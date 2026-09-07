@@ -14,9 +14,28 @@ const inter = Inter({
 });
 
 export const metadata = {
+  metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://trustvalue.ai"),
   title: "TrustValue.ai — Founding Prototype",
   description:
     "TrustValue.ai — a founding prototype for turning real human experience into measurable trust.",
+  alternates: {
+    canonical: "/",
+  },
+  openGraph: {
+    title: "TrustValue.ai — Founding Prototype",
+    description:
+      "Turning genuine human experience into measurable trust in seconds.",
+    url: "https://trustvalue.ai",
+    siteName: "TrustValue.ai",
+    locale: "en_US",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "TrustValue.ai — Founding Prototype",
+    description:
+      "Turning genuine human experience into measurable trust in seconds.",
+  },
 };
 
 export default function RootLayout({ children }) {
