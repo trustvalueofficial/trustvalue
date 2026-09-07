@@ -1,0 +1,38 @@
+[
+  {
+    "id": "ea_1788770705559_5o8ybq",
+    "email": "kishanshinde715@gmail.com",
+    "createdAt": "2026-09-07T08:45:05.559Z",
+    "source": "header_modal"
+  },
+  {
+    "id": "ea_1788771006265_whykdu",
+    "email": "kishanshinde@gmail.com",
+    "createdAt": "2026-09-07T08:50:06.265Z",
+    "source": "hero_form"
+  },
+  {
+    "id": "ea_1788794912591_l08fid",
+    "email": "founder@trustvalue.ai",
+    "createdAt": "2026-09-07T15:28:32.591Z",
+    "source": "founding_build"
+  },
+  {
+    "id": "ea_1788795087932_nz3rcf",
+    "email": "shindekishan930@gmail.com",
+    "createdAt": "2026-09-07T15:31:27.932Z",
+    "source": "founding_build"
+  },
+  {
+    "id": "ea_1788795637249_ig2qmu",
+    "email": "test@example.com",
+    "createdAt": "2026-09-07T15:40:37.249Z",
+    "source": "founding_build"
+  },
+  {
+    "id": "ea_1788796197400_md48zk",
+    "email": "mobile_test@trustvalue.ai",
+    "createdAt": "2026-09-07T15:49:57.400Z",
+    "source": "founding_build"
+  }
+]
