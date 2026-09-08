@@ -56,7 +56,7 @@ export default function Home() {
   const [mainCd, setMainCd] = useState({ d: "79", h: "00", m: "00", s: "00" });
 
   useEffect(() => {
-    const roomOpen = new Date("2026-09-09T00:00:00+05:30").getTime();
+    const roomOpen = new Date("2026-09-09T22:30:00+05:30").getTime();
     const mainLaunch = new Date("2026-11-25T00:00:00+05:30").getTime();
 
     function calc(target) {
@@ -190,7 +190,7 @@ export default function Home() {
   const brandDeltaClass =
     brandAfter < brandBase ? "down" : brandAfter > brandBase ? "up" : "";
 
-  const shareText = `Apple Event 2026 — ${currentMeta.verdict}${
+  const shareText = `Shine and Surprise — ${currentMeta.verdict}${
     driver ? ` · ${driver} influenced my rating` : ""
   }. My TrustValue experience score: ${currentMeta.score}/100.`;
 
@@ -482,7 +482,7 @@ export default function Home() {
           <div className="experience-wrap">
             <div className="exp-head">
               <div>
-                <div className="exp-title">Apple Event 2026</div>
+                <div className="exp-title">Shine and Surprise</div>
                 <div className="exp-sub">
                   Founding demonstration · no live data · no rating is being
                   submitted
@@ -703,7 +703,7 @@ export default function Home() {
                         VERIFIED EXPERIMENTAL
                       </span>
                     </div>
-                    <div className="tc-name">Apple Event 2026</div>
+                    <div className="tc-name">Shine and Surprise</div>
                     <div className="tc-score">
                       <span id="tcScore">{lockedData.score}</span>
                       <small>/100</small>
@@ -752,7 +752,7 @@ export default function Home() {
 
                     <div className="metric">
                       <div className="metric-block">
-                        <small>Apple Event Trust</small>
+                        <small>Shine and Surprise Trust</small>
                         <strong>84.60</strong>
                       </div>
                       <div className="metric-arrow">→</div>
