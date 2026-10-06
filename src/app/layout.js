@@ -21,6 +21,10 @@ export const metadata = {
   alternates: {
     canonical: "/",
   },
+  robots: {
+    index: false,
+    follow: false,
+  },
   openGraph: {
     title: "TrustValue.ai — Founding Prototype",
     description:
