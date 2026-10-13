@@ -1,0 +1,19 @@
+/**
+ * TrustValue Institutional Design Tokens
+ * Global public stylesheet for TrustValue brand tokens and utilities.
+ */
+:root {
+  --color-navy: #071B46;
+  --color-navy-2: #0C2659;
+  --color-orange: #FF5A0A;
+  --color-amber: #FFAA00;
+  --color-red: #F12A0A;
+  --color-paper: #FAFBFD;
+  --color-ink: #06132F;
+  --color-slate: #667085;
+  --color-mist: #EEF2F7;
+  --color-line: #DCE2EB;
+  --color-green: #0A8754;
+  --font-display: "Manrope", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+}
