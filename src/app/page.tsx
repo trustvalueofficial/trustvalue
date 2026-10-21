@@ -19,6 +19,7 @@ export default function HomePage() {
   const [pledgeEmail, setPledgeEmail] = useState("");
   const [pledgeDone, setPledgeDone] = useState(false);
   const [inTopSections, setInTopSections] = useState(true);
+  const [headerStickyGone, setHeaderStickyGone] = useState(false);
 
   useEffect(() => {
     // Only show rating button in sections 1 & 2 (Hero and Sectors showcase)
@@ -30,6 +31,14 @@ export default function HomePage() {
         setInTopSections(rect.bottom > 80);
       } else {
         setInTopSections(window.scrollY < 1200);
+      }
+
+      // Check if last card in sectors has reached the sticky stack position
+      const lastCardEl = document.getElementById("sector-card-last");
+      if (lastCardEl) {
+        const lastRect = lastCardEl.getBoundingClientRect();
+        // As soon as the last card reaches the stack (top <= 145), the sticky header is gone
+        setHeaderStickyGone(lastRect.top <= 145);
       }
     };
     window.addEventListener("scroll", handleScrollSections, { passive: true });
@@ -1039,7 +1048,7 @@ export default function HomePage() {
       {/* 2. SECTORS SHOWCASE (IMAGE 1 SPEC) */}
       <section className="sectors-showcase-section" id="sectors" aria-labelledby="sectors-title">
         <div className="wrap">
-          <header className="section__head">
+          <header className={`section__head ${headerStickyGone ? "is-released" : ""}`}>
             <span className="tag tag--onnavy"><span className="dot dot--signal" />One index, every sector</span>
             <h2 id="sectors-title" style={{ color: "#fff" }}>Trust, measured wherever you spend your life.</h2>
             <p className="lead" style={{ color: "#AEBBD6" }}>
@@ -1052,6 +1061,7 @@ export default function HomePage() {
               sec.isLive ? (
                 <Link
                   key={sec.id}
+                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
                   href={sec.link || "/industry/insurance"}
                   className="showcase-card showcase-card--live"
                   style={{ "--card-index": idx } as React.CSSProperties}
@@ -1068,6 +1078,7 @@ export default function HomePage() {
               ) : (
                 <div
                   key={sec.id}
+                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
                   className="showcase-card showcase-card--inactive"
                   style={{ "--card-index": idx } as React.CSSProperties}
                 >

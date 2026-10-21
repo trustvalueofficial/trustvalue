@@ -840,6 +840,14 @@ main, header.hdr, .site-header, .hdr, section, footer {
     border-radius: 16px !important;
     box-shadow: 0 8px 24px -4px rgba(3, 10, 32, 0.5) !important;
     border: 1px solid rgba(255, 255, 255, 0.08) !important;
+    transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s ease !important;
+  }
+
+  .sectors-showcase-section .section__head.is-released {
+    opacity: 0 !important;
+    visibility: hidden !important;
+    pointer-events: none !important;
+    transform: translateY(-16px) scale(0.98) !important;
   }
 }
 
