@@ -1052,12 +1052,13 @@ export default function HomePage() {
           </header>
 
           <div className="showcase-grid">
-            {SECTORS_SHOWCASE.map((sec) => (
+            {SECTORS_SHOWCASE.map((sec, idx) => (
               sec.isLive ? (
                 <Link
                   key={sec.id}
                   href={sec.link || "/industry/insurance"}
                   className="showcase-card showcase-card--live"
+                  style={{ "--card-index": idx } as React.CSSProperties}
                   title="Explore live audit for Life & Health Insurance"
                 >
                   <div className="showcase-badge">
@@ -1069,7 +1070,11 @@ export default function HomePage() {
                   <p className="showcase-footer-signal">{sec.footerText}</p>
                 </Link>
               ) : (
-                <div key={sec.id} className="showcase-card showcase-card--inactive">
+                <div
+                  key={sec.id}
+                  className="showcase-card showcase-card--inactive"
+                  style={{ "--card-index": idx } as React.CSSProperties}
+                >
                   <div className="showcase-badge">
                     <span>{sec.badge}</span>
                   </div>
