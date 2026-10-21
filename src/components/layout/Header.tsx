@@ -372,7 +372,7 @@ export default function Header() {
               </span>
             ) : (
               <button
-                className="btn btn-ghost btn-sm hidden lg:inline-flex"
+                className="btn btn-ghost btn-sm hdr-desk-only"
                 type="button"
                 onClick={() => setSignInOpen(true)}
               >
@@ -380,12 +380,12 @@ export default function Header() {
               </button>
             )}
 
-            <Link className="btn btn-primary btn-sm hidden lg:inline-flex" href="/write-review">
+            <Link className="btn btn-primary btn-sm hdr-desk-only" href="/write-review">
               Write a review
             </Link>
 
             <button
-              className="icon-btn lg:hidden"
+              className="icon-btn hdr-burger-only"
               type="button"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
