@@ -291,3 +291,63 @@ export const SUBJECTS_CONFIG: Record<string, { name: string; feats: string[]; ru
     rungs: ["This course", "Its institute", "Education category", "Education Trust Index"]
   }
 };
+
+export interface SectorShowcaseItem {
+  id: string;
+  name: string;
+  badge: string;
+  desc: string;
+  goalPct: number;
+  footerText?: string;
+  isLive?: boolean;
+  link?: string;
+}
+
+export const SECTORS_SHOWCASE: SectorShowcaseItem[] = [
+  {
+    id: "0",
+    name: "Life & Health Insurance",
+    badge: "Phase 1: Live Telemetry Audit (40%)",
+    desc: "Auditing all 26 registered life insurers, 29+ products, cashless hospital settlement speeds, and IRDAI claim rejection files.",
+    goalPct: 40,
+    footerText: "1,000 VERIFIED SIGNALS TO LAUNCH",
+    isLive: true,
+    link: "/industry/insurance"
+  },
+  {
+    id: "3",
+    name: "Hospitals & Healthcare Chains",
+    badge: "Voting Open • 86% Goal Reached",
+    desc: "Exposing midnight cashless claim denials, arbitrary room rent proportionate deductions, and inflated surgical consumable billing.",
+    goalPct: 86
+  },
+  {
+    id: "1",
+    name: "Banking & Home Loans",
+    badge: "Voting Open • 64% Goal Reached",
+    desc: "Tracking silent repo-rate rate hikes, arbitrary mortgage tenure extensions (+10 yrs), and hidden loan foreclosure hurdles.",
+    goalPct: 64
+  },
+  {
+    id: "11",
+    name: "Automotive & EV Warranties",
+    badge: "Voting Open • 41% Goal Reached",
+    desc: "Auditing real-world EV battery degradation, hidden software subscription fees, and dealership warranty loophole denials.",
+    goalPct: 41
+  },
+  {
+    id: "9",
+    name: "Real Estate & PropTech",
+    badge: "Voting Open • 34% Goal Reached",
+    desc: "Auditing developer RERA compliance, super-built-up vs carpet area discrepancies, and multi-year possession delay penalties.",
+    goalPct: 34
+  },
+  {
+    id: "16",
+    name: "B2B SaaS & Cloud Services",
+    badge: "Voting Open • 29% Goal Reached",
+    desc: "Exposing aggressive auto-renewal traps, dark-pattern subscription cancellations, and exorbitant vendor data export fees.",
+    goalPct: 29
+  }
+];
+

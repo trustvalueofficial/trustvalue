@@ -8,16 +8,32 @@ import {
   TV_SECTORS,
   TV_BRANDS,
   RAW_PRODUCTS_STRING,
-  SUBJECTS_CONFIG
+  SUBJECTS_CONFIG,
+  SECTORS_SHOWCASE
 } from "@/lib/data/universalData";
 
 export default function HomePage() {
   const [nudgeOpen, setNudgeOpen] = useState(true);
+  const [mobileStatusOpen, setMobileStatusOpen] = useState(false);
+  const [pledgeSector, setPledgeSector] = useState("Hospitals & Healthcare Chains");
+  const [pledgeEmail, setPledgeEmail] = useState("");
+  const [pledgeDone, setPledgeDone] = useState(false);
+
+  useEffect(() => {
+    // Auto-dismiss status drawer on scroll (Image 3 / 4 requirement)
+    const onScroll = () => {
+      if (mobileStatusOpen) {
+        setMobileStatusOpen(false);
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [mobileStatusOpen]);
 
   useEffect(() => {
     // Mobile FAB scroll visibility
     const fb = document.getElementById("fab");
-    const onScroll = () => {
+    const onFabScroll = () => {
       if (!fb) return;
       if (window.scrollY > 400) {
         fb.classList.add("is-on");
@@ -25,11 +41,10 @@ export default function HomePage() {
         fb.classList.remove("is-on");
       }
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("scroll", onFabScroll, { passive: true });
 
     return () => {
-      clearTimeout(timer);
-      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("scroll", onFabScroll);
     };
   }, []);
   useEffect(() => {
@@ -874,7 +889,8 @@ export default function HomePage() {
             </ul>
           </div>
 
-          <aside className="status" aria-labelledby="status-title">
+          {/* Desktop Status Card */}
+          <aside className="status hidden lg:block" aria-labelledby="status-title">
             <div className="status__top">
               <div>
                 <p className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</p>
@@ -916,22 +932,168 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* 2. SECTORS */}
-      <section className="section band-mist" id="sectors" aria-labelledby="sectors-title">
+      {/* Mobile Floating Rating Pop Tab (Image 4) */}
+      <button
+        type="button"
+        className="status-pop-tab lg:hidden"
+        aria-label="Open Index Status"
+        onClick={() => setMobileStatusOpen(true)}
+      >
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="#FF5A0A" aria-hidden="true">
+          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+        </svg>
+        <span className="status-pop-badge">1,000</span>
+      </button>
+
+      {/* Mobile Slide-over Status Drawer (Image 3) */}
+      {mobileStatusOpen && (
+        <div className="status-drawer-backdrop lg:hidden" onClick={() => setMobileStatusOpen(false)}>
+          <div className="status-drawer-panel" onClick={(e) => e.stopPropagation()}>
+            <button
+              type="button"
+              className="status-drawer-close"
+              onClick={() => setMobileStatusOpen(false)}
+              aria-label="Close"
+            >
+              ×
+            </button>
+            <div className="status__top" style={{ marginTop: "16px" }}>
+              <div>
+                <p className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</p>
+                <h2 id="status-title-mob" style={{ fontSize: "1.75rem", marginTop: "12px", color: "#fff" }}>
+                  Goes live at 1,000 reviews.
+                </h2>
+                <p className="status__text" style={{ fontSize: "0.875rem", color: "#AEBBD6", marginTop: "10px" }}>
+                  An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.
+                </p>
+              </div>
+              <img
+                className="status__mascot"
+                src="/brand/status__mascot.webp"
+                alt="The TrustValue mascot"
+                width={280}
+                height={580}
+              />
+            </div>
+            <div className="run" style={{ marginTop: "20px" }}>
+              <div className="run__track">
+                <div className="run__fill" style={{ width: "0%" }} />
+                <span className="run__dot" style={{ left: "0%" }} />
+              </div>
+              <p className="run__ends">
+                <span><b>0</b> locked so far</span>
+                <span><b>1,000</b> to go live</span>
+              </p>
+            </div>
+            <dl className="counts" style={{ marginTop: "20px" }}>
+              <div><dt>Articles published</dt><dd>0</dd></div>
+              <div><dt>Brands listed</dt><dd>183</dd></div>
+              <div><dt>Products listed</dt><dd>84</dd></div>
+              <div><dt>Sectors mapped</dt><dd>18</dd></div>
+            </dl>
+            <p className="status__cta" style={{ marginTop: "24px" }}>
+              <Link className="btn btn--signal" href="/write-review/" style={{ width: "100%", justifyContent: "center" }}>
+                Write the first review
+              </Link>
+              <a href="#explained" onClick={() => setMobileStatusOpen(false)} style={{ display: "block", textAlign: "center", marginTop: "12px", color: "#AEBBD6" }}>
+                How the index works
+              </a>
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* 2. SECTORS SHOWCASE (IMAGE 1 SPEC) */}
+      <section className="sectors-showcase-section" id="sectors" aria-labelledby="sectors-title">
         <div className="wrap">
           <header className="section__head">
-            <span className="tag"><span className="dot dot--signal" />One index, every sector</span>
-            <h2 id="sectors-title">Trust, measured wherever you spend your life.</h2>
-            <p className="lead">
-              18 daily-life sectors, from insurance and banking to telecom, cars and healthcare. Every sector gets the same Trust Index, built the same way, so a score means the same thing everywhere.
+            <span className="tag tag--onnavy"><span className="dot dot--signal" />One index, every sector</span>
+            <h2 id="sectors-title" style={{ color: "#fff" }}>Trust, measured wherever you spend your life.</h2>
+            <p className="lead" style={{ color: "#AEBBD6" }}>
+              18 daily-life sectors mapped. Only active sectors can be explored; pledge your vote to unlock the rest.
             </p>
           </header>
-          <div className="chips" id="need-chips" role="group" aria-label="Filter sectors by need" />
-          <ul className="sector-grid" id="sector-grid" />
-          <div className="sector-notify">
-            <b>Want a sector opened sooner?</b>
-            <span>Pick it above, leave your email, and we will tell you the day its index opens.</span>
-            <div data-lf="sector-notify" data-cta="Notify me" data-ph="Email or WhatsApp number" />
+
+          <div className="showcase-grid">
+            {SECTORS_SHOWCASE.map((sec) => (
+              sec.isLive ? (
+                <Link
+                  key={sec.id}
+                  href={sec.link || "/industry/insurance"}
+                  className="showcase-card showcase-card--live"
+                  title="Explore live audit for Life & Health Insurance"
+                >
+                  <div className="showcase-badge">
+                    <span className="dot-live" />
+                    <span>{sec.badge}</span>
+                  </div>
+                  <h3 className="showcase-title">{sec.name}</h3>
+                  <p className="showcase-desc">{sec.desc}</p>
+                  <p className="showcase-footer-signal">{sec.footerText}</p>
+                </Link>
+              ) : (
+                <div key={sec.id} className="showcase-card showcase-card--inactive">
+                  <div className="showcase-badge">
+                    <span>{sec.badge}</span>
+                  </div>
+                  <h3 className="showcase-title">{sec.name}</h3>
+                  <p className="showcase-desc">{sec.desc}</p>
+                  <div className="showcase-progress">
+                    <div className="showcase-progress-track">
+                      <div className="showcase-progress-fill" style={{ width: `${sec.goalPct}%` }} />
+                    </div>
+                  </div>
+                  <button
+                    type="button"
+                    className="showcase-btn-vote"
+                    onClick={() => {
+                      setPledgeSector(sec.name);
+                      document.getElementById("pledge-email-input")?.focus();
+                      document.getElementById("pledge-email-input")?.scrollIntoView({ behavior: "smooth", block: "center" });
+                    }}
+                  >
+                    Pledge Vote to Unlock
+                  </button>
+                </div>
+              )
+            ))}
+          </div>
+
+          {/* Bottom Pledge Card (Image 1 Bottom) */}
+          <div className="pledge-box" id="pledge-card">
+            <h3>Pledge your vote to unlock an industry</h3>
+            <p>
+              We will notify you the exact day the public audit ledger opens for {pledgeSector}.
+            </p>
+            <form
+              className="pledge-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!pledgeEmail) return;
+                setPledgeDone(true);
+                try {
+                  const q = JSON.parse(localStorage.getItem("tv-pledges") || "[]");
+                  q.push({ email: pledgeEmail, sector: pledgeSector, at: new Date().toISOString() });
+                  localStorage.setItem("tv-pledges", JSON.stringify(q));
+                } catch {}
+              }}
+            >
+              <input
+                id="pledge-email-input"
+                type="email"
+                placeholder="Enter your email address"
+                value={pledgeEmail}
+                onChange={(e) => setPledgeEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="btn btn--signal">Confirm My Vote</button>
+            </form>
+            {pledgeDone && (
+              <p className="pledge-ok">
+                ✓ Your vote for {pledgeSector} has been confirmed. We will message you at launch.
+              </p>
+            )}
+            <small>No spam. One message when it matters. Unsubscribe any time.</small>
           </div>
         </div>
       </section>
