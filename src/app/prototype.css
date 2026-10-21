@@ -350,7 +350,7 @@ textarea.input { min-height: 120px; resize: vertical; line-height: 1.5; }
 
 /* Floating tools */
 .fabs { position: fixed; right: 16px; bottom: calc(16px + env(safe-area-inset-bottom, 0px)); z-index: 50; display: flex; flex-direction: column; gap: 8px; align-items: flex-end; }
-.fab { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font: 700 0.8125rem/1 var(--f-display); box-shadow: var(--shadow); cursor: pointer; }
+.legacy-fab { display: inline-flex; align-items: center; gap: 8px; min-height: 42px; padding: 8px 14px; border-radius: 999px; border: 1px solid var(--line-2); background: var(--surface); color: var(--ink); font: 700 0.8125rem/1 var(--f-display); box-shadow: var(--shadow); cursor: pointer; }
 .fab-dark { background: #071B46; color: #fff; border-color: #071B46; }
 .side { position: fixed; top: 0; right: 0; bottom: 0; z-index: 75; width: min(460px, 100%); background: var(--surface); border-left: 1px solid var(--line); box-shadow: -20px 0 50px rgba(0, 0, 0, 0.18); padding: 18px 18px calc(24px + env(safe-area-inset-bottom, 0px)); overflow: auto; }
 .side[hidden] { display: none !important; }

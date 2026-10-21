@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
 import "./globals.css";
 import "./prototype.css";
+import "./home.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
