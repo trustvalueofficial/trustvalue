@@ -377,16 +377,16 @@
 }
 
 /* FAB floating button rules */
-/* FAB floating button rules (strictly mobile only) */
+/* FAB floating button rules (smaller, pinned to bottom right corner) */
 .fab {
   position: fixed !important;
-  left: 0 !important;
-  right: 0 !important;
-  bottom: 0 !important;
-  z-index: 40 !important;
+  left: auto !important;
+  right: 16px !important;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px)) !important;
+  z-index: 50 !important;
   display: flex !important;
-  justify-content: center !important;
-  padding: 0 var(--gutter, 20px) calc(14px + env(safe-area-inset-bottom, 0px)) !important;
+  justify-content: flex-end !important;
+  padding: 0 !important;
   pointer-events: none !important;
   transform: translateY(130%) !important;
   transition: transform 0.3s cubic-bezier(0.2, 0.9, 0.3, 1) !important;
@@ -399,9 +399,14 @@
 }
 .fab .btn {
   pointer-events: auto !important;
-  height: 52px !important;
-  padding-inline: 24px !important;
-  box-shadow: 0 14px 30px -10px rgba(6, 19, 47, 0.55) !important;
+  height: 38px !important;
+  padding-inline: 16px !important;
+  font-size: 0.8125rem !important;
+  font-weight: 700 !important;
+  border-radius: 999px !important;
+  background: var(--orange, #FF5A0A) !important;
+  color: #06132F !important;
+  box-shadow: 0 4px 16px rgba(255, 90, 10, 0.45) !important;
 }
 @media (min-width: 640px) {
   .fab,
