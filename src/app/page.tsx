@@ -18,16 +18,27 @@ export default function HomePage() {
   const [pledgeSector, setPledgeSector] = useState("Hospitals & Healthcare Chains");
   const [pledgeEmail, setPledgeEmail] = useState("");
   const [pledgeDone, setPledgeDone] = useState(false);
+  const [inTopSections, setInTopSections] = useState(true);
 
   useEffect(() => {
-    // Auto-dismiss status drawer on scroll (Image 3 / 4 requirement)
-    const onScroll = () => {
+    // Only show rating button in sections 1 & 2 (Hero and Sectors showcase)
+    const handleScrollSections = () => {
+      const sectorsEl = document.getElementById("sectors");
+      if (sectorsEl) {
+        const rect = sectorsEl.getBoundingClientRect();
+        // Visible while the bottom of section 2 has not passed above the top half of viewport
+        setInTopSections(rect.bottom > 120);
+      } else {
+        // Fallback to top scroll range
+        setInTopSections(window.scrollY < 1400);
+      }
       if (mobileStatusOpen) {
         setMobileStatusOpen(false);
       }
     };
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("scroll", handleScrollSections, { passive: true });
+    handleScrollSections();
+    return () => window.removeEventListener("scroll", handleScrollSections);
   }, [mobileStatusOpen]);
 
   useEffect(() => {
@@ -932,18 +943,30 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Mobile Floating Rating Pop Tab (Image 4) */}
-      <button
-        type="button"
-        className="status-pop-tab lg:hidden"
-        aria-label="Open Index Status"
-        onClick={() => setMobileStatusOpen(true)}
-      >
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="#FF5A0A" aria-hidden="true">
-          <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-        </svg>
-        <span className="status-pop-badge">1,000</span>
-      </button>
+      {/* Mobile Floating Rating Pop Tab (Image 4) - only visible in Sections 1 & 2 */}
+      {inTopSections && (
+        <button
+          type="button"
+          className="status-pop-tab lg:hidden"
+          aria-label="Open Index Status"
+          onClick={() => setMobileStatusOpen(true)}
+        >
+          {/* Standing Mascot on top of button (Image 4) */}
+          <div className="status-pop-mascot-wrap" aria-hidden="true">
+            <img
+              src="/brand/status__mascot.webp"
+              alt=""
+              className="status-pop-mascot"
+              width={56}
+              height={116}
+            />
+          </div>
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="#FF5A0A" aria-hidden="true">
+            <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+          </svg>
+          <span className="status-pop-badge">1,000</span>
+        </button>
+      )}
 
       {/* Mobile Slide-over Status Drawer (Image 3) */}
       {mobileStatusOpen && (
@@ -957,48 +980,62 @@ export default function HomePage() {
             >
               ×
             </button>
-            <div className="status__top" style={{ marginTop: "16px" }}>
-              <div>
-                <p className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</p>
-                <h2 id="status-title-mob" style={{ fontSize: "1.75rem", marginTop: "12px", color: "#fff" }}>
-                  Goes live at 1,000 reviews.
-                </h2>
-                <p className="status__text" style={{ fontSize: "0.875rem", color: "#AEBBD6", marginTop: "10px" }}>
-                  An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.
+            <div className="status-drawer-body">
+              <div className="status-drawer-hero">
+                <div className="status-drawer-info">
+                  <span className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</span>
+                  <h2 id="status-title-mob" className="status-drawer-title">
+                    Goes live at 1,000 reviews.
+                  </h2>
+                  <p className="status-drawer-desc">
+                    An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.
+                  </p>
+                </div>
+                <div className="status-drawer-mascot-box">
+                  <img
+                    className="status-drawer-mascot"
+                    src="/brand/status__mascot.webp"
+                    alt="The TrustValue mascot"
+                    width={280}
+                    height={580}
+                  />
+                </div>
+              </div>
+
+              {/* Progress Tracker */}
+              <div className="run status-drawer-run">
+                <div className="run__track">
+                  <div className="run__fill" style={{ width: "0%" }} />
+                  <span className="run__dot" style={{ left: "0%" }} />
+                </div>
+                <p className="run__ends">
+                  <span><b>0</b> locked so far</span>
+                  <span><b>1,000</b> to go live</span>
                 </p>
               </div>
-              <img
-                className="status__mascot"
-                src="/brand/status__mascot.webp"
-                alt="The TrustValue mascot"
-                width={280}
-                height={580}
-              />
-            </div>
-            <div className="run" style={{ marginTop: "20px" }}>
-              <div className="run__track">
-                <div className="run__fill" style={{ width: "0%" }} />
-                <span className="run__dot" style={{ left: "0%" }} />
+
+              {/* Metrics Grid */}
+              <dl className="counts status-drawer-counts">
+                <div><dt>Articles published</dt><dd>0</dd></div>
+                <div><dt>Brands listed</dt><dd>183</dd></div>
+                <div><dt>Products listed</dt><dd>84</dd></div>
+                <div><dt>Sectors mapped</dt><dd>18</dd></div>
+              </dl>
+
+              {/* Action Buttons */}
+              <div className="status-drawer-cta">
+                <Link className="btn btn--signal btn--block" href="/write-review/">
+                  Write the first review
+                </Link>
+                <a
+                  href="#explained"
+                  className="status-drawer-link"
+                  onClick={() => setMobileStatusOpen(false)}
+                >
+                  How the index works
+                </a>
               </div>
-              <p className="run__ends">
-                <span><b>0</b> locked so far</span>
-                <span><b>1,000</b> to go live</span>
-              </p>
             </div>
-            <dl className="counts" style={{ marginTop: "20px" }}>
-              <div><dt>Articles published</dt><dd>0</dd></div>
-              <div><dt>Brands listed</dt><dd>183</dd></div>
-              <div><dt>Products listed</dt><dd>84</dd></div>
-              <div><dt>Sectors mapped</dt><dd>18</dd></div>
-            </dl>
-            <p className="status__cta" style={{ marginTop: "24px" }}>
-              <Link className="btn btn--signal" href="/write-review/" style={{ width: "100%", justifyContent: "center" }}>
-                Write the first review
-              </Link>
-              <a href="#explained" onClick={() => setMobileStatusOpen(false)} style={{ display: "block", textAlign: "center", marginTop: "12px", color: "#AEBBD6" }}>
-                How the index works
-              </a>
-            </p>
           </div>
         </div>
       )}
