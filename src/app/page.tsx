@@ -26,20 +26,16 @@ export default function HomePage() {
       const sectorsEl = document.getElementById("sectors");
       if (sectorsEl) {
         const rect = sectorsEl.getBoundingClientRect();
-        // Visible while the bottom of section 2 has not passed above the top half of viewport
-        setInTopSections(rect.bottom > 120);
+        // Visible while in section 1 & 2, disappears when scrolled past section 2
+        setInTopSections(rect.bottom > 80);
       } else {
-        // Fallback to top scroll range
-        setInTopSections(window.scrollY < 1400);
-      }
-      if (mobileStatusOpen) {
-        setMobileStatusOpen(false);
+        setInTopSections(window.scrollY < 1200);
       }
     };
     window.addEventListener("scroll", handleScrollSections, { passive: true });
     handleScrollSections();
     return () => window.removeEventListener("scroll", handleScrollSections);
-  }, [mobileStatusOpen]);
+  }, []);
 
   useEffect(() => {
     // Mobile FAB scroll visibility
