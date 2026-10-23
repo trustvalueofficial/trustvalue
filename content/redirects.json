@@ -1,0 +1,4 @@
+[
+  { "fromPath": "/insurance/brands/hdfc-life", "toPath": "/insurance/providers/hdfc-life", "status": 301 },
+  { "fromPath": "/insurance/brands/hdfc-life/click-2-protect-supreme", "toPath": "/insurance/providers/hdfc-life/click-2-protect-supreme", "status": 301 }
+]

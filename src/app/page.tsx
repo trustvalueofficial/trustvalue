@@ -210,12 +210,36 @@ export default function HomePage() {
       return out;
     }
 
+    const SECTOR_SLUGS = {
+      "0": "insurance",
+      "1": "banking",
+      "2": "investments",
+      "3": "healthcare",
+      "4": "pharma",
+      "5": "telecom",
+      "6": "internet-ott",
+      "7": "food-grocery",
+      "8": "agriculture",
+      "9": "real-estate",
+      "10": "mobility",
+      "11": "automobiles",
+      "12": "electronics",
+      "13": "appliances",
+      "14": "education",
+      "15": "travel",
+      "16": "energy",
+      "17": "government"
+    };
+
     function drawProducts() {
       if (!bc || !bp) return;
       chips(bc, [["all", "All sectors"]].concat(S.map((s) => [s[0], s[2]])), cur, "bs");
       const l = pitems();
       const shown = open || q ? l : l.slice(0, LIM);
-      bp.innerHTML = shown.length ? shown.map((p) => `<li><a class="plate" href="${p[4]}" title="${esc(p[1] + " " + p[2])}"><span class="plate__reg">${esc(mono(p[2]))}</span><span><span class="plate__name">${esc(p[2])}</span><span class="plate__sub">${esc(p[1])} · ${esc(p[3])}</span></span><span class="plate__state">Early signals</span></a></li>`).join("") : '<li><p class="search__empty">Products for this sector are being added. Switch to Brands to rate the brand now.</p></li>';
+      bp.innerHTML = shown.length ? shown.map((p) => {
+        const secSlug = SECTOR_SLUGS[p[0]] || "insurance";
+        return `<li><a class="plate" href="/${secSlug}" title="${esc(p[1] + " " + p[2])}"><span class="plate__reg">${esc(mono(p[2]))}</span><span><span class="plate__name">${esc(p[2])}</span><span class="plate__sub">${esc(p[1])} · ${esc(p[3])}</span></span><span class="plate__state">Early signals</span></a></li>`;
+      }).join("") : '<li><p class="search__empty">Products for this sector are being added. Switch to Brands to rate the brand now.</p></li>';
       const w = $("#brand-more-wrap");
       if (w) w.hidden = open || !!q || l.length <= LIM;
       const bm = $("#brand-more");
@@ -230,7 +254,10 @@ export default function HomePage() {
       chips(bc, [["all", "All sectors"]].concat(S.map((s) => [s[0], s[2]])), cur, "bs");
       const l = items();
       const shown = open || q ? l : l.slice(0, LIM);
-      bp.innerHTML = shown.length ? shown.map((o) => `<li><a class="plate" href="/brand/${o.b[2]}/" title="${esc(o.b[0])}"><span class="plate__reg">${esc(mono(o.b[0]))}</span><span><span class="plate__name">${esc(o.b[0])}</span><span class="plate__sub">${esc(o.b[1])}${cur === "all" ? " · " + esc(o.s[2]) : ""}</span></span><span class="plate__state">Early signals</span></a></li>`).join("") : '<li><p class="search__empty">No brand matches that. <a href="/brands/">Suggest it for the index</a>.</p></li>';
+      bp.innerHTML = shown.length ? shown.map((o) => {
+        const secSlug = SECTOR_SLUGS[o.s[0]] || "insurance";
+        return `<li><a class="plate" href="/${secSlug}/providers/${o.b[2]}" title="${esc(o.b[0])}"><span class="plate__reg">${esc(mono(o.b[0]))}</span><span><span class="plate__name">${esc(o.b[0])}</span><span class="plate__sub">${esc(o.b[1])}${cur === "all" ? " · " + esc(o.s[2]) : ""}</span></span><span class="plate__state">Early signals</span></a></li>`;
+      }).join("") : '<li><p class="search__empty">No brand matches that. <a href="/insurance">Browse insurance sector</a>.</p></li>';
       const w = $("#brand-more-wrap");
       if (w) w.hidden = open || !!q || l.length <= LIM;
       const bm = $("#brand-more");
@@ -244,16 +271,15 @@ export default function HomePage() {
       const bq = $("#brand-q");
       if (bq) bq.value = "";
       if (id !== "all") {
-        window.tvCtx["sector-notify"] = S[+id][2];
-        if (need !== "All" && S[+id][1] !== need) need = "All";
+        window.tvCtx["sector-notify"] = S[+id]?.[2] || "";
+        if (need !== "All" && S[+id]?.[1] !== need) need = "All";
       }
-      drawSectors();
+      if (nc && sg) drawSectors();
       drawBrands();
     }
 
-    if (nc && sg && bc && bp) {
+    if (nc && sg) {
       drawSectors();
-      drawBrands();
       nc.addEventListener("click", (e) => {
         const b = e.target.closest("[data-need]");
         if (b) { need = b.dataset.need; drawSectors(); }
@@ -265,6 +291,10 @@ export default function HomePage() {
         const secBrands = $("#brands");
         if (secBrands) secBrands.scrollIntoView({ behavior: "smooth", block: "start" });
       });
+    }
+
+    if (bc && bp) {
+      drawBrands();
       bc.addEventListener("click", (e) => {
         const b = e.target.closest("[data-bs]");
         if (b) pick(b.dataset.bs);
@@ -1045,146 +1075,7 @@ export default function HomePage() {
         </div>
       )}
 
-      {/* 2. SECTORS SHOWCASE (IMAGE 1 SPEC) */}
-      <section className="sectors-showcase-section" id="sectors" aria-labelledby="sectors-title">
-        <div className="wrap">
-          <header className={`section__head ${headerStickyGone ? "is-released" : ""}`}>
-            <span className="tag tag--onnavy"><span className="dot dot--signal" />One index, every sector</span>
-            <h2 id="sectors-title" style={{ color: "#fff" }}>Trust, measured wherever you spend your life.</h2>
-            <p className="lead" style={{ color: "#AEBBD6" }}>
-              18 daily-life sectors mapped. Only active sectors can be explored; pledge your vote to unlock the rest.
-            </p>
-          </header>
-
-          <div className="showcase-grid">
-            {SECTORS_SHOWCASE.map((sec, idx) => (
-              sec.isLive ? (
-                <Link
-                  key={sec.id}
-                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
-                  href={sec.link || "/industry/insurance"}
-                  className="showcase-card showcase-card--live"
-                  style={{ "--card-index": idx } as React.CSSProperties}
-                  title="Explore live audit for Life & Health Insurance"
-                >
-                  <div className="showcase-badge">
-                    <span className="dot-live" />
-                    <span>{sec.badge}</span>
-                  </div>
-                  <h3 className="showcase-title">{sec.name}</h3>
-                  <p className="showcase-desc">{sec.desc}</p>
-                  <p className="showcase-footer-signal">{sec.footerText}</p>
-                </Link>
-              ) : (
-                <div
-                  key={sec.id}
-                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
-                  className="showcase-card showcase-card--inactive"
-                  style={{ "--card-index": idx } as React.CSSProperties}
-                >
-                  <div className="showcase-badge">
-                    <span>{sec.badge}</span>
-                  </div>
-                  <h3 className="showcase-title">{sec.name}</h3>
-                  <p className="showcase-desc">{sec.desc}</p>
-                  <div className="showcase-progress">
-                    <div className="showcase-progress-track">
-                      <div className="showcase-progress-fill" style={{ width: `${sec.goalPct}%` }} />
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    className="showcase-btn-vote"
-                    onClick={() => {
-                      setPledgeSector(sec.name);
-                      document.getElementById("pledge-email-input")?.focus();
-                      document.getElementById("pledge-email-input")?.scrollIntoView({ behavior: "smooth", block: "center" });
-                    }}
-                  >
-                    Pledge Vote to Unlock
-                  </button>
-                </div>
-              )
-            ))}
-          </div>
-
-          {/* Bottom Pledge Card (Image 1 Bottom) */}
-          <div className="pledge-box" id="pledge-card">
-            <h3>Pledge your vote to unlock an industry</h3>
-            <p>
-              We will notify you the exact day the public audit ledger opens for {pledgeSector}.
-            </p>
-            <form
-              className="pledge-form"
-              onSubmit={(e) => {
-                e.preventDefault();
-                if (!pledgeEmail) return;
-                setPledgeDone(true);
-                try {
-                  const q = JSON.parse(localStorage.getItem("tv-pledges") || "[]");
-                  q.push({ email: pledgeEmail, sector: pledgeSector, at: new Date().toISOString() });
-                  localStorage.setItem("tv-pledges", JSON.stringify(q));
-                } catch {}
-              }}
-            >
-              <input
-                id="pledge-email-input"
-                type="email"
-                placeholder="Enter your email address"
-                value={pledgeEmail}
-                onChange={(e) => setPledgeEmail(e.target.value)}
-                required
-              />
-              <button type="submit" className="btn btn--signal">Confirm My Vote</button>
-            </form>
-            {pledgeDone && (
-              <p className="pledge-ok">
-                ✓ Your vote for {pledgeSector} has been confirmed. We will message you at launch.
-              </p>
-            )}
-            <small>No spam. One message when it matters. Unsubscribe any time.</small>
-          </div>
-        </div>
-      </section>
-
-      {/* 3. BRANDS */}
-      <section className="section" id="brands" aria-labelledby="brands-title">
-        <div className="wrap">
-          <header className="section__head section__head--split">
-            <div className="section__head" style={{ marginBottom: 0 }}>
-              <h2 id="brands-title">Rate and review any brand</h2>
-              <p className="lead">
-                Every brand and every product starts with no score and ten empty signals. The first ten people to rate it publish its first TrustValue Score. No brand pays to be listed, and none can edit what people say.
-              </p>
-            </div>
-            <Link className="link" href="/brands/">Open the brand directory <svg aria-hidden="true"><use href="#i-arrow" /></svg></Link>
-          </header>
-          <div className="board">
-            <div className="board__bar">
-              <div className="seg" id="brand-mode" role="radiogroup" aria-label="Show brands or products">
-                <button type="button" role="radio" aria-checked="true" data-mode="b">Brands</button>
-                <button type="button" role="radio" aria-checked="false" data-mode="p">Products</button>
-              </div>
-              <div className="chips" id="brand-chips" role="group" aria-label="Filter brands by sector" />
-              <p className="board__count" id="brand-count" aria-live="polite" />
-            </div>
-            <div className="brand-find">
-              <svg aria-hidden="true"><use href="#i-search" /></svg>
-              <label className="sr-only" htmlFor="brand-q">Filter brands</label>
-              <input id="brand-q" type="search" placeholder="Filter brands in this view" autoComplete="off" />
-            </div>
-            <ul className="plates" id="brand-plates" />
-            <p className="board-more" id="brand-more-wrap">
-              <button className="btn btn--quiet" type="button" id="brand-more" />
-            </p>
-            <p className="board__note note">
-              Brand names belong to their owners and are shown for identification only. Insurer registration numbers come from the Life Insurance Council member list and each insurer&apos;s documents, checked <time dateTime="2026-09-30">30 Sep 2026</time>. Listing is not an endorsement or a rating.
-            </p>
-          </div>
-        </div>
-      </section>
-
-      {/* 4. EXPERIENCE SIMULATOR */}
+      {/* 2. EXPERIENCE SIMULATOR */}
       <section className="section demo" id="experience" aria-labelledby="demo-title">
         <div className="wrap">
           <header className="section__head">
@@ -1333,6 +1224,170 @@ export default function HomePage() {
           </ol>
         </div>
       </section>
+
+      {/* 3. SECTORS SHOWCASE (IMAGE 1 SPEC) */}
+      <section className="sectors-showcase-section" id="sectors" aria-labelledby="sectors-title">
+        <div className="wrap">
+          <header className={`section__head ${headerStickyGone ? "is-released" : ""}`}>
+            <span className="tag tag--onnavy"><span className="dot dot--signal" />One index, every sector</span>
+            <h2 id="sectors-title" style={{ color: "#fff" }}>Trust, measured wherever you spend your life.</h2>
+            <p className="lead" style={{ color: "#AEBBD6" }}>
+              18 daily-life sectors mapped. Only active sectors can be explored; pledge your vote to unlock the rest.
+            </p>
+          </header>
+
+          <div className="showcase-grid">
+            {SECTORS_SHOWCASE.map((sec, idx) => (
+              sec.isLive ? (
+                <Link
+                  key={sec.id}
+                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
+                  href={sec.link || "/insurance"}
+                  className="showcase-card showcase-card--live"
+                  style={{ "--card-index": idx } as React.CSSProperties}
+                  title="Explore live audit for Life & Health Insurance"
+                >
+                  <div className="showcase-badge">
+                    <span className="dot-live" />
+                    <span>{sec.badge}</span>
+                  </div>
+                  <h3 className="showcase-title">{sec.name}</h3>
+                  <p className="showcase-desc">{sec.desc}</p>
+                  <div className="showcase-progress">
+                    <div className="showcase-progress-track">
+                      <div className="showcase-progress-fill" style={{ width: `${sec.goalPct || 40}%`, background: "linear-gradient(90deg, #FF5A0A 0%, #FFAA00 100%)" }} />
+                    </div>
+                  </div>
+                  <div className="showcase-live-actions">
+                    <span className="showcase-btn-vote showcase-btn-live">
+                      Explore Live Audit &rarr;
+                    </span>
+                    <span className="showcase-footer-signal">{sec.footerText}</span>
+                  </div>
+                </Link>
+              ) : (
+                <div
+                  key={sec.id}
+                  id={idx === SECTORS_SHOWCASE.length - 1 ? "sector-card-last" : undefined}
+                  className="showcase-card showcase-card--inactive"
+                  style={{ "--card-index": idx } as React.CSSProperties}
+                >
+                  <div className="showcase-badge">
+                    <span>{sec.badge}</span>
+                  </div>
+                  <h3 className="showcase-title">{sec.name}</h3>
+                  <p className="showcase-desc">{sec.desc}</p>
+                  <div className="showcase-progress">
+                    <div className="showcase-progress-track">
+                      <div className="showcase-progress-fill" style={{ width: `${sec.goalPct}%` }} />
+                    </div>
+                  </div>
+                  <div className="showcase-live-actions">
+                    <button
+                      type="button"
+                      className="showcase-btn-vote"
+                      onClick={() => {
+                        setPledgeSector(sec.name);
+                        const input = document.getElementById("pledge-email-input");
+                        const box = document.getElementById("pledge-card");
+                        if (box) {
+                          box.scrollIntoView({ behavior: "smooth", block: "center" });
+                          box.classList.add("pledge-box--highlight");
+                          setTimeout(() => box.classList.remove("pledge-box--highlight"), 2500);
+                        }
+                        if (input) {
+                          input.focus();
+                        }
+                      }}
+                    >
+                      Pledge Vote to Unlock
+                    </button>
+                    {sec.footerText && (
+                      <span className="showcase-footer-signal">{sec.footerText}</span>
+                    )}
+                  </div>
+                </div>
+              )
+            ))}
+          </div>
+
+          {/* Bottom Pledge Card (Image 1 Bottom) */}
+          <div className="pledge-box" id="pledge-card">
+            <h3>Pledge your vote to unlock an industry</h3>
+            <p>
+              We will notify you the exact day the public audit ledger opens for {pledgeSector}.
+            </p>
+            <form
+              className="pledge-form"
+              onSubmit={(e) => {
+                e.preventDefault();
+                if (!pledgeEmail) return;
+                setPledgeDone(true);
+                try {
+                  const q = JSON.parse(localStorage.getItem("tv-pledges") || "[]");
+                  q.push({ email: pledgeEmail, sector: pledgeSector, at: new Date().toISOString() });
+                  localStorage.setItem("tv-pledges", JSON.stringify(q));
+                } catch {}
+              }}
+            >
+              <input
+                id="pledge-email-input"
+                type="email"
+                placeholder="Enter your email address"
+                value={pledgeEmail}
+                onChange={(e) => setPledgeEmail(e.target.value)}
+                required
+              />
+              <button type="submit" className="btn btn--signal">Confirm My Vote</button>
+            </form>
+            {pledgeDone && (
+              <p className="pledge-ok">
+                ✓ Your vote for {pledgeSector} has been confirmed. We will message you at launch.
+              </p>
+            )}
+            <small>No spam. One message when it matters. Unsubscribe any time.</small>
+          </div>
+        </div>
+      </section>
+
+      {/* 3. BRANDS */}
+      <section className="section" id="brands" aria-labelledby="brands-title">
+        <div className="wrap">
+          <header className="section__head section__head--split">
+            <div className="section__head" style={{ marginBottom: 0 }}>
+              <h2 id="brands-title">Rate and review any brand</h2>
+              <p className="lead">
+                Every brand and every product starts with no score and ten empty signals. The first ten people to rate it publish its first TrustValue Score. No brand pays to be listed, and none can edit what people say.
+              </p>
+            </div>
+            <Link className="link" href="/brands/">Open the brand directory <svg aria-hidden="true"><use href="#i-arrow" /></svg></Link>
+          </header>
+          <div className="board">
+            <div className="board__bar">
+              <div className="seg" id="brand-mode" role="radiogroup" aria-label="Show brands or products">
+                <button type="button" role="radio" aria-checked="true" data-mode="b">Brands</button>
+                <button type="button" role="radio" aria-checked="false" data-mode="p">Products</button>
+              </div>
+              <div className="chips" id="brand-chips" role="group" aria-label="Filter brands by sector" />
+              <p className="board__count" id="brand-count" aria-live="polite" />
+            </div>
+            <div className="brand-find">
+              <svg aria-hidden="true"><use href="#i-search" /></svg>
+              <label className="sr-only" htmlFor="brand-q">Filter brands</label>
+              <input id="brand-q" type="search" placeholder="Filter brands in this view" autoComplete="off" />
+            </div>
+            <ul className="plates" id="brand-plates" />
+            <p className="board-more" id="brand-more-wrap">
+              <button className="btn btn--quiet" type="button" id="brand-more" />
+            </p>
+            <p className="board__note note">
+              Brand names belong to their owners and are shown for identification only. Insurer registration numbers come from the Life Insurance Council member list and each insurer&apos;s documents, checked <time dateTime="2026-09-30">30 Sep 2026</time>. Listing is not an endorsement or a rating.
+            </p>
+          </div>
+        </div>
+      </section>
+
+
 
       {/* 5. SITUATIONS */}
       <section className="section situ" id="situations" aria-labelledby="situ-title">

@@ -1,0 +1,1763 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrustValue Multi-Sector Unified Header Architecture Demo</title>
+  <!-- Google Fonts: Manrope & Inter -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Manrope:wght@600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+  <style>
+    :root {
+      --navy: #071B46;
+      --navy-dark: #051435;
+      --navy-light: #0C2659;
+      --orange: #FF5A0A;
+      --orange-hover: #E04E00;
+      --amber: #FFAA00;
+      --paper: #FAFBFD;
+      --surface: #FFFFFF;
+      --ink: #06132F;
+      --slate: #64748B;
+      --slate-light: #94A3B8;
+      --mist: #EEF2F7;
+      --mist-light: #F8FAFC;
+      --line: #E2E8F0;
+      --line-dark: rgba(255, 255, 255, 0.12);
+      --grad: linear-gradient(90deg, #FFAA00 0%, #FF5A0A 55%, #F12A0A 100%);
+      --f-display: 'Manrope', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --f-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --f-mono: 'JetBrains Mono', monospace;
+      --shadow-mega: 0 30px 60px -15px rgba(7, 27, 70, 0.32), 0 10px 24px -5px rgba(0, 0, 0, 0.08);
+      --max: 1240px;
+      --gutter: 24px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: #F1F5F9;
+      color: var(--ink);
+      font: 400 15px/1.6 var(--f-body);
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    .wrap {
+      width: min(100% - 2 * var(--gutter), var(--max));
+      margin-inline: auto;
+    }
+
+    /* ---------------- HEADER CORE ---------------- */
+    .hdr {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: var(--navy);
+      color: #E6EBF5;
+      border-bottom: 1px solid var(--line-dark);
+    }
+    .hdr::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      height: 2px;
+      background: var(--grad);
+    }
+
+    .hdr-row {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      height: 68px;
+    }
+
+    .hdr-logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+      color: #fff;
+      font: 800 1.25rem/1 var(--f-display);
+      letter-spacing: -0.03em;
+      flex-shrink: 0;
+    }
+    .hdr-logo span { color: var(--orange); }
+    .hdr-logo .badge-tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      background: rgba(255, 90, 10, 0.2);
+      color: #FFAA00;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      margin-left: 2px;
+    }
+
+    /* ---------------- DESKTOP NAV ---------------- */
+    .nav {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      margin-left: 12px;
+    }
+    .nav-item { position: relative; }
+
+    .nav-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: transparent;
+      border: 1px solid transparent;
+      color: #E6EBF5;
+      font: 700 0.9rem/1 var(--f-display);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .nav-btn:hover, .nav-btn.active {
+      background: rgba(255, 255, 255, 0.1);
+      color: #FFFFFF;
+      border-color: rgba(255, 255, 255, 0.15);
+    }
+    .nav-btn svg {
+      width: 13px;
+      height: 13px;
+      transition: transform 0.2s ease;
+    }
+    .nav-btn.active svg {
+      transform: rotate(180deg);
+    }
+
+    .nav-btn--sectors {
+      background: rgba(255, 90, 10, 0.15);
+      border-color: rgba(255, 90, 10, 0.4);
+      color: #FFAA00;
+    }
+    .nav-btn--sectors:hover, .nav-btn--sectors.active {
+      background: var(--orange);
+      color: #FFFFFF;
+      border-color: var(--orange);
+    }
+
+    /* ---------------- HEADER ACTIONS ---------------- */
+    .hdr-end {
+      margin-left: auto;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .hdr-search-trigger {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      height: 40px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #CBD5E1;
+      font: 500 0.85rem/1 var(--f-body);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .hdr-search-trigger:hover {
+      background: rgba(255, 255, 255, 0.14);
+      border-color: rgba(255, 255, 255, 0.35);
+      color: #fff;
+    }
+    .hdr-search-trigger kbd {
+      background: rgba(255, 255, 255, 0.12);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      border-radius: 4px;
+      padding: 2px 6px;
+      font-size: 0.7rem;
+      font-family: var(--f-mono);
+      color: #94A3B8;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      min-height: 40px;
+      padding: 0 18px;
+      border-radius: 999px;
+      border: 0;
+      font: 700 0.88rem/1.1 var(--f-display);
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--orange);
+      color: #06132F;
+    }
+    .btn-primary:hover {
+      background: #FF6E26;
+      color: #06132F;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: #FFFFFF;
+      border: 1.5px solid rgba(255, 255, 255, 0.3);
+    }
+    .btn-ghost:hover {
+      border-color: #FFFFFF;
+      background: rgba(255, 255, 255, 0.08);
+    }
+    .btn-navy {
+      background: var(--navy);
+      color: #fff;
+    }
+    .btn-navy:hover {
+      background: var(--navy-light);
+    }
+    .btn-sm {
+      min-height: 34px;
+      padding: 0 14px;
+      font-size: 0.82rem;
+    }
+
+    /* ---------------- MEGA DROPDOWN CORE ---------------- */
+    .mega-fullwidth {
+      display: none;
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      width: 100%;
+      background: #FFFFFF;
+      color: var(--ink);
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      border-bottom: 2px solid var(--line);
+      box-shadow: var(--shadow-mega);
+      z-index: 95;
+      animation: megaFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .mega-fullwidth.open {
+      display: block;
+    }
+
+    @keyframes megaFadeIn {
+      from { opacity: 0; transform: translateY(-8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .mega-inner {
+      padding: 24px 0 0 0;
+    }
+
+    .mega-head-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+      margin-bottom: 20px;
+    }
+    .mega-head-title {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .mega-head-title h3 {
+      font: 800 1.25rem/1.2 var(--f-display);
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+    .mega-head-title span {
+      font-size: 0.85rem;
+      color: var(--slate);
+      font-weight: 500;
+    }
+    .mega-head-link {
+      font: 700 0.88rem/1.2 var(--f-display);
+      color: var(--orange);
+      text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .mega-head-link:hover {
+      color: var(--orange-hover);
+      text-decoration: underline;
+    }
+
+    .mega-panel-foot {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #F8FAFC;
+      border-top: 1px solid var(--line);
+      padding: 14px var(--gutter);
+      margin-top: 20px;
+      font-size: 0.82rem;
+      color: var(--slate);
+    }
+    .mega-panel-foot-links {
+      display: flex;
+      gap: 10px;
+    }
+
+    /* ---------------- ARCHITECTURE 1: ALL 18 SECTORS BROWSER ---------------- */
+    .sector-category-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+      max-height: 480px;
+      overflow-y: auto;
+      padding-right: 8px;
+    }
+    @media (max-width: 980px) {
+      .sector-category-grid { grid-template-columns: 1fr; }
+    }
+
+    .sector-cluster {
+      background: #FAFBFD;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      padding: 16px 18px;
+    }
+    .sector-cluster-head {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font: 800 0.8rem/1.2 var(--f-display);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--slate);
+      margin-bottom: 12px;
+      padding-bottom: 8px;
+      border-bottom: 1px dashed var(--line);
+    }
+    .sector-cluster-head i {
+      color: var(--orange);
+    }
+
+    .sector-item-card {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 10px 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.15s ease;
+      margin-bottom: 4px;
+    }
+    .sector-item-card:hover {
+      background: #FFFFFF;
+      box-shadow: 0 4px 14px rgba(7, 27, 70, 0.08);
+      transform: translateX(4px);
+    }
+    .sector-item-icon {
+      font-size: 1.3rem;
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      background: #EEF2F7;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+    }
+    .sector-item-card:hover .sector-item-icon {
+      background: var(--navy);
+      color: #fff;
+    }
+    .sector-item-body {
+      flex: 1;
+      min-width: 0;
+    }
+    .sector-item-title {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font: 700 0.92rem/1.25 var(--f-display);
+      color: var(--navy);
+    }
+    .sector-item-card:hover .sector-item-title {
+      color: var(--orange);
+    }
+    .sector-item-sub {
+      font-size: 0.78rem;
+      color: var(--slate);
+      margin-top: 2px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .sector-status-pill {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .pill--live {
+      background: #E4F4EC;
+      color: #075E3B;
+    }
+    .pill--vote {
+      background: #FFF3DC;
+      color: #8A4E00;
+    }
+
+    /* ---------------- ARCHITECTURE 2: BRANDS MATRIX ---------------- */
+    .mega-brands-layout {
+      display: grid;
+      grid-template-columns: 260px minmax(0, 1fr);
+      gap: 24px;
+      min-height: 440px;
+    }
+    .sector-filter-sidebar {
+      border-right: 1px solid var(--line);
+      padding-right: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      max-height: 460px;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: #CBD5E1 transparent;
+    }
+    .sector-filter-sidebar::-webkit-scrollbar {
+      width: 5px;
+    }
+    .sector-filter-sidebar::-webkit-scrollbar-track {
+      background: #F8FAFC;
+      border-radius: 999px;
+    }
+    .sector-filter-sidebar::-webkit-scrollbar-thumb {
+      background: #CBD5E1;
+      border-radius: 999px;
+    }
+    .sector-filter-sidebar::-webkit-scrollbar-thumb:hover {
+      background: var(--slate);
+    }
+    .sector-tab-btn {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 14px;
+      border-radius: 10px;
+      background: transparent;
+      border: 0;
+      text-align: left;
+      font: 600 0.88rem/1.2 var(--f-display);
+      color: var(--slate);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .sector-tab-btn:hover {
+      background: #F1F5F9;
+      color: var(--navy);
+    }
+    .sector-tab-btn.active {
+      background: var(--navy);
+      color: #FFFFFF;
+      font-weight: 700;
+    }
+    .sector-tab-btn .tab-count {
+      font-size: 0.75rem;
+      opacity: 0.7;
+    }
+
+    .brands-stage {
+      display: flex;
+      flex-direction: column;
+    }
+    .brands-stage-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+    .brands-grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      column-gap: 16px;
+      row-gap: 6px;
+      max-height: 380px;
+      overflow-y: auto;
+    }
+    @media (max-width: 1080px) {
+      .brands-grid-4col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+    .brand-cell-link {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 8px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      color: var(--navy);
+      transition: all 0.15s;
+    }
+    .brand-cell-link:hover {
+      background: #F8FAFC;
+      color: var(--orange);
+      transform: translateX(2px);
+    }
+    .brand-cell-num {
+      font: 700 0.72rem/1 var(--f-mono);
+      color: var(--slate-light);
+      width: 18px;
+    }
+    .brand-cell-name {
+      font: 600 0.88rem/1.3 var(--f-display);
+      flex: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* ---------------- ARCHITECTURE 3: PRODUCTS & PLANS ---------------- */
+    .mega-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+    }
+    .mega-cards-grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+    @media (max-width: 1024px) {
+      .mega-cards-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .mega-cards-grid-3col { grid-template-columns: 1fr; }
+    }
+
+    /* Video Upload Modal */
+    .video-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(7, 27, 70, 0.72);
+      backdrop-filter: blur(5px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+    .video-modal-backdrop.open {
+      display: flex;
+    }
+    .video-modal-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      max-width: 560px;
+      width: 100%;
+      padding: 28px;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.3);
+      animation: megaFadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .video-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      background: #EEF2F7;
+      border: 0;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      color: var(--slate);
+      font-size: 1.1rem;
+      transition: all 0.15s;
+    }
+    .video-modal-close:hover {
+      background: var(--navy);
+      color: #fff;
+    }
+    .video-dropzone {
+      border: 2px dashed #CBD5E1;
+      border-radius: 14px;
+      padding: 26px;
+      text-align: center;
+      background: #FAFBFD;
+      margin: 16px 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .video-dropzone:hover {
+      border-color: var(--orange);
+      background: #FFF9F5;
+    }
+    .mega-card-item {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 18px 20px;
+      border-radius: 16px;
+      background: #F8FAFC;
+      border: 1.5px solid var(--line);
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+      min-height: 126px;
+    }
+    .mega-card-item:hover {
+      background: #FFFFFF;
+      border-color: var(--navy);
+      box-shadow: 0 10px 24px -4px rgba(7, 27, 70, 0.12);
+      transform: translateY(-2px);
+    }
+    .mega-card-item-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .mega-card-title {
+      font: 800 1.05rem/1.25 var(--f-display);
+      color: var(--navy);
+      letter-spacing: -0.015em;
+    }
+    .mega-card-desc {
+      font-size: 0.82rem;
+      color: var(--slate);
+      line-height: 1.45;
+      margin-top: 6px;
+    }
+    .mega-card-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--navy);
+      background: #EEF2F7;
+      padding: 3px 8px;
+      border-radius: 6px;
+      margin-top: 10px;
+    }
+
+    /* ---------------- ARCHITECTURE GUIDE CALLOUT ---------------- */
+    .demo-banner {
+      background: #071B46;
+      color: #fff;
+      padding: 32px 0 40px;
+      border-bottom: 1px solid var(--line);
+    }
+    .demo-banner h1 {
+      font: 800 2rem/1.2 var(--f-display);
+      letter-spacing: -0.025em;
+    }
+    .demo-banner p {
+      font-size: 1rem;
+      color: #CBD5E1;
+      margin-top: 8px;
+      max-width: 65ch;
+    }
+    .demo-badge-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 16px;
+    }
+    .demo-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .doc-section {
+      padding: 44px 0;
+    }
+    .doc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 24px;
+    }
+    .doc-card {
+      background: #fff;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      padding: 24px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    }
+    .doc-card h3 {
+      font: 800 1.2rem/1.2 var(--f-display);
+      color: var(--navy);
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .doc-card p {
+      font-size: 0.9rem;
+      color: var(--slate);
+      line-height: 1.55;
+    }
+    .code-box {
+      margin-top: 14px;
+      padding: 12px;
+      background: #0F172A;
+      color: #38BDF8;
+      border-radius: 8px;
+      font-family: var(--f-mono);
+      font-size: 0.78rem;
+      overflow-x: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ========================================================================= -->
+  <!-- MULTI-SECTOR EXPANDED HEADER ARCHITECTURE                                  -->
+  <!-- ========================================================================= -->
+  <header id="hdr" class="hdr">
+    <div class="wrap hdr-row">
+      <!-- Brand Logo -->
+      <a class="hdr-logo" href="/" aria-label="TrustValue Home">
+        <svg width="28" height="28" viewBox="0 0 28 28" fill="none" style="flex-shrink: 0;">
+          <rect width="28" height="28" rx="8" fill="#FF5A0A"/>
+          <path d="M14 6L21 9.5V14.5C21 18.8 17.9 22.3 14 23.5C10.1 22.3 7 18.8 7 14.5V9.5L14 6Z" fill="#071B46"/>
+          <path d="M11.5 14L13.2 15.7L16.8 12.1" stroke="#FFAA00" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <span>TrustValue</span><span style="color:#fff;">.ai</span>
+        <span class="badge-tag">18 Sectors</span>
+      </a>
+
+      <!-- Desktop Nav -->
+      <nav class="nav" aria-label="Main Navigation">
+        <!-- 1. All Sectors (Unified Multi-Sector Hub) -->
+        <div class="nav-item">
+          <button type="button" class="nav-btn nav-btn--sectors" onclick="toggleMenu('sectors')">
+            All Sectors
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- 2. Brands Directory (Multi-Sector Categorized) -->
+        <div class="nav-item">
+          <button type="button" class="nav-btn" onclick="toggleMenu('brands')">
+            Brands
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- 3. Products & Categories -->
+        <div class="nav-item">
+          <button type="button" class="nav-btn" onclick="toggleMenu('products')">
+            Products &amp; Plans
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- 4. Research & Guides -->
+        <div class="nav-item">
+          <button type="button" class="nav-btn" onclick="toggleMenu('research')">
+            Research Desk
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+
+        <!-- 5. Community & Telemetry -->
+        <div class="nav-item">
+          <button type="button" class="nav-btn" onclick="toggleMenu('community')">
+            Community
+            <svg viewBox="0 0 24 24"><path d="m6 9 6 6 6-6" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"/></svg>
+          </button>
+        </div>
+      </nav>
+
+      <!-- Right Action Hub -->
+      <div class="hdr-end">
+        <button class="hdr-search-trigger" onclick="alert('Live Universal Search: Searches 18 Sectors, 270+ Brands, and 1,000+ Categories.')">
+          <i class="fa-solid fa-magnifying-glass"></i>
+          <span>Search any brand or sector...</span>
+          <kbd>Ctrl K</kbd>
+        </button>
+
+        <a class="btn btn-ghost btn-sm" href="/rating">
+          Leaderboard
+        </a>
+
+        <a class="btn btn-primary btn-sm" href="/#experience">
+          Rate Experience
+        </a>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MEGA PANEL 1: ALL 18 SECTORS (Organized by Needs / Macro Clusters)      -->
+    <!-- ======================================================================= -->
+    <div id="mega-sectors" class="mega-fullwidth">
+      <div class="wrap mega-inner">
+        <div class="mega-head-bar">
+          <div class="mega-head-title">
+            <h3>All 18 Regulated Consumer Sectors</h3>
+            <span>Select any industry to browse verified audits, statutory ratios, and pricing transparency</span>
+          </div>
+        </div>
+
+        <div class="sector-category-grid">
+          <!-- Cluster 1: Money & Financial Protection -->
+          <div class="sector-cluster">
+            <div class="sector-cluster-head">
+              <i class="fa-solid fa-vault"></i> Money &amp; Protection
+            </div>
+
+            <a class="sector-item-card" href="/insurance">
+              <div class="sector-item-icon" style="color: #2563EB; background: #EFF6FF;">
+                <i class="fa-solid fa-shield-halved"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Insurance</span>
+                  <span class="sector-status-pill pill--live">Live Audit</span>
+                </div>
+                <div class="sector-item-sub">Term, health, motor, travel · 26 Insurers</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/banking">
+              <div class="sector-item-icon" style="color: #0D9488; background: #F0FDFA;">
+                <i class="fa-solid fa-building-columns"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Banking &amp; Loans</span>
+                  <span class="sector-status-pill pill--vote">Next to Open</span>
+                </div>
+                <div class="sector-item-sub">Savings, credit cards, home &amp; personal loans</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/investments">
+              <div class="sector-item-icon" style="color: #7C3AED; background: #FAF5FF;">
+                <i class="fa-solid fa-chart-line"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Investments</span>
+                  <span class="sector-status-pill pill--vote">Pledge Vote</span>
+                </div>
+                <div class="sector-item-sub">Mutual funds, stocks, NPS, corporate FDs</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Cluster 2: Health & Life Essentials -->
+          <div class="sector-cluster">
+            <div class="sector-cluster-head">
+              <i class="fa-solid fa-heart-pulse"></i> Health &amp; Everyday Life
+            </div>
+
+            <a class="sector-item-card" href="/healthcare">
+              <div class="sector-item-icon" style="color: #E11D48; background: #FFF1F2;">
+                <i class="fa-solid fa-hospital"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Healthcare</span>
+                  <span class="sector-status-pill pill--vote">1,000 Signals</span>
+                </div>
+                <div class="sector-item-sub">Hospitals, diagnostics, cashless turnarounds</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/pharma">
+              <div class="sector-item-icon" style="color: #D97706; background: #FFFBEB;">
+                <i class="fa-solid fa-pills"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Pharma &amp; Pharmacy</span>
+                  <span class="sector-status-pill pill--vote">Pledge Vote</span>
+                </div>
+                <div class="sector-item-sub">Medicines, generics, online pharmacies</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/food">
+              <div class="sector-item-icon" style="color: #059669; background: #ECFDF5;">
+                <i class="fa-solid fa-basket-shopping"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Food &amp; Grocery</span>
+                  <span class="sector-status-pill pill--vote">Pledge Vote</span>
+                </div>
+                <div class="sector-item-sub">Packaged foods, quick commerce, quality tests</div>
+              </div>
+            </a>
+          </div>
+
+          <!-- Cluster 3: Mobility & Housing -->
+          <div class="sector-cluster">
+            <div class="sector-cluster-head">
+              <i class="fa-solid fa-car"></i> Mobility, Housing &amp; Infra
+            </div>
+
+            <a class="sector-item-card" href="/automobiles">
+              <div class="sector-item-icon" style="color: #2563EB; background: #EFF6FF;">
+                <i class="fa-solid fa-car"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Automobiles</span>
+                  <span class="sector-status-pill pill--vote">Opens 4th</span>
+                </div>
+                <div class="sector-item-sub">Cars, EVs, safety crash ratings (B-NCAP)</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/real-estate">
+              <div class="sector-item-icon" style="color: #EA580C; background: #FFF7ED;">
+                <i class="fa-solid fa-city"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Real Estate</span>
+                  <span class="sector-status-pill pill--vote">RERA Audits</span>
+                </div>
+                <div class="sector-item-sub">Housing projects, possession dates, carpet area</div>
+              </div>
+            </a>
+
+            <a class="sector-item-card" href="/telecom">
+              <div class="sector-item-icon" style="color: #0284C7; background: #F0F9FF;">
+                <i class="fa-solid fa-tower-broadcast"></i>
+              </div>
+              <div class="sector-item-body">
+                <div class="sector-item-title">
+                  <span>Telecom &amp; Fiber</span>
+                  <span class="sector-status-pill pill--vote">Opens 3rd</span>
+                </div>
+                <div class="sector-item-sub">Prepaid, 5G coverage, broadband latency</div>
+              </div>
+            </a>
+          </div>
+        </div>
+
+        <div class="mega-panel-foot">
+          <span>Explore all 18 regulated consumer sectors with statutorily indexed audits &amp; Ombudsman metrics.</span>
+          <div class="mega-panel-foot-links">
+            <a class="btn btn-primary btn-sm" href="/insurance">Explore All Sectors</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MEGA PANEL 2: BRANDS MATRIX (Multi-Sector Tabbed Browser)               -->
+    <!-- ======================================================================= -->
+    <div id="mega-brands" class="mega-fullwidth">
+      <div class="wrap mega-inner">
+        <div class="mega-head-bar">
+          <div class="mega-head-title">
+            <h3>Verified Brands Directory</h3>
+            <span>Statutorily regulated providers cross-referenced with IRDAI, RBI, RERA, and NABH filings</span>
+          </div>
+          <a href="/insurance/providers" class="mega-head-link">
+            Browse All Providers →
+          </a>
+        </div>
+
+        <div class="mega-brands-layout">
+          <!-- Sector Selector Rail (All 18 Regulated Sectors) -->
+          <div class="sector-filter-sidebar">
+            <button class="sector-tab-btn active" onclick="switchBrandTab('insurance', this)">
+              <span>🛡️ Life Insurance</span>
+              <span class="tab-count">26 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('banking', this)">
+              <span>🏛️ Banking &amp; Loans</span>
+              <span class="tab-count">12 Banks</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('investments', this)">
+              <span>📈 Investments</span>
+              <span class="tab-count">9 Funds</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('healthcare', this)">
+              <span>🏥 Hospital Chains</span>
+              <span class="tab-count">9 Chains</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('pharma', this)">
+              <span>💊 Pharma &amp; Pharmacy</span>
+              <span class="tab-count">8 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('telecom', this)">
+              <span>📡 Telecom &amp; Fiber</span>
+              <span class="tab-count">7 Telcos</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('internet-ott', this)">
+              <span>🎬 Internet &amp; OTT</span>
+              <span class="tab-count">7 Platforms</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('food', this)">
+              <span>🍱 Food &amp; Grocery</span>
+              <span class="tab-count">8 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('agriculture', this)">
+              <span>🌾 Agriculture</span>
+              <span class="tab-count">8 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('real-estate', this)">
+              <span>🏗️ Real Estate</span>
+              <span class="tab-count">10 Builders</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('utilities', this)">
+              <span>⚡ Home &amp; Utilities</span>
+              <span class="tab-count">8 Utilities</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('automobiles', this)">
+              <span>🚗 Automobile Makers</span>
+              <span class="tab-count">14 OEMs</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('travel', this)">
+              <span>✈️ Travel &amp; Transport</span>
+              <span class="tab-count">11 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('education', this)">
+              <span>🎓 Education &amp; EdTech</span>
+              <span class="tab-count">6 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('electronics', this)">
+              <span>📱 Consumer Tech</span>
+              <span class="tab-count">12 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('retail', this)">
+              <span>🛍️ Retail &amp; E-Commerce</span>
+              <span class="tab-count">8 Brands</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('jobs-skilling', this)">
+              <span>💼 Jobs &amp; Skilling</span>
+              <span class="tab-count">6 Portals</span>
+            </button>
+            <button class="sector-tab-btn" onclick="switchBrandTab('government', this)">
+              <span>🏛️ Government Services</span>
+              <span class="tab-count">8 Portals</span>
+            </button>
+          </div>
+
+          <!-- Dynamic Brands Grid -->
+          <div class="brands-stage">
+            <div class="brands-stage-header">
+              <strong id="active-brand-title" style="font-size: 0.95rem; color: var(--navy);">
+                Showing 26 Registered Life Insurers
+              </strong>
+              <small style="color: var(--slate);">Bayesian Authenticity Weighted</small>
+            </div>
+
+            <div id="brands-container" class="brands-grid-4col">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <div class="mega-panel-foot">
+          <span>No brand can pay, sponsor, or alter their TrustScore. Commercial teams are legally separated from audits.</span>
+          <div class="mega-panel-foot-links">
+            <a class="btn btn-navy btn-sm" href="/insurance/providers">Full Provider Directory</a>
+            <a class="btn btn-ghost btn-sm" style="color:var(--navy); border-color:#CBD5E1;" href="/rating">Auditing Methodology</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MEGA PANEL 3: PRODUCTS & PLAN CATEGORIES                                 -->
+    <!-- ======================================================================= -->
+    <div id="mega-products" class="mega-fullwidth">
+      <div class="wrap mega-inner">
+        <div class="mega-head-bar">
+          <div class="mega-head-title">
+            <h3>Audited Products &amp; Plan Categories</h3>
+            <span>Explore policies and contract specifications across term life, savings, investments, and health</span>
+          </div>
+          <a href="/insurance" class="mega-head-link">
+            Browse All Categories →
+          </a>
+        </div>
+
+        <div class="mega-cards-grid">
+          <a href="/insurance/life/term-insurance" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Term Insurance.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Pure life protection with maximum sum assured at lowest cost.</p>
+            <span class="mega-card-tag">Pure Protection</span>
+          </a>
+
+          <a href="/insurance/life/savings-plans" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Savings &amp; Endowment.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Guaranteed money-back and capital preservation life plans.</p>
+            <span class="mega-card-tag">Guaranteed Returns</span>
+          </a>
+
+          <a href="/insurance/life/ulip" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">ULIPs.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Market-linked equity and debt funds with integrated life cover.</p>
+            <span class="mega-card-tag">Wealth Creation</span>
+          </a>
+
+          <a href="/insurance/life/pension-plans" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Retirement &amp; Pension.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Guaranteed annuities and lifelong post-retirement income.</p>
+            <span class="mega-card-tag">Lifelong Annuity</span>
+          </a>
+
+          <a href="/insurance/health/individual-health" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Individual Health.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Personal medical coverage with cashless network admissions.</p>
+            <span class="mega-card-tag">Cashless Desks</span>
+          </a>
+
+          <a href="/insurance/health/family-floater" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Family Floater.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Shared sum insured covering spouse, dependent children, and parents.</p>
+            <span class="mega-card-tag">Family Protection</span>
+          </a>
+
+          <a href="/insurance/health/senior-citizen-health" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Senior Citizen Cover.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Specialized medical policies with reduced waiting periods.</p>
+            <span class="mega-card-tag">Elder Care</span>
+          </a>
+
+          <a href="/insurance/compare/providers/hdfc-life-vs-max-life" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Compare Insurers.</h4>
+              <i class="fa-solid fa-arrow-up-right-from-square" style="color:#94A3B8;"></i>
+            </div>
+            <p class="mega-card-desc">Side-by-side claim turnaround times, solvency ratios, and dispute records.</p>
+            <span class="mega-card-tag">HDFC Life vs Max Life</span>
+          </a>
+        </div>
+
+        <div class="mega-panel-foot">
+          <span>Compare plans side-by-side or inspect claim ratios before locking a contract.</span>
+          <div class="mega-panel-foot-links">
+            <a class="btn btn-navy btn-sm" href="/insurance">All Categories</a>
+            <a class="btn btn-ghost btn-sm" style="color:var(--navy); border-color:#CBD5E1;" href="/rating">Trust Leaderboard</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MEGA PANEL 4: RESEARCH DESK                                             -->
+    <!-- ======================================================================= -->
+    <div id="mega-research" class="mega-fullwidth">
+      <div class="wrap mega-inner">
+        <div class="mega-head-bar">
+          <div class="mega-head-title">
+            <h3>Regulatory Explainers &amp; Consumer Playbooks</h3>
+            <span>Statutory circular breakdowns, legal rights, and Ombudsman escalation guides</span>
+          </div>
+          <a href="/blog" class="mega-head-link">Browse All Research →</a>
+        </div>
+
+        <div class="mega-cards-grid">
+          <!-- 1. Research Desk -->
+          <a href="/blog" class="mega-card-item" style="background:#F0F6FE; border-color:#DBEAFE;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Research Desk.</h4>
+              <span style="color:#2563EB; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Evidence-backed explainers and statutory circular breakdowns.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#DBEAFE; color:#1E40AF;">Research &amp; Guides</span>
+            </div>
+          </a>
+
+          <!-- 2. Section 45 Rule -->
+          <a href="/blog/irdai-3-year-incontestability-rule-explained" class="mega-card-item" style="background:#F5F3FF; border-color:#EDE9FE;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Section 45 Rule.</h4>
+              <span style="color:#7C3AED; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Why life insurers cannot reject claims after 36 months of policy inception.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#EDE9FE; color:#5B21B6;">Incontestability</span>
+            </div>
+          </a>
+
+          <!-- 3. RERA Carpet Area -->
+          <a href="/blog/rera-carpet-area-vs-built-up-guide" class="mega-card-item" style="background:#FDF2F8; border-color:#FCE7F3;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">RERA Carpet Area.</h4>
+              <span style="color:#DB2777; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Statutory carpet area measurements and RERA escrow protections.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#FCE7F3; color:#9D174D;">Real Estate Audit</span>
+            </div>
+          </a>
+
+          <!-- 4. NABH Cashless Standards -->
+          <a href="/blog/nabh-cashless-hospital-turnaround-times" class="mega-card-item" style="background:#FEFCE8; border-color:#FEF08A;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">NABH Cashless Standards.</h4>
+              <span style="color:#CA8A04; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">TPA query resolution timelines, discharge procedures, and repudiation appeals.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#FEF08A; color:#854D0E;">Hospital Discharges</span>
+            </div>
+          </a>
+
+          <!-- 5. Claim Dispute Help -->
+          <a href="/contact" class="mega-card-item" style="background:#ECFEFF; border-color:#CFFAFE;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Claim Dispute Help.</h4>
+              <span style="color:#0891B2; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Step-by-step guidance on Ombudsman escalation and repudiation appeals.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#CFFAFE; color:#155E75;">Ombudsman Escalation</span>
+            </div>
+          </a>
+
+          <!-- 6. TrustScore Leaderboard -->
+          <a href="/rating" class="mega-card-item" style="background:#F0FDF4; border-color:#DCFCE7;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">TrustScore Leaderboard.</h4>
+              <span style="color:#16A34A; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Multi-sector benchmark index across 18 regulated consumer sectors.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#DCFCE7; color:#166534;">18 Regulated Sectors</span>
+            </div>
+          </a>
+
+          <!-- 7. Consumer Telemetry -->
+          <a href="/reviews" class="mega-card-item" style="background:#F8FAFC; border-color:#E2E8F0;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Consumer Telemetry.</h4>
+              <span style="color:#475569; font-weight:700; font-size:1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc">Verified policyholder experiences backed by settlement receipts.</p>
+            <div>
+              <span class="mega-card-tag" style="background:#E2E8F0; color:#334155;">Evidence Backed</span>
+            </div>
+          </a>
+
+          <!-- 8. How TrustScores Work (Navy Hero Card) -->
+          <a href="/rating" class="mega-card-item" style="background:#071B46; border-color:#0F2D6B; color:#FFFFFF;">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title" style="color:#FFFFFF;">How TrustScores Work.</h4>
+              <span style="color:#FF5A0A; font-weight:800; font-size:1.1rem;">↗</span>
+            </div>
+            <p class="mega-card-desc" style="color:#CBD5E1;">Bayesian authenticity math, evidence weighting, and anti-gaming formulas.</p>
+            <div>
+              <span class="mega-card-tag" style="background:rgba(255,255,255,0.12); color:#93C5FD;">Bayesian Formula</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="mega-panel-foot">
+          <span>All research written and verified by former ombudsman officers and legal researchers.</span>
+          <div class="mega-panel-foot-links">
+            <a class="btn btn-navy btn-sm" href="/blog">Research Desk</a>
+            <a class="btn btn-ghost btn-sm" style="color:var(--navy); border-color:#CBD5E1;" href="/contact">Escalate a Dispute</a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================= -->
+    <!-- MEGA PANEL 5: COMMUNITY & TELEMETRY (With Video Upload)                 -->
+    <!-- ======================================================================= -->
+    <div id="mega-community" class="mega-fullwidth">
+      <div class="wrap mega-inner">
+        <div class="mega-head-bar">
+          <div class="mega-head-title">
+            <h3>Community Telemetry &amp; Evidence</h3>
+            <span>On-camera consumer proof, cashless hospital slips, and tamper-proof ratings across 18 sectors</span>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button type="button" class="btn btn-primary btn-sm" onclick="openVideoModal()">
+              <i class="fa-solid fa-video"></i> Upload Video Review
+            </button>
+            <a href="/reviews" class="mega-head-link">Telemetry Feed →</a>
+          </div>
+        </div>
+
+        <div class="mega-cards-grid-3col">
+          <!-- 1. Video Upload Action Card -->
+          <div class="mega-card-item" style="border: 2px solid #FF5A0A; background: #FFF9F5; cursor: pointer;" onclick="openVideoModal()">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title" style="color: #E04E00;">
+                <i class="fa-solid fa-video" style="color:#FF5A0A; margin-right: 6px;"></i> Video Proof Upload.
+              </h4>
+              <span class="sector-status-pill" style="background:#FF5A0A; color:#fff;">Upload Now</span>
+            </div>
+            <p class="mega-card-desc">Record or upload a 60-second video on camera explaining your cashless hospital admission, car delivery, or claim payout.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag" style="background:rgba(255,90,10,0.15); color:#E04E00; font-weight:700;">Camera &amp; Video Proof</span>
+              <span style="font-size:0.82rem; font-weight:700; color:#FF5A0A;">Start Recording →</span>
+            </div>
+          </div>
+
+          <!-- 2. Video Reviews Stream -->
+          <a href="/reviews" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Verified Video Reviews.</h4>
+              <i class="fa-solid fa-circle-play" style="color:#7C3AED; font-size:1.2rem;"></i>
+            </div>
+            <p class="mega-card-desc">Watch authentic policyholders and consumers explain cashless turnaround speeds and claim delays on camera.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag">On-Camera Telemetry</span>
+              <span style="color:#94A3B8; font-size:0.8rem;">Watch Feed ↗</span>
+            </div>
+          </a>
+
+          <!-- 3. Live Telemetry Stream -->
+          <a href="/reviews" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Live Telemetry Stream.</h4>
+              <i class="fa-solid fa-wave-square" style="color:#2563EB; font-size:1.2rem;"></i>
+            </div>
+            <p class="mega-card-desc">Real-time cryptographic stream of verified consumer ratings across all 18 regulated sectors.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag">Reviews &amp; Telemetry</span>
+              <span style="color:#94A3B8; font-size:0.8rem;">Browse Stream ↗</span>
+            </div>
+          </a>
+
+          <!-- 4. Settlement Receipts & Photos -->
+          <a href="/reviews" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Settlement Evidence.</h4>
+              <i class="fa-solid fa-file-invoice" style="color:#059669; font-size:1.2rem;"></i>
+            </div>
+            <p class="mega-card-desc">Redacted settlement receipts, hospital discharge letters, and RERA escrow delivery certificates.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag">Document Proof</span>
+              <span style="color:#94A3B8; font-size:0.8rem;">View Receipts ↗</span>
+            </div>
+          </a>
+
+          <!-- 5. One Gesture 7-Second Rating -->
+          <a href="/#experience" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">One Gesture Rating.</h4>
+              <i class="fa-solid fa-bolt" style="color:#FF5A0A; font-size:1.2rem;"></i>
+            </div>
+            <p class="mega-card-desc">Lock your 7-second rating with zero corporate influence, salesperson callbacks, or spam.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag">Fast &amp; Pure</span>
+              <span style="color:#94A3B8; font-size:0.8rem;">Rate Experience ↗</span>
+            </div>
+          </a>
+
+          <!-- 6. Ombudsman Escalation Desk -->
+          <a href="/contact" class="mega-card-item">
+            <div class="mega-card-item-top">
+              <h4 class="mega-card-title">Ombudsman Escalation.</h4>
+              <i class="fa-solid fa-gavel" style="color:#0EA5E9; font-size:1.2rem;"></i>
+            </div>
+            <p class="mega-card-desc">Free consumer grievance support and Ombudsman escalation workflows for rejected claims or disputes.</p>
+            <div style="display:flex; align-items:center; justify-content:space-between; margin-top:10px;">
+              <span class="mega-card-tag">Grievance Support</span>
+              <span style="color:#94A3B8; font-size:0.8rem;">File Dispute ↗</span>
+            </div>
+          </a>
+        </div>
+
+        <div class="mega-panel-foot">
+          <span>Only verified buyers can upload video proof or lock ratings. All revisions are publicly audit-trailed.</span>
+          <div class="mega-panel-foot-links">
+            <button type="button" class="btn btn-primary btn-sm" onclick="openVideoModal()">
+              <i class="fa-solid fa-video"></i> Upload Video Review
+            </button>
+            <a class="btn btn-navy btn-sm" href="/#experience">Rate Experience</a>
+            <a class="btn btn-ghost btn-sm" style="color:var(--navy); border-color:#CBD5E1;" href="/reviews">View All Telemetry</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ========================================================================= -->
+  <!-- DEMO OVERVIEW & ARCHITECTURAL GUIDANCE                                    -->
+  <!-- ========================================================================= -->
+  <main>
+    <section class="demo-banner">
+      <div class="wrap">
+        <h1>Universal Header Navigation Architecture</h1>
+        <p>
+          This demonstration shows how your current TrustValue header can be expanded to let users navigate to <strong>all 18 sectors</strong>, individual brands, product categories, and research from any page on the website.
+        </p>
+        <div class="demo-badge-row">
+          <span class="demo-badge"><i class="fa-solid fa-check" style="color:#2FD08A;"></i> 18 Sectors Hub</span>
+          <span class="demo-badge"><i class="fa-solid fa-check" style="color:#2FD08A;"></i> Multi-Sector Brands Tab</span>
+          <span class="demo-badge"><i class="fa-solid fa-check" style="color:#2FD08A;"></i> Products Catch-All Navigation</span>
+          <span class="demo-badge"><i class="fa-solid fa-check" style="color:#2FD08A;"></i> Zero Breakage on Mobile</span>
+        </div>
+      </div>
+    </section>
+
+    <section class="doc-section">
+      <div class="wrap">
+        <h2 style="font: 800 1.6rem/1.2 var(--f-display); color: var(--navy); margin-bottom: 24px;">
+          How This Architecture Solves Universal Sector Navigation
+        </h2>
+
+        <div class="doc-grid">
+          <!-- Card 1 -->
+          <div class="doc-card">
+            <h3><i class="fa-solid fa-shapes" style="color:var(--orange);"></i> 1. The "All Sectors" Hub Item</h3>
+            <p>
+              In the previous header, the navigation only showed <em>Insurance</em> brands. By adding an <strong>"All Sectors"</strong> high-priority button in the top navigation, users can open the 18-sector macro-cluster panel and immediately jump to Banking, Healthcare, Real Estate, Automobiles, or any other vertical with a single click.
+            </p>
+            <div class="code-box">
+              Route: /[sector]<br>
+              e.g. /insurance, /banking, /healthcare, /real-estate
+            </div>
+          </div>
+
+          <!-- Card 2 -->
+          <div class="doc-card">
+            <h3><i class="fa-solid fa-shield-halved" style="color:#2563EB;"></i> 2. Multi-Sector Brands Matrix</h3>
+            <p>
+              Instead of hardcoding only the 26 life insurers, the <strong>Brands</strong> mega menu now incorporates a lightweight sector selector rail on the left. Clicking any sector instantly populates the 4-column brand matrix without navigating away or reloading the page.
+            </p>
+            <div class="code-box">
+              Route: /[sector]/providers/[provider]<br>
+              e.g. /banking/providers/sbi, /automobiles/providers/tata-motors
+            </div>
+          </div>
+
+          <!-- Card 3 -->
+          <div class="doc-card">
+            <h3><i class="fa-solid fa-magnifying-glass" style="color:#059669;"></i> 3. Universal Live Search (Ctrl + K)</h3>
+            <p>
+              The top-bar search bar indexes brands, sector categories, and articles across all 18 sectors. Typing <code>"HDFC"</code> suggests HDFC Life and HDFC Bank; typing <code>"Carpet"</code> suggests MahaRERA Real Estate guides; typing <code>"EV"</code> suggests Automobile safety audits.
+            </p>
+            <div class="code-box">
+              Dynamic Indexing: S = TV_SECTORS, B = TV_BRANDS<br>
+              Instant keyboard navigation via arrow keys
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- VIDEO UPLOAD MODAL DIALOG                                                 -->
+    <!-- ========================================================================= -->
+    <div id="videoModal" class="video-modal-backdrop" onclick="closeVideoModal(event)">
+      <div class="video-modal-card" onclick="event.stopPropagation()">
+        <button type="button" class="video-modal-close" onclick="closeVideoModal()">&times;</button>
+        <div style="display:flex; align-items:center; gap:12px; margin-bottom:14px;">
+          <span style="width:42px; height:42px; border-radius:12px; background:#FFF1E8; color:#FF5A0A; display:grid; place-items:center; font-size:1.25rem;">
+            <i class="fa-solid fa-video"></i>
+          </span>
+          <div>
+            <h3 style="font:800 1.25rem/1.2 var(--f-display); color:var(--navy);">Upload Video Review &amp; Proof</h3>
+            <p style="font-size:0.82rem; color:var(--slate);">60-second authentic customer proof · Indexed across 18 sectors</p>
+          </div>
+        </div>
+
+        <div style="margin-top:16px;">
+          <label style="display:block; font:700 0.82rem/1.2 var(--f-display); color:var(--navy); margin-bottom:6px;">Select Sector</label>
+          <select id="videoSectorSelect" style="width:100%; height:40px; padding:0 12px; border:1px solid var(--line); border-radius:8px; font-family:var(--f-body); font-size:0.88rem; color:var(--ink); background:#FAFBFD;">
+            <option value="insurance">🛡️ Insurance (Health, Term, Motor)</option>
+            <option value="banking">🏛️ Banking &amp; Loans</option>
+            <option value="investments">📈 Investments &amp; Mutual Funds</option>
+            <option value="healthcare">🏥 Healthcare &amp; Hospitals</option>
+            <option value="pharma">💊 Pharma &amp; Pharmacy</option>
+            <option value="telecom">📡 Telecom &amp; Fiber</option>
+            <option value="internet-ott">🎬 Internet &amp; OTT</option>
+            <option value="food">🍱 Food &amp; Grocery</option>
+            <option value="agriculture">🌾 Agriculture &amp; Farming</option>
+            <option value="real-estate">🏗️ Real Estate &amp; Housing</option>
+            <option value="utilities">⚡ Home &amp; Utilities</option>
+            <option value="automobiles">🚗 Automobiles &amp; EVs</option>
+            <option value="travel">✈️ Travel &amp; Transport</option>
+            <option value="education">🎓 Education &amp; EdTech</option>
+            <option value="electronics">📱 Consumer Tech</option>
+            <option value="retail">🛍️ Retail &amp; E-Commerce</option>
+            <option value="jobs-skilling">💼 Jobs &amp; Skilling</option>
+            <option value="government">🏛️ Government Services</option>
+          </select>
+        </div>
+
+        <div class="video-dropzone" onclick="document.getElementById('videoFileInput').click()">
+          <input type="file" id="videoFileInput" accept="video/*" style="display:none;" onchange="handleFileSelected(this)">
+          <i class="fa-solid fa-cloud-arrow-up" style="font-size:2.2rem; color:#FF5A0A; margin-bottom:8px;"></i>
+          <h4 style="font:700 0.95rem/1.2 var(--f-display); color:var(--navy);">Choose video file or drag &amp; drop here</h4>
+          <p style="font-size:0.8rem; color:var(--slate); margin-top:4px;" id="videoFileStatus">MP4, MOV, WebM up to 150MB · Up to 3 minutes</p>
+        </div>
+
+        <div style="display:flex; gap:10px; margin-top:14px;">
+          <button type="button" class="btn btn-ghost btn-sm" style="flex:1; border-color:#CBD5E1; color:var(--navy);" onclick="alert('Camera recording activated: WebRTC camera will record 60-second video.')">
+            <i class="fa-solid fa-camera"></i> Record on Camera
+          </button>
+          <button type="button" class="btn btn-primary btn-sm" style="flex:1;" onclick="submitVideoUpload()">
+            <i class="fa-solid fa-check"></i> Submit Video Proof
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- ========================================================================= -->
+  <!-- JAVASCRIPT: INTERACTION LOGIC FOR MOCK DEMO                               -->
+  <!-- ========================================================================= -->
+  <script>
+    let activeMenu = null;
+
+    // Complete 18-Sector Brand Catalog from TrustValue Universal Data Core
+    const SECTOR_BRANDS = {
+      insurance: [
+        "ACKO Life", "Aditya Birla Sun Life", "Ageas Federal Life", "Aviva Life",
+        "Axis Max Life", "Bajaj Life", "Bandhan Life", "Bharti AXA Life",
+        "Canara HSBC Life", "CreditAccess Life", "Digit Life", "Edelweiss Life",
+        "Generali Central Life", "HDFC Life", "ICICI Prudential Life", "IndiaFirst Life",
+        "IndusInd Nippon Life", "Kotak Life", "LIC", "PNB MetLife",
+        "Pramerica Life", "Sahara Life", "SBI Life", "Shriram Life",
+        "SUD Life", "Tata AIA Life"
+      ],
+      banking: [
+        "HDFC Bank", "State Bank of India (SBI)", "ICICI Bank", "Axis Bank",
+        "Kotak Mahindra Bank", "Punjab National Bank", "Bank of Baroda", "Canara Bank",
+        "IndusInd Bank", "IDFC FIRST Bank", "Yes Bank", "Bajaj Finance"
+      ],
+      investments: [
+        "SBI Mutual Fund", "HDFC Mutual Fund", "ICICI Prudential Mutual Fund",
+        "Nippon India Mutual Fund", "Axis Mutual Fund", "Zerodha", "Groww",
+        "Upstox", "Angel One"
+      ],
+      healthcare: [
+        "Apollo Hospitals", "Fortis Healthcare", "Max Healthcare", "Manipal Hospitals",
+        "Narayana Health", "Medanta - The Medicity", "Dr Lal PathLabs", "Metropolis Healthcare", "Thyrocare"
+      ],
+      pharma: [
+        "Tata 1mg", "PharmEasy", "Apollo Pharmacy", "Netmeds",
+        "MedPlus", "Cipla", "Sun Pharma", "Dr. Reddy's"
+      ],
+      telecom: [
+        "Reliance Jio", "Bharti Airtel", "Vodafone Idea (Vi)", "BSNL",
+        "ACT Fibernet", "Tata Play Fiber", "Hathway"
+      ],
+      "internet-ott": [
+        "Netflix", "Amazon Prime Video", "JioHotstar", "Sony LIV",
+        "ZEE5", "Spotify", "YouTube Premium"
+      ],
+      food: [
+        "Zomato", "Swiggy", "Blinkit", "Zepto",
+        "BigBasket", "Amul", "Britannia", "Nestlé India"
+      ],
+      agriculture: [
+        "Coromandel International", "UPL", "Dhanuka Agritech", "Escorts Kubota",
+        "TAFE", "John Deere India", "DeHaat", "BigHaat"
+      ],
+      "real-estate": [
+        "Godrej Properties", "DLF Limited", "Prestige Estates", "Sobha Limited",
+        "Lodha (Macrotech)", "Brigade Group", "Oberoi Realty", "MagicBricks",
+        "NoBroker", "99acres"
+      ],
+      utilities: [
+        "Tata Power", "Adani Electricity", "BSES Delhi", "Mahanagar Gas",
+        "Indraprastha Gas", "Indane LPG", "Bharat Gas", "HP Gas"
+      ],
+      automobiles: [
+        "Tata Motors", "Mahindra & Mahindra", "Maruti Suzuki", "Hyundai India",
+        "Kia India", "Toyota Kirloskar", "Honda Cars India", "MG Motor India",
+        "Hero MotoCorp", "Bajaj Auto", "TVS Motor", "Royal Enfield",
+        "Ather Energy", "Ola Electric"
+      ],
+      travel: [
+        "IndiGo Airlines", "Air India", "Akasa Air", "SpiceJet",
+        "IRCTC Rail", "MakeMyTrip", "Goibibo", "OYO Rooms",
+        "Taj Hotels", "Uber India", "Rapido"
+      ],
+      education: [
+        "Physics Wallah", "Unacademy", "upGrad", "Coursera",
+        "Vedantu", "BYJU'S"
+      ],
+      electronics: [
+        "Samsung", "Apple India", "Sony India", "LG Electronics",
+        "OnePlus", "Xiaomi", "Voltas", "Daikin India",
+        "Havells", "Whirlpool", "Bosch India", "Panasonic"
+      ],
+      retail: [
+        "Amazon India", "Flipkart", "Myntra", "Nykaa",
+        "Meesho", "Tata CLiQ", "Reliance Retail", "DMart"
+      ],
+      "jobs-skilling": [
+        "Naukri.com", "LinkedIn India", "Indeed India", "Foundit (Monster)",
+        "Internshala", "Scaler Academy"
+      ],
+      government: [
+        "DigiLocker", "UMANG", "Aadhaar (UIDAI)", "Parivahan Sewa",
+        "Income Tax e-Filing", "EPFO Portal", "CoWIN", "IRCTC Rail Connect"
+      ]
+    };
+
+    function toggleMenu(menuKey) {
+      const panel = document.getElementById(`mega-${menuKey}`);
+      const btn = event.currentTarget;
+
+      // Close all other panels
+      document.querySelectorAll('.mega-fullwidth').forEach(p => {
+        if (p !== panel) p.classList.remove('open');
+      });
+      document.querySelectorAll('.nav-btn').forEach(b => {
+        if (b !== btn) b.classList.remove('active');
+      });
+
+      if (panel) {
+        const isOpen = panel.classList.toggle('open');
+        btn.classList.toggle('active', isOpen);
+        activeMenu = isOpen ? menuKey : null;
+
+        if (isOpen && menuKey === 'brands') {
+          // If no sector is active yet, default to insurance
+          const activeTab = document.querySelector('.sector-tab-btn.active');
+          const slug = activeTab ? activeTab.getAttribute('onclick').match(/'([^']+)'/)[1] : 'insurance';
+          renderBrands(slug);
+        }
+      }
+    }
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      const hdr = document.getElementById('hdr');
+      const modal = document.getElementById('videoModal');
+      if (hdr && !hdr.contains(e.target) && (!modal || !modal.contains(e.target))) {
+        document.querySelectorAll('.mega-fullwidth').forEach(p => p.classList.remove('open'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        activeMenu = null;
+      }
+    });
+
+    // Close on Escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.mega-fullwidth').forEach(p => p.classList.remove('open'));
+        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+        closeVideoModal();
+        activeMenu = null;
+      }
+    });
+
+    // Switch brand tabs inside Brands Mega Menu
+    function switchBrandTab(sectorSlug, btnElem) {
+      document.querySelectorAll('.sector-tab-btn').forEach(b => b.classList.remove('active'));
+      btnElem.classList.add('active');
+      renderBrands(sectorSlug);
+    }
+
+    function renderBrands(sectorSlug) {
+      const list = SECTOR_BRANDS[sectorSlug] || [];
+      const titleElem = document.getElementById('active-brand-title');
+      const container = document.getElementById('brands-container');
+
+      const titles = {
+        insurance: "Showing 26 Registered Life Insurers",
+        banking: "Showing 12 Commercial & Retail Banks",
+        investments: "Showing 9 Mutual Funds & Broker Platforms",
+        healthcare: "Showing 9 Super-Specialty Hospital Chains & Labs",
+        pharma: "Showing 8 Online Pharmacies & Medicine Makers",
+        telecom: "Showing 7 Telecom Providers & Fiber Networks",
+        "internet-ott": "Showing 7 Streaming Platforms & Content Networks",
+        food: "Showing 8 Food Delivery & Quick Commerce Platforms",
+        agriculture: "Showing 8 Agricultural & Farming Enterprises",
+        "real-estate": "Showing 10 RERA-Audited Real Estate Builders",
+        utilities: "Showing 8 Electricity & Piped Gas Utilities",
+        automobiles: "Showing 14 Automobile & EV Manufacturers",
+        travel: "Showing 11 Airlines, Railways & Travel Portals",
+        education: "Showing 6 Online Learning Platforms & EdTechs",
+        electronics: "Showing 12 Consumer Electronics & Appliance Brands",
+        retail: "Showing 8 E-Commerce Marketplaces & Retailers",
+        "jobs-skilling": "Showing 6 Job Portals & Skilling Platforms",
+        government: "Showing 8 Citizen Services & Government Portals"
+      };
+
+      if (titleElem) titleElem.textContent = titles[sectorSlug] || `Showing ${list.length} Verified Brands`;
+
+      if (container) {
+        container.innerHTML = list.map((name, idx) => {
+          const num = String(idx + 1).padStart(2, '0');
+          const slug = name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+          return `
+            <a class="brand-cell-link" href="/${sectorSlug}/providers/${slug}" onclick="alert('Navigating to /${sectorSlug}/providers/${slug}')">
+              <span class="brand-cell-num">${num}</span>
+              <span class="brand-cell-name">${name}</span>
+              <span style="color:#CBD5E1; font-size:0.75rem; margin-left:auto;">↗</span>
+            </a>
+          `;
+        }).join('');
+      }
+    }
+
+    // Video Upload Modal Handlers
+    function openVideoModal() {
+      // Close any open mega dropdowns
+      document.querySelectorAll('.mega-fullwidth').forEach(p => p.classList.remove('open'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      const modal = document.getElementById('videoModal');
+      if (modal) modal.classList.add('open');
+    }
+
+    function closeVideoModal(e) {
+      const modal = document.getElementById('videoModal');
+      if (modal) modal.classList.remove('open');
+    }
+
+    function handleFileSelected(input) {
+      if (input.files && input.files[0]) {
+        const file = input.files[0];
+        const sizeMb = (file.size / (1024 * 1024)).toFixed(1);
+        const statusElem = document.getElementById('videoFileStatus');
+        if (statusElem) {
+          statusElem.textContent = `Selected: ${file.name} (${sizeMb} MB) · Ready to upload`;
+          statusElem.style.color = '#059669';
+          statusElem.style.fontWeight = '700';
+        }
+      }
+    }
+
+    function submitVideoUpload() {
+      const sector = document.getElementById('videoSectorSelect').value;
+      alert(`Video review submitted for sector: ${sector}! Your video is queued for tamper-proof Bayesian authenticity indexing.`);
+      closeVideoModal();
+    }
+  </script>
+</body>
+</html>

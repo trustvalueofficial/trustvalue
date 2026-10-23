@@ -1,103 +1,111 @@
-import React from "react";
+import type { Metadata } from "next";
 import Link from "next/link";
-import { Metadata } from "next";
-import Breadcrumbs from "@/components/navigation/Breadcrumbs";
+import { getSectors } from "@/lib/cms";
+import { paths } from "@/lib/routing";
+import { meta } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Verified Policyholder Reviews & Resolutions | TrustValue.ai",
-  description: "Browse verified consumer reviews and closed-loop dispute resolution audits across life insurance brands.",
-};
+export const metadata: Metadata = meta(
+  "Verified Consumer Reviews & Telemetry",
+  "Live stream of evidence-backed consumer reviews, settlement documents, and dispute resolutions across all 18 sectors.",
+  paths.reviews()
+);
 
-const SAMPLE_REVIEWS = [
-  {
-    id: "rev-101",
-    author: "Vikram R.",
-    city: "Bengaluru",
-    brand: "HDFC Life",
-    brandSlug: "hdfc-life",
-    product: "Click 2 Protect Super",
-    rating: 5,
-    title: "Settled term life claim within 4 days with zero friction",
-    body: "Submitted death certificate and hospital records online. Relationship manager was proactive and payment was credited on the 4th day directly to nominee account.",
-    date: "September 2026",
-    status: "Policyholder KYC Verified",
-  },
-  {
-    id: "rev-102",
-    author: "Anita M.",
-    city: "Mumbai",
-    brand: "ICICI Prudential Life",
-    brandSlug: "icici-prudential",
-    product: "iProtect Smart",
-    rating: 4,
-    title: "Transparent medical tele-underwriting and smooth issuance",
-    body: "Tele-MER was scheduled on time. Blood tests at home. Policy document generated within 48 hours without unexpected loadings.",
-    date: "August 2026",
-    status: "Policyholder KYC Verified",
-  },
-  {
-    id: "rev-103",
-    author: "Suresh K.",
-    city: "Pune",
-    brand: "Max Life",
-    brandSlug: "max-life",
-    product: "Smart Secure Plus",
-    rating: 5,
-    title: "Claim paid smoothly despite minor discrepancy clarified by hospital",
-    body: "Claims team directly contacted hospital records desk to verify admission dates rather than rejecting. Highly ethical handling.",
-    date: "August 2026",
-    status: "Policyholder KYC Verified",
-  },
-];
+export default function ReviewsPage() {
+  const sectors = getSectors();
 
-export default function ReviewsFeedPage() {
+  // Mock telemetry data to demonstrate multi-sector review stream
+  const sampleReviews = [
+    {
+      id: "rev-1",
+      sectorSlug: "insurance",
+      provider: "HDFC Life",
+      offering: "Click 2 Protect Supreme",
+      offeringSlug: "click-2-protect-supreme",
+      rating: 5,
+      proof: "Hospital Settlement Receipt",
+      text: "Claim disbursed in 48 hours under IRDAI rapid claim track. Verified through cashless desk.",
+      time: "2 hours ago",
+    },
+    {
+      id: "rev-2",
+      sectorSlug: "real-estate",
+      provider: "Lodha",
+      offering: "Palava Phase 2",
+      offeringSlug: "palava-phase-2",
+      rating: 4,
+      proof: "RERA Occupancy Certificate",
+      text: "Possession handed over on verified MahaRERA schedule. Water infrastructure operational.",
+      time: "5 hours ago",
+    },
+    {
+      id: "rev-3",
+      sectorSlug: "automobiles",
+      provider: "Tata Motors",
+      offering: "Nexon",
+      offeringSlug: "nexon",
+      rating: 5,
+      proof: "Bharat NCAP 5-Star Test",
+      text: "Crash test integrity verified. Real-world highway mileage 17.4 kmpl verified by telematics.",
+      time: "1 day ago",
+    },
+    {
+      id: "rev-4",
+      sectorSlug: "government",
+      provider: "Rural Development",
+      offering: "PM Awas Yojana",
+      offeringSlug: "pm-awas-yojana",
+      rating: 5,
+      proof: "DBT Direct Bank Transfer",
+      text: "Subsidized instalment credited directly into Jan Dhan account after geo-tag inspection.",
+      time: "2 days ago",
+    },
+  ];
+
   return (
-    <div className="wrap">
-      <Breadcrumbs items={[{ label: "Reviews" }]} />
+    <>
+      <h1>Verified Consumer Reviews &amp; Telemetry</h1>
+      <p className="lead">
+        Real customer experiences backed by document proof (redacted settlement letters, RERA certificates, and bill receipts).
+      </p>
 
-      <header className="phead">
-        <p className="eyebrow">Consumer Verification Telemetry</p>
-        <h1>Verified Policyholder Reviews</h1>
-        <p className="lead">
-          Real customer experiences verified under IS 19000:2022 standards. Insurers cannot pay to remove, suppress, or modify any review.
-        </p>
-        <div className="row" style={{ marginTop: "16px" }}>
-          <Link className="btn btn-primary" href="/write-review">
-            Submit a review
-          </Link>
-          <Link className="btn btn-ghost" href="/industry/insurance">
-            Browse by insurer
-          </Link>
+      <section style={{ marginBottom: "24px" }}>
+        <h2>Filter by Sector</h2>
+        <div className="chips">
+          {sectors.map((s) => (
+            <Link key={s.slug} href={paths.sector(s.slug)} className="chip">
+              {s.icon} {s.name}
+            </Link>
+          ))}
         </div>
-      </header>
+      </section>
 
-      <div className="stack" style={{ marginBottom: "32px" }}>
-        {SAMPLE_REVIEWS.map((r) => (
-          <article key={r.id} className="review">
-            <div className="review-head">
-              <span className="tag tag-green">{r.status}</span>
-              <span className="small muted">
-                <Link href={`/industry/insurance/${r.brandSlug}`}><b>{r.brand}</b></Link> · {r.product}
-              </span>
-              <span className="tiny faint" style={{ marginLeft: "auto" }}>{r.date}</span>
+      <section>
+        <h2>Live Verification Stream</h2>
+        <div className="grid">
+          {sampleReviews.map((r) => (
+            <div key={r.id} className="card">
+              <div style={{ display: "flex", justifyContent: "space-between", marginBottom: "6px" }}>
+                <span className="badge">{r.sectorSlug}</span>
+                <span className="muted" style={{ fontSize: "12px" }}>{r.time}</span>
+              </div>
+              <strong>{r.provider} — {r.offering}</strong>
+              <div style={{ color: "#f59e0b", fontSize: "14px", margin: "4px 0" }}>
+                {"★".repeat(r.rating)}{"☆".repeat(5 - r.rating)}
+              </div>
+              <p style={{ fontSize: "14px", margin: "8px 0" }}>{r.text}</p>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginTop: "12px", borderTop: "1px solid var(--line)", paddingTop: "8px" }}>
+                <small style={{ color: "var(--brand)", fontWeight: "600" }}>✓ {r.proof}</small>
+                <Link
+                  href={paths.offering(r.sectorSlug, r.provider.toLowerCase().replace(/\s+/g, "-"), r.offeringSlug)}
+                  style={{ fontSize: "12px" }}
+                >
+                  View Offering &rarr;
+                </Link>
+              </div>
             </div>
-            <h3 style={{ marginTop: "10px" }}>
-              <Link href={`/reviews/${r.id}`} style={{ color: "var(--ink)", textDecoration: "none" }}>
-                {r.title}
-              </Link>
-            </h3>
-            <p className="body">{r.body}</p>
-            <p className="small muted" style={{ marginTop: "8px" }}>
-              By {r.author} ({r.city})
-            </p>
-            <div className="row" style={{ marginTop: "12px" }}>
-              <Link className="btn btn-ghost btn-sm" href={`/reviews/${r.id}`}>
-                View full audit trail &rarr;
-              </Link>
-            </div>
-          </article>
-        ))}
-      </div>
-    </div>
+          ))}
+        </div>
+      </section>
+    </>
   );
 }

@@ -1,60 +1,42 @@
-import React from "react";
-import Link from "next/link";
-import { Metadata } from "next";
+import type { Metadata } from "next";
+import { meta } from "@/lib/seo";
+import { paths } from "@/lib/routing";
 
-export const metadata: Metadata = {
-  title: "About TrustValue | The Global Trust Index",
-  description: "TrustValue publishes authenticity-weighted reviews of life insurers and plans in India, so people can see which promises are kept before they buy or claim.",
-};
+export const metadata: Metadata = meta(
+  "About TrustValue",
+  "Independent Bayesian TrustScores, regulatory auditing standards, and multi-vertical consumer intelligence.",
+  paths.about()
+);
 
 export default function AboutPage() {
   return (
-    <div className="wrap">
-      <nav className="crumbs" aria-label="Breadcrumb">
-        <ol>
-          <li><Link href="/">Home</Link></li>
-          <li><span aria-current="page">About</span></li>
-        </ol>
-      </nav>
+    <>
+      <h1>About TrustValue</h1>
+      <p className="lead">
+        We provide independent, audited benchmarks across 18 regulated sectors in India — from insurance and banking to healthcare and real estate.
+      </p>
 
-      <header className="phead">
-        <p className="eyebrow">The Global Trust Index</p>
-        <h1>About TrustValue</h1>
-        <p className="lead">
-          Turning genuine human experience into measurable, tamper-proof trust telemetry across consumer-critical sectors.
+      <section className="card">
+        <h2>Our Core Principle</h2>
+        <p>
+          Every recommendation and TrustScore is algorithmically derived from verified customer settlements, regulatory complaints data (IRDAI, RBI, RERA, NABH), and evidence-backed audits. We never sell rankings or accept paid placement.
         </p>
-      </header>
+      </section>
 
-      <div className="body2">
-        <article className="prose">
-          <h2>What we do</h2>
-          <p>
-            We cover all 26 life insurers in India and their policies. Consumers review their actual experience; we weigh each submission for KYC verification and fraud forensics, and publish real-time TrustScores, grievance tracks, and contractual facts.
-          </p>
-
-          <h2>What we do not do</h2>
-          <p>
-            We do not sell insurance, quote broker premiums, or offer commissioned financial advice. Insurers cannot pay to influence scores, sponsor search placements, or suppress critical reviews.
-          </p>
-
-          <h2>Compliance and independence</h2>
-          <p>
-            TrustValue operates strictly under <b>IS 19000:2022</b> principles of review neutrality. Mathematical algorithms are open, consistent across every insurer, and audited against fraud rings.
-          </p>
-        </article>
-
-        <aside className="rail stack">
-          <div className="card card-mist">
-            <h3>Learn our methodology</h3>
-            <p className="small muted" style={{ marginTop: "6px" }}>
-              See the exact equations used to calculate TrustScores.
-            </p>
-            <Link className="btn btn-navy btn-sm" style={{ marginTop: "12px" }} href="/methodology">
-              How TrustScores work
-            </Link>
-          </div>
-        </aside>
+      <div className="stats">
+        <div className="stat">
+          <small>Sectors Audited</small>
+          <strong>18 Industries</strong>
+        </div>
+        <div className="stat">
+          <small>Authenticity Model</small>
+          <strong>Bayesian Scored</strong>
+        </div>
+        <div className="stat">
+          <small>Evidence Standard</small>
+          <strong>Document Verified</strong>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
