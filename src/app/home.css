@@ -988,6 +988,46 @@ main, header.hdr, .site-header, .hdr, section, footer {
   text-transform: uppercase;
 }
 
+.showcase-live-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 18px;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.showcase-live-actions .showcase-footer-signal {
+  margin-top: 0 !important;
+}
+
+.showcase-btn-live {
+  background: #FF5A0A !important;
+  border-color: #FF5A0A !important;
+  color: #FFFFFF !important;
+  font-weight: 700 !important;
+  box-shadow: 0 4px 14px rgba(255, 90, 10, 0.45);
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: transform 0.15s, background 0.15s, box-shadow 0.15s;
+}
+
+.showcase-btn-live:hover {
+  background: #FF6E26 !important;
+  border-color: #FF6E26 !important;
+  box-shadow: 0 6px 20px rgba(255, 90, 10, 0.65);
+  transform: translateY(-1px);
+}
+
+.pledge-box--highlight {
+  box-shadow: 0 0 0 3px #FF5A0A, 0 16px 36px rgba(255, 90, 10, 0.4) !important;
+  transform: translateY(-2px);
+  transition: all 0.3s ease-in-out !important;
+}
+
 /* Pledge Card (Image 1 Bottom) */
 .pledge-box {
   margin-top: 48px;

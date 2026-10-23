@@ -310,16 +310,16 @@ export const SECTORS_SHOWCASE: SectorShowcaseItem[] = [
     badge: "Phase 1: Live Telemetry Audit (40%)",
     desc: "Auditing all 26 registered life insurers, 29+ products, cashless hospital settlement speeds, and IRDAI claim rejection files.",
     goalPct: 40,
-    footerText: "1,000 VERIFIED SIGNALS TO LAUNCH",
     isLive: true,
-    link: "/industry/insurance"
+    link: "/insurance"
   },
   {
     id: "3",
     name: "Hospitals & Healthcare Chains",
     badge: "Voting Open • 86% Goal Reached",
     desc: "Exposing midnight cashless claim denials, arbitrary room rent proportionate deductions, and inflated surgical consumable billing.",
-    goalPct: 86
+    goalPct: 86,
+    footerText: "1,000 VERIFIED SIGNALS TO LAUNCH"
   },
   {
     id: "1",
