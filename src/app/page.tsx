@@ -256,7 +256,7 @@ export default function HomePage() {
       const shown = open || q ? l : l.slice(0, LIM);
       bp.innerHTML = shown.length ? shown.map((o) => {
         const secSlug = SECTOR_SLUGS[o.s[0]] || "insurance";
-        return `<li><a class="plate" href="/${secSlug}/providers/${o.b[2]}" title="${esc(o.b[0])}"><span class="plate__reg">${esc(mono(o.b[0]))}</span><span><span class="plate__name">${esc(o.b[0])}</span><span class="plate__sub">${esc(o.b[1])}${cur === "all" ? " · " + esc(o.s[2]) : ""}</span></span><span class="plate__state">Early signals</span></a></li>`;
+        return `<li><a class="plate" href="/${secSlug}/brands/${o.b[2]}" title="${esc(o.b[0])}"><span class="plate__reg">${esc(mono(o.b[0]))}</span><span><span class="plate__name">${esc(o.b[0])}</span><span class="plate__sub">${esc(o.b[1])}${cur === "all" ? " · " + esc(o.s[2]) : ""}</span></span><span class="plate__state">Early signals</span></a></li>`;
       }).join("") : '<li><p class="search__empty">No brand matches that. <a href="/insurance">Browse insurance sector</a>.</p></li>';
       const w = $("#brand-more-wrap");
       if (w) w.hidden = open || !!q || l.length <= LIM;
