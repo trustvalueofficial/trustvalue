@@ -220,7 +220,7 @@ export default function Header() {
           kind: "Brand",
           title: b.name,
           sub: `${b.regulatoryId} · Claim Ratio ${b.claimSettlementRatio}%`,
-          url: `/insurance/providers/${b.slug}`,
+          url: `/insurance/brands/${b.slug}`,
         });
       }
       // Search products inside brand
@@ -230,7 +230,7 @@ export default function Header() {
             kind: "Product",
             title: p.name,
             sub: `${b.name} · ${p.category} · TrustScore ${p.trustScore}`,
-            url: `/insurance/providers/${b.slug}`,
+            url: `/insurance/brands/${b.slug}`,
           });
         }
       });
@@ -747,11 +747,11 @@ export default function Header() {
                       <span>Statutorily regulated providers cross-referenced with IRDAI, RBI, RERA, and NABH filings</span>
                     </div>
                     <Link
-                      href="/insurance/providers"
+                      href="/insurance/brands"
                       className="mega-head-link"
                       onClick={() => setActiveMenu(null)}
                     >
-                      Browse All Providers →
+                      Browse All Brands →
                     </Link>
                   </div>
 
@@ -790,7 +790,7 @@ export default function Header() {
                           return (
                             <Link
                               key={slug}
-                              href={`/${activeBrandSector}/providers/${slug}`}
+                              href={`/${activeBrandSector}/brands/${slug}`}
                               className="brand-cell-link"
                               onClick={() => setActiveMenu(null)}
                             >
@@ -811,10 +811,10 @@ export default function Header() {
                     <div className="mega-panel-foot-links">
                       <Link
                         className="btn btn-navy btn-sm"
-                        href="/insurance/providers"
+                        href="/insurance/brands"
                         onClick={() => setActiveMenu(null)}
                       >
-                        Full Provider Directory
+                        Full Brand Directory
                       </Link>
                       <Link
                         className="btn btn-ghost btn-sm"
@@ -1948,7 +1948,7 @@ export default function Header() {
 
                     <div style={{ padding: "0 16px 8px 16px" }}>
                       <Link
-                        href="/insurance/providers"
+                        href="/insurance/brands"
                         onClick={() => {
                           setDrawerOpen(false);
                           setMobileSubMenu(null);
@@ -1966,7 +1966,7 @@ export default function Header() {
                           fontSize: "0.85rem",
                         }}
                       >
-                        <span><i className="fa-solid fa-compass" style={{ marginRight: "8px" }}></i> Full Provider Directory</span>
+                        <span><i className="fa-solid fa-compass" style={{ marginRight: "8px" }}></i> Full Brand Directory</span>
                         <i className="fa-solid fa-arrow-right"></i>
                       </Link>
                     </div>
@@ -1981,7 +1981,7 @@ export default function Header() {
                           .map((b) => (
                             <Link
                               key={b.slug}
-                              href={`/insurance/providers/${b.slug}`}
+                              href={`/insurance/brands/${b.slug}`}
                               onClick={() => {
                                 setDrawerOpen(false);
                                 setMobileSubMenu(null);
