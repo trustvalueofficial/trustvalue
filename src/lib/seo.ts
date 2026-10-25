@@ -14,10 +14,19 @@ export function filledFields(o: Offering, attrs: Record<string, unknown> = o.att
 export const isIndexable = (o: Offering, sector: SectorConfig, attrs?: Record<string, unknown>) =>
   filledFields(o, attrs) >= sector.indexing.minFieldsToIndex;
 
-export const meta = (title: string, description: string, p: string, index = true): Metadata => ({
+export const meta = (title: string, description: string, p: string, index = false): Metadata => ({
   title, description,
   alternates: { canonical: canonical(p) },
-  robots: index ? { index: true, follow: true } : { index: false, follow: true },
+  robots: {
+    index: false,
+    follow: false,
+    nocache: true,
+    googleBot: {
+      index: false,
+      follow: false,
+      noimageindex: true,
+    },
+  },
 });
 
 export function schemaType(template: TemplateKey, sector: SectorConfig, category?: ResolvedCategory): string {

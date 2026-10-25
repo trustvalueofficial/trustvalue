@@ -87,6 +87,7 @@ export default function Footer() {
           <div>
             <h2>Institutional &amp; Legal</h2>
             <ul>
+              <li><Link href={paths.termsAndcondition()}>Terms of Use</Link></li>
               <li><Link href={paths.about()}>Auditing Integrity Notice</Link></li>
               <li><Link href={paths.contact()}>Grievance Redressal Officer</Link></li>
               <li><Link href="/sitemap.xml">XML Sitemap</Link></li>
