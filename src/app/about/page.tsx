@@ -1,14 +1,8 @@
-import type { Metadata } from "next";
-import { meta } from "@/lib/seo";
-import { paths } from "@/lib/routing";
-import AboutView from "./AboutView";
+"use client";
 
-export const metadata: Metadata = meta(
-  "About TrustValue",
-  "The trust score for everything you buy. Real customers rate what they bought, with a photo as proof.",
-  paths.about()
-);
+import "./about.css";
+import { AboutPageView } from "@/components/about";
 
 export default function AboutPage() {
-  return <AboutView />;
+  return <AboutPageView />;
 }

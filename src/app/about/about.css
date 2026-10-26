@@ -23,3 +23,43 @@
 .about-tv .stat { background: rgba(7,27,70,.55); }
 .about-tv .lead { max-width: 60ch; font-size: 1.0625rem; color: var(--ink-2); }
 .about-tv .dark .lead { color: var(--on-navy); }
+
+/* Road ahead timeline — undo global prototype `.stop` (rating scale) styles */
+.about-tv .road .stop {
+  min-height: unset;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: default;
+  padding: 0;
+  flex-direction: unset;
+  align-items: start;
+  justify-content: start;
+  font: inherit;
+  color: inherit;
+}
+.about-tv .road .stop:hover,
+.about-tv .road .stop.on,
+.about-tv .road .stop.on.t0,
+.about-tv .road .stop.on.t1,
+.about-tv .road .stop.on.t2,
+.about-tv .road .stop.on.t3,
+.about-tv .road .stop.on.t4,
+.about-tv .road .stop.on.t5 {
+  border: none;
+  background: transparent;
+  color: inherit;
+}
+.about-tv .road .stop small {
+  display: none;
+}
+.about-tv .road .stop p.step {
+  margin: 0;
+  font: 800 0.75rem/1.2 var(--display);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal-text);
+}
+.about-tv .road .stop.is-on .stop__dot {
+  color: #fff;
+}
