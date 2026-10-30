@@ -1,0 +1,308 @@
+/* ==========================================================================
+   TrustValue Brand & Product Detail Layout Stylesheet
+   Path: public/css/brand-detail.css
+   Used for: Brand, Product, and Plan detail pages
+   ========================================================================== */
+
+/* 1. Header Typography Hierarchy */
+.brand-layout h1,
+.brand-layout .brand-h1 {
+  font-size: 24px !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+  text-wrap: wrap !important;
+}
+
+.brand-layout h2,
+.brand-layout .brand-h2 {
+  font-size: 20px !important;
+  line-height: 1.25 !important;
+  letter-spacing: -0.02em !important;
+  text-wrap: nowrap !important;
+}
+
+@media (max-width: 640px) {
+  .brand-layout h2,
+  .brand-layout .brand-h2 {
+    text-wrap: wrap !important;
+  }
+}
+
+/* 2. Button Design System */
+.brand-layout .btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: 999px;
+  font-family: var(--f-display, Outfit, -apple-system, sans-serif);
+  font-weight: 700;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  border: 0;
+  text-decoration: none;
+}
+
+.brand-layout .btn:active {
+  transform: translateY(1px);
+}
+
+.brand-layout .btn--sm {
+  min-height: 40px;
+  padding: 0 18px;
+  font-size: 0.875rem;
+}
+
+.brand-layout .btn--signal {
+  background: #FF5A0A !important;
+  color: #06132F !important;
+  box-shadow: 0 2px 8px rgba(255, 90, 10, 0.25);
+}
+
+.brand-layout .btn--signal:hover {
+  background: #FF6E26 !important;
+}
+
+.brand-layout .btn--quiet {
+  background: #EEF2F7 !important;
+  color: #071B46 !important;
+  border: 1px solid #DCE2EB !important;
+}
+
+.brand-layout .btn--quiet:hover {
+  background: #E2E8F1 !important;
+  border-color: #CBD5E1 !important;
+}
+
+.brand-layout .btn--navy {
+  background: #071B46 !important;
+  color: #FFFFFF !important;
+}
+
+.brand-layout .btn--navy:hover {
+  background: #0C2659 !important;
+}
+
+.brand-layout .btn--glass {
+  background: rgba(255, 255, 255, 0.14) !important;
+  color: #FFFFFF !important;
+  border: 1px solid rgba(255, 255, 255, 0.2) !important;
+  backdrop-filter: blur(8px);
+}
+
+.brand-layout .btn--glass:hover {
+  background: rgba(255, 255, 255, 0.22) !important;
+}
+
+/* 3. Left Plan Summary Story Card */
+.brand-summary-card {
+  background: radial-gradient(110% 80% at 100% 0%, #173A88 0%, rgba(23, 58, 136, 0) 62%), #071B46;
+  min-height: 440px;
+}
+
+/* 4. Interactive Rating Range Slider */
+.brand-layout input[type="range"].rate-range {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 12px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #F12A0A 0%, #FF5A0A 26%, #FFAA00 56%, #FFAA00 80%, #0A8754 100%) !important;
+  outline: none;
+  cursor: pointer;
+}
+
+.brand-layout input[type="range"].rate-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #FFFFFF;
+  background: var(--thumb-color, #2FD08A);
+  box-shadow: 0 3px 12px rgba(7, 27, 70, 0.38);
+  cursor: grab;
+  transition: transform 0.1s ease, background 0.2s ease;
+}
+
+.brand-layout input[type="range"].rate-range::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.15);
+}
+
+.brand-layout input[type="range"].rate-range::-moz-range-thumb {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 4px solid #FFFFFF;
+  background: var(--thumb-color, #2FD08A);
+  box-shadow: 0 3px 12px rgba(7, 27, 70, 0.38);
+  cursor: grab;
+}
+
+/* 5. Fullscreen Story Viewer Popup (.sv) */
+.sv {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: env(safe-area-inset-top, 0px) 0 env(safe-area-inset-bottom, 0px);
+  background: rgba(2, 8, 23, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.sv__panel {
+  display: grid;
+  justify-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.sv__frame {
+  position: relative;
+  width: min(100vw - 24px, 420px, calc((100vh - 120px) * 9 / 16));
+  aspect-ratio: 9/16;
+  overflow: hidden;
+  background: radial-gradient(110% 80% at 100% 0%, #173A88 0%, rgba(23, 58, 136, 0) 62%), #071B46;
+  border-radius: 22px;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75), inset 0 0 0 1px rgba(255, 255, 255, 0.12);
+  user-select: none;
+  -webkit-user-select: none;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.sv__foot {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  padding: 0 16px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.sv__foot .btn {
+  height: 44px;
+  padding: 0 20px;
+  font-size: 0.875rem;
+}
+
+.st__bars {
+  position: absolute;
+  left: 10px;
+  right: 10px;
+  top: 10px;
+  z-index: 30;
+  display: flex;
+  gap: 4px;
+}
+
+.st__bars i {
+  position: relative;
+  flex: 1;
+  height: 3.5px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.32);
+  overflow: hidden;
+}
+
+.st__bars i b {
+  position: absolute;
+  inset: 0;
+  background: #fff;
+  border-radius: 3px;
+  transition: width 0.05s linear;
+}
+
+.st__top {
+  position: absolute;
+  left: 10px;
+  right: 8px;
+  top: 20px;
+  z-index: 30;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #fff;
+}
+
+.st__avatar {
+  flex: none;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #fff;
+  display: grid;
+  place-items: center;
+  color: #071B46;
+  font-weight: 800;
+  font-size: 13px;
+}
+
+.st__who {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  flex: 1;
+  font-size: 0.75rem;
+  line-height: 1.25;
+  color: rgba(255, 255, 255, 0.86);
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.35);
+}
+
+.st__who b {
+  font-weight: 700;
+  font-size: 0.875rem;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.st__who span {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.st__btn {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.1);
+  border: 0;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.st__btn:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.st__tap {
+  position: absolute;
+  top: 60px;
+  bottom: 0;
+  z-index: 20;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+}
+
+.st__tap--prev {
+  left: 0;
+  width: 32%;
+}
+
+.st__tap--next {
+  right: 0;
+  width: 68%;
+}

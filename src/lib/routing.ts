@@ -11,8 +11,10 @@ export const RESERVED_SECTOR_SLUGS: readonly string[] = reserved.sector;
  */
 export const paths = {
   home: () => "/",
+  sectors: () => "/sectors",
   sector: (s: string) => `/${s}`,
   category: (s: string, p: string[]) => `/${s}/${p.join("/")}`,
+  segments: (s: string) => `/${s}/segments`,
   providers: (s: string) => `/${s}/brands`,
   provider: (s: string, p: string) => `/${s}/brands/${p}`,
   brands: (s: string) => `/${s}/brands`,

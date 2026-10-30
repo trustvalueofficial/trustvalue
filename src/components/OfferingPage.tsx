@@ -41,15 +41,18 @@ export function OfferingPage({ s, p, o, v }: { s: string; p: string; o: string; 
   const { sector, provider, offering, variant, category } = d;
   const Template = TEMPLATES[category.template];
   const crumbs = [
+    { name: "Home", href: paths.home() },
     { name: sector.name, href: paths.sector(s) },
-    ...getAncestors(s, category.path).map((c) => ({ name: c.name, href: paths.category(s, c.path) })),
+    { name: "Brands", href: paths.brands(s) },
     { name: provider.name, href: paths.provider(s, p) },
     { name: offering.name, href: paths.offering(s, p, o) },
     ...(variant ? [{ name: variant.name, href: paths.variant(s, p, o, variant.slug) }] : []),
   ];
   return (
     <>
-      <Breadcrumbs items={crumbs} />
+      <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-4">
+        <Breadcrumbs items={crumbs} />
+      </div>
       <Template {...d} attrs={category.attributes} />
       <JsonLd data={{
         "@context": "https://schema.org",

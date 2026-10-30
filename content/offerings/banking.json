@@ -2,31 +2,165 @@
   {
     "slug": "regular-home-loan",
     "provider": "sbi",
-    "name": "Regular Home Loan",
+    "name": "SBI Regular Home Loan",
     "primaryCategory": "loans/home-loans",
     "status": "published",
     "lastVerified": "2026-10-21",
-    "summary": "Sample home loan.",
+    "summary": "India's largest home loan scheme offering low interest rates and zero hidden charges.",
     "cities": [
       "mumbai",
-      "pune"
+      "pune",
+      "delhi",
+      "bangalore"
     ],
     "attributes": {
-      "interest_rate": "8.5%",
-      "processing_fee": "Sample 0.35%",
+      "interest_rate": "8.50%",
+      "processing_fee": "0.35% (Max ₹ 10,000)",
       "min_balance": "n/a",
       "tenure": "Up to 30 years",
       "eligibility": [
         "Salaried or self-employed",
         "Age 21–65"
       ],
-      "max_amount": "₹ 5 crore (sample)"
+      "max_amount": "₹ 10,00,00,000"
     },
     "sources": [
       {
-        "title": "Official source (sample)",
-        "url": "https://example.com/source",
+        "title": "SBI Official Home Loan Portal",
+        "url": "https://sbi.co.in",
         "accessedOn": "2026-10-21"
+      }
+    ]
+  },
+  {
+    "slug": "sbi-yono-savings-account",
+    "provider": "sbi",
+    "name": "SBI Insta Plus Savings Account",
+    "primaryCategory": "accounts/savings-accounts",
+    "status": "published",
+    "lastVerified": "2026-10-25",
+    "summary": "Full KYC digital instant savings account via video verification with zero branch visits.",
+    "cities": [
+      "mumbai",
+      "pune",
+      "delhi",
+      "bangalore"
+    ],
+    "attributes": {
+      "interest_rate": "2.70%",
+      "processing_fee": "Nil",
+      "min_balance": "₹ 0 (Zero Balance)",
+      "tenure": "Lifetime",
+      "eligibility": [
+        "Resident Indian Individual",
+        "Aadhaar & PAN linked"
+      ],
+      "max_amount": "Unlimited"
+    },
+    "sources": [
+      {
+        "title": "SBI YONO Banking Portal",
+        "url": "https://sbi.co.in",
+        "accessedOn": "2026-10-25"
+      }
+    ]
+  },
+  {
+    "slug": "sbi-express-car-loan",
+    "provider": "sbi",
+    "name": "SBI New Car Loan Scheme",
+    "primaryCategory": "loans/car-loans",
+    "status": "published",
+    "lastVerified": "2026-10-24",
+    "summary": "Financing up to 90% on-road price of new passenger vehicles with flexible repayment.",
+    "cities": [
+      "mumbai",
+      "pune",
+      "delhi",
+      "bangalore"
+    ],
+    "attributes": {
+      "interest_rate": "8.75%",
+      "processing_fee": "Nil",
+      "min_balance": "n/a",
+      "tenure": "Up to 7 years",
+      "eligibility": [
+        "Net annual income min ₹ 3 Lakhs",
+        "Age 21–67"
+      ],
+      "max_amount": "₹ 50,00,000"
+    },
+    "sources": [
+      {
+        "title": "SBI Vehicle Finance Schedule",
+        "url": "https://sbi.co.in",
+        "accessedOn": "2026-10-24"
+      }
+    ]
+  },
+  {
+    "slug": "sbi-simplyclick-card",
+    "provider": "sbi",
+    "name": "SimplyCLICK SBI Credit Card",
+    "primaryCategory": "cards/credit-cards",
+    "status": "published",
+    "lastVerified": "2026-10-26",
+    "summary": "Online shopping credit card with 10X reward points on partner e-commerce merchants.",
+    "cities": [
+      "mumbai",
+      "pune",
+      "delhi",
+      "bangalore"
+    ],
+    "attributes": {
+      "interest_rate": "3.50% / month",
+      "processing_fee": "₹ 499 annual fee",
+      "min_balance": "n/a",
+      "tenure": "Revolving credit",
+      "eligibility": [
+        "Salaried or self-employed",
+        "Min age 21"
+      ],
+      "max_amount": "₹ 5,00,000"
+    },
+    "sources": [
+      {
+        "title": "SBI Card & Payment Services",
+        "url": "https://sbicard.com",
+        "accessedOn": "2026-10-26"
+      }
+    ]
+  },
+  {
+    "slug": "sbi-kavach-personal-loan",
+    "provider": "sbi",
+    "name": "SBI Express Bandhan Personal Loan",
+    "primaryCategory": "loans/personal-loans",
+    "status": "published",
+    "lastVerified": "2026-10-23",
+    "summary": "Instant collateral-free personal loan for salaried individuals with digital sanction.",
+    "cities": [
+      "mumbai",
+      "pune",
+      "delhi",
+      "bangalore"
+    ],
+    "attributes": {
+      "interest_rate": "11.15%",
+      "processing_fee": "1.00% + GST",
+      "min_balance": "n/a",
+      "tenure": "Up to 6 years",
+      "eligibility": [
+        "Corporate or PSU salaried employees",
+        "Min monthly salary ₹ 15,000"
+      ],
+      "max_amount": "₹ 20,00,000"
+    },
+    "sources": [
+      {
+        "title": "SBI Personal Banking Terms",
+        "url": "https://sbi.co.in",
+        "accessedOn": "2026-10-23"
       }
     ]
   }

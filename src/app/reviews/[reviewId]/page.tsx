@@ -22,7 +22,8 @@ export default async function SingleReviewResolutionPage({ params }: SingleRevie
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <Breadcrumbs
           items={[
-            { label: "Insurance", href: "/industry/insurance" },
+            { label: "Insurance", href: "/insurance" },
+            { label: "Reviews", href: "/reviews" },
             { label: "Review #" + reviewId },
           ]}
         />
