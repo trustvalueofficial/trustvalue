@@ -23,6 +23,7 @@
 # misc
 .DS_Store
 *.pem
+.vscode/
 
 # debug
 npm-debug.log*
@@ -63,3 +64,6 @@ next-env.d.ts
 /sectordone.html
 /compare.md
 /public/sectordone.html
+
+# Local documentation archive
+/mdfiles/

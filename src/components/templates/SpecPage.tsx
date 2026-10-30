@@ -1,5 +1,5 @@
 import BrandDetailLayout, { BrandProductItem, FactItem } from "@/components/brands/BrandDetailLayout";
-import { getCategory, getOfferingsByProvider } from "@/lib/cms";
+import { getCategory, getOfferingsByProvider, getOfferingsInCategory, getProvider } from "@/lib/cms";
 import { paths } from "@/lib/routing";
 import type { TemplateProps } from "./types";
 
@@ -38,6 +38,48 @@ export function SpecPage({ sector, provider, profile, offering, variant, categor
     };
   });
 
+  const catOfferings = getOfferingsInCategory(sector.slug, category.path);
+  const rivalOfferings = catOfferings.filter((o) => o.provider !== provider.slug && o.slug !== offering.slug);
+  const catLeaf = category.path[category.path.length - 1] || category.slug;
+
+  const crossBrandPeers = rivalOfferings.slice(0, 3).map((r) => {
+    const rivalProvider = getProvider(r.provider);
+    const sortedPair = [offering.slug, r.slug].sort().join("-vs-");
+    return {
+      slug: r.slug,
+      name: r.name,
+      providerSlug: r.provider,
+      providerName: rivalProvider?.name || r.provider,
+      categorySlug: catLeaf,
+      deltaBadge: "Competitor",
+      metricsSnippet: r.summary || `Direct competitive product in ${category.name}.`,
+      href: `${paths.compareOfferings(sector.slug, catLeaf, sortedPair)}?lock=${offering.slug}`,
+    };
+  });
+
+  const sameBrandPeers = siblingOfferings.slice(0, 3).map((s) => {
+    const sortedPair = [offering.slug, s.slug].sort().join("-vs-");
+    return {
+      slug: s.slug,
+      name: s.name,
+      providerSlug: provider.slug,
+      providerName: provider.name,
+      categorySlug: catLeaf,
+      deltaBadge: "Internal Line",
+      metricsSnippet: s.summary || `Alternative model from ${provider.name}.`,
+      href: `${paths.compareOfferings(sector.slug, catLeaf, sortedPair)}?lock=${offering.slug}`,
+    };
+  });
+
+  const allEligibleOptions = catOfferings.map((o) => {
+    const prov = getProvider(o.provider);
+    return {
+      slug: o.slug,
+      name: o.name,
+      brandName: prov?.name || o.provider,
+    };
+  });
+
   return (
     <BrandDetailLayout
       entityType="product"
@@ -55,6 +97,9 @@ export function SpecPage({ sector, provider, profile, offering, variant, categor
       trustScore={92.5}
       facts={facts.length ? facts : undefined}
       products={brandProducts.length > 0 ? brandProducts : undefined}
+      comparePeers={crossBrandPeers}
+      sameBrandComparePeers={sameBrandPeers}
+      allCompareOptions={allEligibleOptions}
     />
   );
 }

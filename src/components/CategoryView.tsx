@@ -5,6 +5,7 @@ import { CityPicker } from "./CityPicker";
 import { JsonLd } from "./JsonLd";
 import { OfferingCard } from "./OfferingCard";
 import { formatValue } from "./sections";
+import CompareSection from "@/components/compare/CompareSection";
 import {
   getAncestors,
   getCategory,
@@ -338,9 +339,42 @@ export function CategoryView({
         </section>
       )}
 
+      {/* Dynamic Comparison Section directly above FAQ */}
+      {offerings.length >= 2 && (
+        <div style={{ marginTop: "40px" }}>
+          <CompareSection
+            sectorSlug={s}
+            sectorName={sector.name}
+            entityType="segment"
+            currentSlug={category.slug}
+            currentName={category.name}
+            categorySlug={category.path[category.path.length - 1]}
+            categoryName={category.name}
+            crossBrandPeers={offerings.slice(0, 3).map((o, idx, arr) => {
+              const other = arr[(idx + 1) % arr.length];
+              const sortedPair = [o.slug, other.slug].sort().join("-vs-");
+              return {
+                slug: o.slug,
+                name: `${o.name} vs ${other.name}`,
+                categorySlug: category.path[category.path.length - 1],
+                deltaBadge: "Category Duel",
+                metricsSnippet: `Direct side-by-side comparison between leading offerings in ${category.name}.`,
+                href: paths.compareOfferings(s, category.path[category.path.length - 1], sortedPair),
+              };
+            })}
+            allEligibleOptions={offerings.map((o) => ({
+              slug: o.slug,
+              name: o.name,
+              brandName: o.provider,
+            }))}
+          />
+        </div>
+      )}
+
       {/* FAQs */}
       {category.faqs.length > 0 && (
         <section
+          id="questions"
           className="card"
           style={{
             background: "#ffffff",
