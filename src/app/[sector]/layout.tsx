@@ -4,7 +4,6 @@ import type { ReactNode } from "react";
 import { getSector } from "@/lib/cms";
 import { getSectorFaIcon } from "@/lib/icons";
 import { paths } from "@/lib/routing";
-import "@/app/sector.css";
 
 /** Sector context bar. An unknown sector slug is a 404 here, before any page runs. */
 export default async function SectorLayout({

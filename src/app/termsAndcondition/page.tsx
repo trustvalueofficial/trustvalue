@@ -2,7 +2,6 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import "./terms.css";
 import { MASCOT_HERO_DATA_URI } from "./assets";
 
 const TOTAL = 8;
@@ -330,6 +329,7 @@ export default function TermsAndConditionPage() {
 
   return (
     <div className={`terms-container ${isPlainMode ? "plain" : ""}`}>
+      <link rel="stylesheet" href="/css/terms.css" />
       <canvas ref={canvasRef} className="confetti" />
 
       {/* Sticky HUD Bar */}

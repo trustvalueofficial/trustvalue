@@ -63,6 +63,27 @@ export default async function ProviderPage({ params }: Props) {
     };
   });
 
+  const allSectorProviders = getProvidersForSector(s);
+  const peerProviders = allSectorProviders.filter((x) => x.slug !== provider);
+
+  const brandComparePeers = peerProviders.slice(0, 3).map((peer) => {
+    const peerOfferings = getOfferingsByProvider(s, peer.slug);
+    const csr = peer.sectors[s]?.trust?.["Claim Settlement Ratio"] || "98.10%";
+    const sortedPair = [provider, peer.slug].sort().join("-vs-");
+    return {
+      slug: peer.slug,
+      name: peer.name,
+      deltaBadge: `${csr} CSR`,
+      metricsSnippet: `${peerOfferings.length} audited offerings in ${sector.name} with IRDAI regulatory registration.`,
+      href: `${paths.compareProviders(s, sortedPair)}?lock=${provider}`,
+    };
+  });
+
+  const allBrandOptions = allSectorProviders.map((x) => ({
+    slug: x.slug,
+    name: x.name,
+  }));
+
   return (
     <>
       <div className="max-w-[1200px] mx-auto px-4 sm:px-6 pt-4">
@@ -90,6 +111,8 @@ export default async function ProviderPage({ params }: Props) {
         trustScore={95.0}
         facts={brandFacts}
         products={brandProducts}
+        comparePeers={brandComparePeers}
+        allCompareOptions={allBrandOptions}
       />
 
       <JsonLd data={{ "@context": "https://schema.org", "@type": "Organization", name: p.name, url: p.website }} />

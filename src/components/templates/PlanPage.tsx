@@ -1,5 +1,5 @@
 import BrandDetailLayout, { BrandProductItem, FactItem, WarningItem } from "@/components/brands/BrandDetailLayout";
-import { getCategory, getOfferingsByProvider } from "@/lib/cms";
+import { getCategory, getOfferingsByProvider, getOfferingsInCategory, getProvider } from "@/lib/cms";
 import { paths } from "@/lib/routing";
 import type { TemplateProps } from "./types";
 
@@ -49,6 +49,50 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
     };
   });
 
+  // Fetch peer offerings in the same category from rival brands
+  const catOfferings = getOfferingsInCategory(sector.slug, category.path);
+  const rivalOfferings = catOfferings.filter((o) => o.provider !== provider.slug && o.slug !== offering.slug);
+  const catLeaf = category.path[category.path.length - 1] || category.slug;
+
+  const crossBrandPeers = rivalOfferings.slice(0, 3).map((r) => {
+    const rivalProvider = getProvider(r.provider);
+    const sortedPair = [offering.slug, r.slug].sort().join("-vs-");
+    const prem = r.attributes?.["premium"] ? String(r.attributes["premium"]) : undefined;
+    return {
+      slug: r.slug,
+      name: r.name,
+      providerSlug: r.provider,
+      providerName: rivalProvider?.name || r.provider,
+      categorySlug: catLeaf,
+      deltaBadge: prem ? `From ${prem.split("/")[0]}` : "Verified Rival",
+      metricsSnippet: r.summary || `Direct competitive alternative in ${category.name} from ${rivalProvider?.name || r.provider}.`,
+      href: `${paths.compareOfferings(sector.slug, catLeaf, sortedPair)}?lock=${offering.slug}`,
+    };
+  });
+
+  const sameBrandPeers = siblingOfferings.slice(0, 3).map((s) => {
+    const sortedPair = [offering.slug, s.slug].sort().join("-vs-");
+    return {
+      slug: s.slug,
+      name: s.name,
+      providerSlug: provider.slug,
+      providerName: provider.name,
+      categorySlug: catLeaf,
+      deltaBadge: "Internal Tier",
+      metricsSnippet: s.summary || `Alternative tier offered by ${provider.name}.`,
+      href: `${paths.compareOfferings(sector.slug, catLeaf, sortedPair)}?lock=${offering.slug}`,
+    };
+  });
+
+  const allEligibleOptions = catOfferings.map((o) => {
+    const prov = getProvider(o.provider);
+    return {
+      slug: o.slug,
+      name: o.name,
+      brandName: prov?.name || o.provider,
+    };
+  });
+
   return (
     <BrandDetailLayout
       entityType="plan"
@@ -67,6 +111,9 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
       facts={facts.length ? facts : undefined}
       warnings={warnings && warnings.length ? warnings : undefined}
       products={brandProducts.length > 0 ? brandProducts : undefined}
+      comparePeers={crossBrandPeers}
+      sameBrandComparePeers={sameBrandPeers}
+      allCompareOptions={allEligibleOptions}
     />
   );
 }

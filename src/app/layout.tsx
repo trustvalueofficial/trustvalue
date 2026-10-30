@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Manrope, Inter } from "next/font/google";
-import "./globals.css";
-import "./prototype.css";
-import "./home.css";
+import "../../public/css/globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
@@ -54,8 +52,11 @@ export const metadata: Metadata = {
   },
   icons: {
     icon: [
-      { url: "/icon.png", type: "image/png" },
-      { url: "/favicon.png", sizes: "any" },
+      { url: "/images/icon.png", type: "image/png" },
+      { url: "/images/favicon.ico", sizes: "any" },
+    ],
+    apple: [
+      { url: "/images/apple-icon.png", type: "image/png" },
     ],
   },
 };
@@ -75,6 +76,10 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <link rel="stylesheet" href="/css/prototype.css" />
+        <link rel="stylesheet" href="/css/home.css" />
+        <link rel="stylesheet" href="/css/sector.css" />
+        <link rel="stylesheet" href="/css/compare.css" />
         <link rel="stylesheet" href="/css/brand-detail.css" />
       </head>
       <body className="antialiased bg-[#FAFBFD] text-[#06132F]">

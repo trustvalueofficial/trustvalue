@@ -5,7 +5,6 @@ import { SectorCard } from "@/components/SectorCard";
 import { getCategories, getProvidersForSector, getSectors } from "@/lib/cms";
 import { paths } from "@/lib/routing";
 import { meta } from "@/lib/seo";
-import "@/app/sector.css";
 
 export const metadata: Metadata = meta(
   "All Consumer Sectors – TrustValue",

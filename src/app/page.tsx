@@ -3,7 +3,6 @@
 
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
-import "./home.css";
 import {
   TV_SECTORS,
   TV_BRANDS,

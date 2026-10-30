@@ -3,6 +3,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
+import CompareSection, { ComparePeerItem } from "@/components/compare/CompareSection";
+
 export interface FactItem {
   key: string;
   val: string;
@@ -50,6 +52,9 @@ export interface BrandDetailLayoutProps {
   newsList?: NewsItem[];
   aboutContent?: string[];
   products?: BrandProductItem[];
+  comparePeers?: ComparePeerItem[];
+  sameBrandComparePeers?: ComparePeerItem[];
+  allCompareOptions?: { slug: string; name: string; brandName?: string }[];
 }
 
 export default function BrandDetailLayout({
@@ -71,6 +76,9 @@ export default function BrandDetailLayout({
   newsList,
   aboutContent,
   products,
+  comparePeers,
+  sameBrandComparePeers,
+  allCompareOptions,
 }: BrandDetailLayoutProps) {
   // Story player states (Independent standalone summary of whole page)
   const [activeCard, setActiveCard] = useState<number>(0); // Starts at Card 0 (New on TrustValue)
@@ -1324,6 +1332,23 @@ export default function BrandDetailLayout({
             {/* Section: Audited Products & Plans (Product/Plan: above FAQ)*/}
             {/* ========================================================= */}
             {entityType !== "brand" && productsSection}
+
+            {/* ========================================================= */}
+            {/* Section: Dynamic Head-to-Head Compare Matrix (Above FAQ)  */}
+            {/* ========================================================= */}
+            <CompareSection
+              sectorSlug={sectorSlug}
+              entityType={entityType}
+              currentSlug={entityType === "brand" ? (providerSlug || "brand") : (categorySlug.split("/").pop() || "plan")}
+              currentName={title}
+              categorySlug={categorySlug}
+              categoryName={categoryName}
+              providerSlug={providerSlug}
+              providerName={providerName}
+              crossBrandPeers={comparePeers}
+              sameBrandPeers={sameBrandComparePeers}
+              allEligibleOptions={allCompareOptions}
+            />
 
             {/* Questions FAQ (20px Header) */}
             <section id="questions" className="py-3.5 sm:py-4 scroll-mt-20 border-b border-[#DCE2EB]">
