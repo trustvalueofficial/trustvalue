@@ -1,22 +1,782 @@
 [
-  { "slug": "hdfc-life", "name": "HDFC Life", "type": "Insurer", "parentGroup": "HDFC", "website": "https://example.com/hdfc-life",
-    "sectors": { "insurance": { "description": "Sample profile: life insurer offering term, savings and pension plans.", "registration": "SAMPLE-REG-0001", "trust": { "Sample claims metric": "n/a" } } } },
-  { "slug": "max-life", "name": "Max Life", "type": "Insurer", "website": "https://example.com/max-life",
-    "sectors": { "insurance": { "description": "Sample profile: life insurer offering term and savings plans.", "registration": "SAMPLE-REG-0002", "trust": { "Sample claims metric": "n/a" } } } },
-  { "slug": "sbi", "name": "State Bank of India", "type": "Bank", "website": "https://example.com/sbi",
+  {
+    "slug": "tata-aig-general",
+    "name": "Tata AIG General",
+    "type": "General & Health Insurer",
+    "parentGroup": "Tata Group",
+    "website": "https://example.com/tata-aig",
     "sectors": {
-      "banking": { "description": "Sample profile: public sector bank with a pan-India branch network.", "registration": "SAMPLE-RBI-0001", "trust": { "Branches": "Sample" } },
-      "investments": { "description": "Sample profile: fixed deposits and bonds from a bank provider.", "registration": "SAMPLE-RBI-0001" } } },
-  { "slug": "lodha", "name": "Lodha", "type": "Builder", "website": "https://example.com/lodha",
-    "sectors": { "real-estate": { "description": "Sample profile: residential and commercial developer.", "registration": "SAMPLE-RERA-0001" } } },
-  { "slug": "apollo", "name": "Apollo Hospitals", "type": "Hospital chain", "website": "https://example.com/apollo",
-    "sectors": { "healthcare": { "description": "Sample profile: multi-speciality hospital chain.", "registration": "SAMPLE-NABH-0001" } } },
-  { "slug": "tata-motors", "name": "Tata Motors", "type": "Manufacturer", "website": "https://example.com/tata-motors",
-    "sectors": { "automobiles": { "description": "Sample profile: passenger and commercial vehicle maker." } } },
-  { "slug": "samsung", "name": "Samsung", "type": "Brand", "website": "https://example.com/samsung",
-    "sectors": { "electronics": { "description": "Sample profile: consumer electronics brand." } } },
-  { "slug": "sun-pharma", "name": "Sun Pharma", "type": "Manufacturer", "website": "https://example.com/sun-pharma",
-    "sectors": { "pharma": { "description": "Sample profile: pharmaceutical manufacturer.", "registration": "SAMPLE-GMP-0001" } } },
-  { "slug": "ministry-of-rural-development", "name": "Ministry of Rural Development", "type": "Ministry", "website": "https://example.com/mord",
-    "sectors": { "government": { "description": "Sample profile: central ministry responsible for rural schemes." } } }
+      "insurance": {
+        "description": "Comprehensive general and health insurer.",
+        "registration": "IRDAI-REG-108"
+      }
+    }
+  },
+  {
+    "slug": "hdfc-life",
+    "name": "HDFC Life",
+    "type": "Life Insurer",
+    "parentGroup": "HDFC",
+    "website": "https://example.com/hdfc-life",
+    "sectors": {
+      "insurance": {
+        "description": "Sample profile: life insurer offering term, savings and pension plans.",
+        "registration": "SAMPLE-REG-0001",
+        "trust": {
+          "Sample claims metric": "n/a"
+        }
+      }
+    }
+  },
+  {
+    "slug": "max-life",
+    "name": "Max Life",
+    "type": "Life Insurer",
+    "website": "https://example.com/max-life",
+    "sectors": {
+      "insurance": {
+        "description": "Sample profile: life insurer offering term and savings plans.",
+        "registration": "SAMPLE-REG-0002",
+        "trust": {
+          "Sample claims metric": "n/a"
+        }
+      }
+    }
+  },
+  {
+    "slug": "sbi",
+    "name": "State Bank of India",
+    "type": "Bank",
+    "website": "https://example.com/sbi",
+    "sectors": {
+      "banking": {
+        "description": "Sample profile: public sector bank with a pan-India branch network.",
+        "registration": "SAMPLE-RBI-0001",
+        "trust": {
+          "Branches": "Sample"
+        }
+      },
+      "investments": {
+        "description": "Sample profile: fixed deposits and bonds from a bank provider.",
+        "registration": "SAMPLE-RBI-0001"
+      }
+    }
+  },
+  {
+    "slug": "lodha",
+    "name": "Lodha",
+    "type": "Builder",
+    "website": "https://example.com/lodha",
+    "sectors": {
+      "real-estate": {
+        "description": "Sample profile: residential and commercial developer.",
+        "registration": "SAMPLE-RERA-0001"
+      }
+    }
+  },
+  {
+    "slug": "apollo",
+    "name": "Apollo Hospitals",
+    "type": "Hospital chain",
+    "website": "https://example.com/apollo",
+    "sectors": {
+      "healthcare": {
+        "description": "Sample profile: multi-speciality hospital chain.",
+        "registration": "SAMPLE-NABH-0001"
+      }
+    }
+  },
+  {
+    "slug": "tata-motors",
+    "name": "Tata Motors",
+    "type": "Manufacturer",
+    "website": "https://example.com/tata-motors",
+    "sectors": {
+      "automobiles": {
+        "description": "Sample profile: passenger and commercial vehicle maker."
+      }
+    }
+  },
+  {
+    "slug": "samsung",
+    "name": "Samsung",
+    "type": "Brand",
+    "website": "https://example.com/samsung",
+    "sectors": {
+      "electronics": {
+        "description": "Sample profile: consumer electronics brand."
+      }
+    }
+  },
+  {
+    "slug": "sun-pharma",
+    "name": "Sun Pharma",
+    "type": "Manufacturer",
+    "website": "https://example.com/sun-pharma",
+    "sectors": {
+      "pharma": {
+        "description": "Sample profile: pharmaceutical manufacturer.",
+        "registration": "SAMPLE-GMP-0001"
+      }
+    }
+  },
+  {
+    "slug": "ministry-of-rural-development",
+    "name": "Ministry of Rural Development",
+    "type": "Ministry",
+    "website": "https://example.com/mord",
+    "sectors": {
+      "government": {
+        "description": "Sample profile: central ministry responsible for rural schemes."
+      }
+    }
+  },
+  {
+    "slug": "northwind",
+    "name": "Northwind Life Insurance",
+    "type": "Life Insurer",
+    "parentGroup": "Northwind Financial Holdings",
+    "website": "https://example.com/northwind",
+    "sectors": {
+      "insurance": {
+        "description": "Life insurer specializing in pure term cover with high claim settlement record and audited disclosures.",
+        "registration": "IRDAI-REG-143",
+        "trust": {
+          "Claim Settlement Ratio": "98.10%",
+          "IRDAI Solvency Ratio": "2.12x",
+          "Average Grievance SLA": "4.2 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "acko-life",
+    "name": "ACKO Life",
+    "type": "Life Insurer",
+    "parentGroup": "ACKO Life Insurance Limited",
+    "website": "https://ackolife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-164), headquartered in Bengaluru.",
+        "registration": "IRDAI-REG-164",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "aditya-birla-sun-life",
+    "name": "Aditya Birla Sun Life Insurance",
+    "type": "Life Insurer",
+    "parentGroup": "Aditya Birla Sun Life Insurance Company Limited",
+    "website": "https://adityabirlasunlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-109), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-109",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "ageas-federal-life",
+    "name": "Ageas Federal Life",
+    "type": "Life Insurer",
+    "parentGroup": "Ageas Federal Life Insurance Company Limited",
+    "website": "https://ageasfederallife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-135), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-135",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "aviva-life",
+    "name": "Aviva Life Insurance",
+    "type": "Life Insurer",
+    "parentGroup": "Aviva Life Insurance Company India Limited",
+    "website": "https://avivalife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-122), headquartered in Gurugram.",
+        "registration": "IRDAI-REG-122",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "axis-max-life",
+    "name": "Axis Max Life",
+    "type": "Life Insurer",
+    "parentGroup": "Axis Max Life Insurance Limited",
+    "website": "https://axismaxlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-104), headquartered in Gurugram.",
+        "registration": "IRDAI-REG-104",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "bajaj-life",
+    "name": "Bajaj Life",
+    "type": "Life Insurer",
+    "parentGroup": "Bajaj Life Insurance Limited",
+    "website": "https://bajajlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-116), headquartered in Pune.",
+        "registration": "IRDAI-REG-116",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "bandhan-life",
+    "name": "Bandhan Life",
+    "type": "Life Insurer",
+    "parentGroup": "Bandhan Life Insurance Limited",
+    "website": "https://bandhanlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-138), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-138",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "bharti-axa-life",
+    "name": "Bharti AXA Life",
+    "type": "Life Insurer",
+    "parentGroup": "Bharti AXA Life Insurance Company Limited",
+    "website": "https://bhartiaxalife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-130), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-130",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "canara-hsbc-life",
+    "name": "Canara HSBC Life",
+    "type": "Life Insurer",
+    "parentGroup": "Canara HSBC Life Insurance Company Limited",
+    "website": "https://canarahsbclife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-136), headquartered in Gurugram.",
+        "registration": "IRDAI-REG-136",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "creditaccess-life",
+    "name": "CreditAccess Life",
+    "type": "Life Insurer",
+    "parentGroup": "CreditAccess Life Insurance Limited",
+    "website": "https://creditaccesslife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-163), headquartered in Bengaluru.",
+        "registration": "IRDAI-REG-163",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "go-digit-life",
+    "name": "Digit Life",
+    "type": "Life Insurer",
+    "parentGroup": "Go Digit Life Insurance Limited",
+    "website": "https://godigitlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-165), headquartered in Pune.",
+        "registration": "IRDAI-REG-165",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "edelweiss-life",
+    "name": "Edelweiss Life",
+    "type": "Life Insurer",
+    "parentGroup": "Edelweiss Life Insurance Company Limited",
+    "website": "https://edelweisslife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-147), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-147",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "generali-central-life",
+    "name": "Generali Central Life",
+    "type": "General & Health Insurer",
+    "parentGroup": "Generali Central Life Insurance Company Limited",
+    "website": "https://generalicentrallife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-133), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-133",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "icici-prudential-life",
+    "name": "ICICI Prudential Life",
+    "type": "Life Insurer",
+    "parentGroup": "ICICI Prudential Life Insurance Company Limited",
+    "website": "https://iciciprudentiallife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-105), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-105",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "indiafirst-life",
+    "name": "IndiaFirst Life",
+    "type": "Life Insurer",
+    "parentGroup": "IndiaFirst Life Insurance Company Limited",
+    "website": "https://indiafirstlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-143), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-143",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "indusind-nippon-life",
+    "name": "IndusInd Nippon Life",
+    "type": "Life Insurer",
+    "parentGroup": "IndusInd Nippon Life Insurance Company Limited",
+    "website": "https://indusindnipponlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-121), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-121",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "kotak-life",
+    "name": "Kotak Life",
+    "type": "Life Insurer",
+    "parentGroup": "Kotak Mahindra Life Insurance Company Limited",
+    "website": "https://kotaklife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-107), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-107",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "lic",
+    "name": "LIC",
+    "type": "Life Insurer",
+    "parentGroup": "Life Insurance Corporation of India",
+    "website": "https://lic.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-512), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-512",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "pnb-metlife",
+    "name": "PNB MetLife",
+    "type": "Life Insurer",
+    "parentGroup": "PNB MetLife India Insurance Company Limited",
+    "website": "https://pnbmetlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-117), headquartered in Bengaluru.",
+        "registration": "IRDAI-REG-117",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "pramerica-life",
+    "name": "Pramerica Life",
+    "type": "Life Insurer",
+    "parentGroup": "Pramerica Life Insurance Company Limited",
+    "website": "https://pramericalife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-140), headquartered in Gurugram.",
+        "registration": "IRDAI-REG-140",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "sahara-life",
+    "name": "Sahara Life",
+    "type": "Life Insurer",
+    "parentGroup": "Sahara India Life Insurance Company Limited",
+    "website": "https://saharalife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-127), headquartered in Lucknow.",
+        "registration": "IRDAI-REG-127",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "sbi-life",
+    "name": "SBI Life",
+    "type": "Life Insurer",
+    "parentGroup": "SBI Life Insurance Company Limited",
+    "website": "https://sbilife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-111), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-111",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "shriram-life",
+    "name": "Shriram Life",
+    "type": "Life Insurer",
+    "parentGroup": "Shriram Life Insurance Company Limited",
+    "website": "https://shriramlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-128), headquartered in Hyderabad.",
+        "registration": "IRDAI-REG-128",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "sud-life",
+    "name": "SUD Life",
+    "type": "Life Insurer",
+    "parentGroup": "Star Union Dai-ichi Life Insurance Company Limited",
+    "website": "https://sudlife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-142), headquartered in Navi Mumbai.",
+        "registration": "IRDAI-REG-142",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "tata-aia-life",
+    "name": "Tata AIA Life",
+    "type": "Life Insurer",
+    "parentGroup": "Tata AIA Life Insurance Company Limited",
+    "website": "https://tataaialife.com",
+    "sectors": {
+      "insurance": {
+        "description": "IRDAI-audited insurer (Registration: IRDAI-REG-110), headquartered in Mumbai.",
+        "registration": "IRDAI-REG-110",
+        "trust": {
+          "Claim Settlement Ratio": "98.20%",
+          "IRDAI Solvency Ratio": "2.05x",
+          "Average Grievance SLA": "4.6 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "star-health",
+    "name": "Star Health and Allied Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "Star Health Insurance Limited",
+    "website": "https://starhealth.in",
+    "sectors": {
+      "insurance": {
+        "description": "India's leading standalone health insurer (IRDAI-REG-129) with 14,000+ cashless network hospitals.",
+        "registration": "IRDAI-REG-129",
+        "trust": {
+          "In-house Claim Settlement": "99.10%",
+          "IRDAI Solvency Ratio": "2.14x",
+          "Cashless Network Hospitals": "14,000+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "care-health",
+    "name": "Care Health Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "Care Health Insurance Limited",
+    "website": "https://careinsurance.com",
+    "sectors": {
+      "insurance": {
+        "description": "Specialized health insurer (IRDAI-REG-148) with comprehensive health and maternity coverage.",
+        "registration": "IRDAI-REG-148",
+        "trust": {
+          "Claim Settlement Ratio": "95.20%",
+          "IRDAI Solvency Ratio": "1.82x",
+          "Cashless Network Hospitals": "11,400+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "niva-bupa",
+    "name": "Niva Bupa Health Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "Niva Bupa Health Insurance Company Limited",
+    "website": "https://nivabupa.com",
+    "sectors": {
+      "insurance": {
+        "description": "Standalone health insurance specialist (IRDAI-REG-145) with unlimited restore features.",
+        "registration": "IRDAI-REG-145",
+        "trust": {
+          "Claim Settlement Ratio": "91.60%",
+          "IRDAI Solvency Ratio": "1.75x",
+          "Cashless Network Hospitals": "10,000+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "icici-lombard-general",
+    "name": "ICICI Lombard General",
+    "type": "General & Health Insurer",
+    "parentGroup": "ICICI Bank",
+    "website": "https://icicilombard.com",
+    "sectors": {
+      "insurance": {
+        "description": "Premier non-life insurer (IRDAI-REG-115) for health, motor, travel, and home insurance.",
+        "registration": "IRDAI-REG-115",
+        "trust": {
+          "Claim Settlement Ratio": "98.50%",
+          "IRDAI Solvency Ratio": "2.62x",
+          "Grievance Disposal Ratio": "99.8%"
+        }
+      }
+    }
+  },
+  {
+    "slug": "bajaj-allianz-general",
+    "name": "Bajaj Allianz General",
+    "type": "General & Health Insurer",
+    "parentGroup": "Bajaj Finserv & Allianz SE",
+    "website": "https://bajajallianz.com",
+    "sectors": {
+      "insurance": {
+        "description": "Audited non-life insurer (IRDAI-REG-113) with fast-track digital motor and health claims.",
+        "registration": "IRDAI-REG-113",
+        "trust": {
+          "Claim Settlement Ratio": "98.10%",
+          "IRDAI Solvency Ratio": "3.45x",
+          "Average Grievance SLA": "3.2 days"
+        }
+      }
+    }
+  },
+  {
+    "slug": "hdfc-ergo-general",
+    "name": "HDFC ERGO General",
+    "type": "General & Health Insurer",
+    "parentGroup": "HDFC Bank",
+    "website": "https://hdfcergo.com",
+    "sectors": {
+      "insurance": {
+        "description": "Leading general insurer (IRDAI-REG-146) offering Optima Secure health and comprehensive motor covers.",
+        "registration": "IRDAI-REG-146",
+        "trust": {
+          "Claim Settlement Ratio": "97.40%",
+          "IRDAI Solvency Ratio": "1.93x",
+          "Network Garages & Hospitals": "12,500+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "new-india-assurance",
+    "name": "New India Assurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "Government of India (Public Sector)",
+    "website": "https://newindia.co.in",
+    "sectors": {
+      "insurance": {
+        "description": "India's largest public sector non-life insurer (IRDAI-REG-190) operating across 28 countries.",
+        "registration": "IRDAI-REG-190",
+        "trust": {
+          "IRDAI Solvency Ratio": "2.10x",
+          "Sovereign Backing": "Government of India",
+          "Global Offices": "2,400+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "sbi-general",
+    "name": "SBI General Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "State Bank of India",
+    "website": "https://sbigeneral.in",
+    "sectors": {
+      "insurance": {
+        "description": "General insurance arm of SBI (IRDAI-REG-144) covering health, motor, cyber, and property risks.",
+        "registration": "IRDAI-REG-144",
+        "trust": {
+          "Claim Settlement Ratio": "95.10%",
+          "IRDAI Solvency Ratio": "2.20x",
+          "Branches Supported": "22,000+"
+        }
+      }
+    }
+  },
+  {
+    "slug": "go-digit-general",
+    "name": "Go Digit General Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "Go Digit Infoworks",
+    "website": "https://godigit.com",
+    "sectors": {
+      "insurance": {
+        "description": "Digital-first general insurer (IRDAI-REG-158) with AI-powered instant claims.",
+        "registration": "IRDAI-REG-158",
+        "trust": {
+          "Claim Settlement Ratio": "96.20%",
+          "IRDAI Solvency Ratio": "1.78x",
+          "Paperless Claims": "100%"
+        }
+      }
+    }
+  },
+  {
+    "slug": "acko-general",
+    "name": "ACKO General Insurance",
+    "type": "General & Health Insurer",
+    "parentGroup": "ACKO Technology & Services",
+    "website": "https://acko.com",
+    "sectors": {
+      "insurance": {
+        "description": "Direct-to-consumer digital insurer (IRDAI-REG-157) with zero-commission pricing.",
+        "registration": "IRDAI-REG-157",
+        "trust": {
+          "Claim Settlement Ratio": "98.00%",
+          "IRDAI Solvency Ratio": "2.15x",
+          "Instant Claim Approval": "Sub-15 mins"
+        }
+      }
+    }
+  }
 ]

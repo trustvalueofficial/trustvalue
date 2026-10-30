@@ -75,6 +75,7 @@ export default function RootLayout({
           crossOrigin="anonymous"
           referrerPolicy="no-referrer"
         />
+        <link rel="stylesheet" href="/css/brand-detail.css" />
       </head>
       <body className="antialiased bg-[#FAFBFD] text-[#06132F]">
         <SvgIcons />

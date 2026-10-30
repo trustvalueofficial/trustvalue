@@ -133,6 +133,55 @@ export const getComparePairs = () => loadCompare();
 
 export const getRedirects = (): RedirectRule[] => readJson<RedirectRule[]>("redirects.json");
 
+/* ---------------------------------- blogs ---------------------------------- */
+
+export interface BlogFAQ {
+  question: string;
+  answer: string;
+}
+
+export interface BlogArticle {
+  slug: string;
+  title: string;
+  sector: string;
+  readTime: string;
+  summary: string;
+  body: string;
+  status: string;
+  author?: string;
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string;
+  directAnswer?: string;
+  featuredImage?: string;
+  faqData?: BlogFAQ[];
+  categoryId?: string;
+  views?: number;
+  commentsCount?: number;
+  indexedAt?: string;
+  relatedSlugs?: string[];
+  seo?: {
+    title?: string;
+    description?: string;
+    focusKeyword?: string;
+    keywords?: string[];
+    schemaType?: string;
+  };
+}
+
+const loadBlogs = memo((): BlogArticle[] => {
+  const full = path.join(ROOT, "blogs", "articles.json");
+  if (!fs.existsSync(full)) return [];
+  try {
+    return JSON.parse(fs.readFileSync(full, "utf8")) as BlogArticle[];
+  } catch {
+    return [];
+  }
+});
+
+export const getBlogs = () => loadBlogs().filter((b) => b.status === "published");
+export const getBlog = (slug: string) => loadBlogs().find((b) => b.slug === slug);
+
 /* ----------------------------------- helpers ----------------------------------- */
 
 /** Merge offering attributes with a variant's overrides. */
@@ -140,3 +189,4 @@ export const mergeAttributes = (o: Offering, variantSlug?: string) => ({
   ...o.attributes,
   ...(o.variants?.find((v) => v.slug === variantSlug)?.attributes ?? {}),
 });
+
