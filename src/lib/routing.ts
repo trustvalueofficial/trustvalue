@@ -31,5 +31,5 @@ export const paths = {
   contact: () => "/contact",
   reviews: () => "/reviews",
   rating: () => "/rating",
-  termsAndcondition: () => "/termsAndcondition",
+  termsAndcondition: () => "/termsandcondition",
 };
