@@ -728,7 +728,7 @@ export default function Header() {
                     <div className="mega-panel-foot-links">
                       <Link
                         className="btn btn-primary btn-sm"
-                        href="/insurance"
+                        href="/sectors"
                         onClick={() => setActiveMenu(null)}
                       >
                         Explore All Sectors

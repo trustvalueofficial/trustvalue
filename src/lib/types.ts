@@ -10,6 +10,7 @@ export interface AttributeDef {
   unit?: string;
   comparable?: boolean;
   filterable?: boolean;
+  higherIsBetter?: boolean;
 }
 export interface Faq { question: string; answer: string }
 export interface SourceRef { title: string; url: string; accessedOn: string }

@@ -956,8 +956,8 @@ textarea.input { min-height: 120px; resize: vertical; line-height: 1.5; }
   flex-wrap: wrap;
 }
 
-/* ===== Exact Brand & Product Dossier (Screenshot Match) ===== */
-.brand-dossier-wrap {
+/* ===== Exact Brand & Product Profile (Screenshot Match) ===== */
+.brand-profile-wrap {
   max-width: 1140px;
   margin: 0 auto;
   padding: 24px 20px 80px 20px;
@@ -1799,7 +1799,7 @@ textarea.input { min-height: 120px; resize: vertical; line-height: 1.5; }
     margin-inline: auto !important;
     padding-inline: 0 !important;
   }
-  .brand-dossier-wrap {
+  .brand-profile-wrap {
     padding: 16px 12px 60px 12px !important;
   }
   .tvh .section {
@@ -2146,7 +2146,7 @@ textarea.input { min-height: 120px; resize: vertical; line-height: 1.5; }
     font-size: 16px !important;
   }
 
-  /* Dossier pages overrides */
+  /* Brand profile pages overrides */
   .brand-hero-title {
     font-size: 1.85rem !important;
   }

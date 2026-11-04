@@ -1,5 +1,20 @@
 [
   {
+    "slug": "tata-medicare-premier",
+    "name": "Tata MediCare Premier",
+    "sector": "insurance",
+    "provider": "tata-aig-general",
+    "primaryCategory": "health/individual-health",
+    "status": "published",
+    "lastVerified": "2026-10-27",
+    "summary": "Comprehensive health protection plan with zero co-pay.",
+    "attributes": {
+      "premium": "₹ 800–2,200 / month",
+      "sum_assured": "₹ 10 lakh – 1 crore"
+    },
+    "variants": []
+  },
+  {
     "slug": "click-2-protect-supreme",
     "provider": "hdfc-life",
     "name": "Click 2 Protect Supreme",
@@ -89,5 +104,371 @@
         "accessedOn": "2026-10-21"
       }
     ]
+  },
+  {
+    "slug": "northwind-term-shield",
+    "provider": "northwind",
+    "name": "Northwind Term Shield",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-29",
+    "summary": "Pure risk individual life protection with zero co-pay, guaranteed claims escalation SLA, and terminal illness rider.",
+    "attributes": {
+      "premium": "₹ 600–1,800 / month",
+      "sum_assured": "₹ 50 lakh – 10 crore",
+      "claim_settlement_ratio": "98.10%",
+      "waiting_period": "None",
+      "entry_age": "18–65 years",
+      "policy_term": "Up to 40 years",
+      "features": [
+        "Return of premium option",
+        "Critical illness rider",
+        "Terminal illness accelerated cover",
+        "Zero co-pay"
+      ],
+      "exclusions": [
+        "The plan page lists 20, 34 and 60 critical illnesses in different places. Ask which list your option covers, and find it in the policy wording.",
+        "Death by suicide in the first 12 months pays back 80% of premiums paid, or the policy's surrender value if that is higher.",
+        "Bought through a POS agent? No death benefit in the first 90 days, except after an accident. Premiums are refunded."
+      ]
+    },
+    "variants": [
+      {
+        "slug": "shield-basic",
+        "name": "Life Shield",
+        "attributes": {
+          "premium": "₹ 600 / month"
+        }
+      },
+      {
+        "slug": "shield-plus",
+        "name": "Life Shield Plus",
+        "attributes": {
+          "premium": "₹ 950 / month"
+        }
+      }
+    ],
+    "faqs": [
+      {
+        "question": "What is the claim settlement ratio of Northwind Term Shield?",
+        "answer": "Northwind Life settled 98.10% of individual death claims by number in FY 2024-25 as disclosed in IRDAI public disclosures."
+      },
+      {
+        "question": "Does this plan include a critical illness rider?",
+        "answer": "Yes, optional critical illness and accidental permanent disability riders can be attached at issuance or on policy anniversaries."
+      }
+    ],
+    "sources": [
+      {
+        "title": "IRDAI Annual Public Disclosure FY 2024-25 Form NL-2",
+        "url": "https://irdai.gov.in/public-disclosures",
+        "accessedOn": "2026-10-29"
+      },
+      {
+        "title": "Northwind Term Shield Policy Document #NTS-2024-V4",
+        "url": "https://example.com/northwind/policy-docs",
+        "accessedOn": "2026-10-29"
+      }
+    ]
+  },
+  {
+    "slug": "iprotect-smart",
+    "provider": "icici-prudential-life",
+    "name": "iProtect Smart Term Plan",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-28",
+    "summary": "Pure risk term plan with terminal illness accelerated benefit and 34 critical illness cover.",
+    "attributes": {
+      "premium": "₹ 580–1,650 / month",
+      "sum_assured": "₹ 50 lakh – 10 crore",
+      "claim_settlement_ratio": "98.90%",
+      "waiting_period": "None",
+      "entry_age": "18–65 years",
+      "policy_term": "Up to 40 years",
+      "features": [
+        "Terminal Illness Inbuilt Benefit",
+        "34 Critical Illness Cover",
+        "Special Exit Option"
+      ],
+      "exclusions": [
+        "Suicide within first year"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "signature-ulip",
+    "provider": "icici-prudential-life",
+    "name": "Signature Wealth ULIP",
+    "sector": "insurance",
+    "primaryCategory": "life/ulip",
+    "status": "published",
+    "lastVerified": "2026-10-28",
+    "summary": "Market-linked wealth creation plan with zero premium allocation and zero admin charges.",
+    "attributes": {
+      "premium": "₹ 3,000–25,000 / month",
+      "sum_assured": "₹ 10 lakh – 1 crore",
+      "claim_settlement_ratio": "98.90%",
+      "features": [
+        "Zero Premium Allocation Charge",
+        "Unlimited Free Fund Switches",
+        "Whole Life Cover"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "sanchay-plus",
+    "provider": "hdfc-life",
+    "name": "Sanchay Plus Guaranteed Return",
+    "sector": "insurance",
+    "primaryCategory": "life/savings-plans",
+    "status": "published",
+    "lastVerified": "2026-10-27",
+    "summary": "Guaranteed income life insurance plan offering lifelong tax-free income stream.",
+    "attributes": {
+      "premium": "₹ 2,500–20,000 / month",
+      "sum_assured": "₹ 10 lakh – 2 crore",
+      "claim_settlement_ratio": "99.30%",
+      "features": [
+        "Guaranteed Income Option",
+        "Life-long Income till 99",
+        "Tax Free Returns u/s 10(10D)"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "sampoorna-raksha-supreme",
+    "provider": "tata-aia-life",
+    "name": "Sampoorna Raksha Supreme",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-26",
+    "summary": "Whole life pure risk term insurance with built-in disability cover and vitality wellness discount.",
+    "attributes": {
+      "premium": "₹ 590–1,750 / month",
+      "sum_assured": "₹ 50 lakh – 10 crore",
+      "claim_settlement_ratio": "99.00%",
+      "features": [
+        "Whole Life Cover upto age 100",
+        "Post-Disability Waiver of Premium",
+        "Vitality Wellness Discount"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "eshield-next",
+    "provider": "sbi-life",
+    "name": "eShield Next Term Plan",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-25",
+    "summary": "Sovereign-backed individual pure term plan with level and increasing cover options.",
+    "attributes": {
+      "premium": "₹ 550–1,600 / month",
+      "sum_assured": "₹ 50 lakh – 5 crore",
+      "claim_settlement_ratio": "97.80%",
+      "features": [
+        "Level & Increasing Cover",
+        "Better Half Benefit",
+        "Terminal Illness Cover"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "tech-term",
+    "provider": "lic",
+    "name": "LIC Tech Term Online",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-25",
+    "summary": "Government-backed direct online pure term assurance policy with sovereign guarantee.",
+    "attributes": {
+      "premium": "₹ 680–1,950 / month",
+      "sum_assured": "₹ 50 lakh – 15 crore",
+      "claim_settlement_ratio": "98.50%",
+      "features": [
+        "Sovereign Guarantee u/s 37 LIC Act",
+        "Direct Online Non-Intermediated",
+        "Accidental Benefit Rider"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "super-protect-plan",
+    "provider": "ageas-federal-life",
+    "name": "Super Protect Term Plan",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-24",
+    "summary": "Comprehensive term insurance with return of premium option and flexible payout schedules.",
+    "attributes": {
+      "premium": "₹ 580–1,550 / month",
+      "sum_assured": "₹ 50 lakh – 3 crore",
+      "claim_settlement_ratio": "96.70%",
+      "features": [
+        "Return of Premium Option",
+        "Terminal Illness Benefit",
+        "Flexible Claim Payouts"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "kotak-e-term",
+    "provider": "kotak-life",
+    "name": "Kotak e-Term Plan",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-24",
+    "summary": "High sum assured term plan with permanent disability benefit and step-up coverage options.",
+    "attributes": {
+      "premium": "₹ 520–1,500 / month",
+      "sum_assured": "₹ 50 lakh – 5 crore",
+      "claim_settlement_ratio": "98.20%",
+      "features": [
+        "Step-Up Life Event Coverage",
+        "Permanent Disability Rider",
+        "Online Direct Discount"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "birlas-digi-shield",
+    "provider": "aditya-birla-sun-life",
+    "name": "DigiShield Term Insurance",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-23",
+    "summary": "10 customizable plan options with whole life coverage and survival income benefit.",
+    "attributes": {
+      "premium": "₹ 540–1,600 / month",
+      "sum_assured": "₹ 50 lakh – 5 crore",
+      "claim_settlement_ratio": "97.60%",
+      "features": [
+        "10 Plan Customization Options",
+        "Survival Income Stream",
+        "Joint Life Protection"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "bajaj-e-touch",
+    "provider": "bajaj-life",
+    "name": "eTouch Life Term Plan",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-23",
+    "summary": "Accelerated terminal illness waiver and comprehensive critical disease indemnity cover.",
+    "attributes": {
+      "premium": "₹ 530–1,550 / month",
+      "sum_assured": "₹ 50 lakh – 5 crore",
+      "claim_settlement_ratio": "98.00%",
+      "features": [
+        "Early Claim Settlement SLA",
+        "Comprehensive Critical Illness",
+        "Zero Paperwork Processing"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "acko-flexi-term",
+    "provider": "acko-life",
+    "name": "ACKO Flexi Term Assurance",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-22",
+    "summary": "100% paperless digital term life protection with flexible tenure adjustment.",
+    "attributes": {
+      "premium": "₹ 480–1,400 / month",
+      "sum_assured": "₹ 50 lakh – 3 crore",
+      "claim_settlement_ratio": "95.00%",
+      "features": [
+        "100% Digital Tele-medical",
+        "Instant Issuance Track",
+        "Zero Commission Markup"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "go-digit-shield",
+    "provider": "go-digit-life",
+    "name": "Digit Life Shield",
+    "sector": "insurance",
+    "primaryCategory": "life/term-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-22",
+    "summary": "Straightforward term cover with transparent exclusion disclosures and instant claim app.",
+    "attributes": {
+      "premium": "₹ 490–1,450 / month",
+      "sum_assured": "₹ 50 lakh – 2 crore",
+      "claim_settlement_ratio": "94.80%",
+      "features": [
+        "Simple Wording Policy",
+        "Instant Claim Processing App",
+        "Free Health Assessments"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "tata-aig-auto-secure",
+    "provider": "tata-aig-general",
+    "name": "Tata AIG Auto Secure Private Car Package",
+    "sector": "insurance",
+    "primaryCategory": "general/motor-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-25",
+    "summary": "Comprehensive private car protection policy with 13 custom add-on covers including zero depreciation.",
+    "attributes": {
+      "premium": "₹ 3,450–12,800 / yr",
+      "sum_assured": "Declared Insured Value (IDV)",
+      "claim_settlement_ratio": "98.50%",
+      "features": [
+        "Depreciation Reimbursement",
+        "Engine and Gearbox Protector",
+        "24x7 Roadside Assistance"
+      ]
+    },
+    "variants": []
+  },
+  {
+    "slug": "tata-aig-travel-guard",
+    "provider": "tata-aig-general",
+    "name": "Tata AIG Travel Guard International",
+    "sector": "insurance",
+    "primaryCategory": "general/travel-insurance",
+    "status": "published",
+    "lastVerified": "2026-10-25",
+    "summary": "Comprehensive worldwide travel protection covering overseas medical hospitalization and trip cancellations.",
+    "attributes": {
+      "premium": "₹ 950–4,200 / trip",
+      "sum_assured": "USD 50,000 – 5,00,000",
+      "claim_settlement_ratio": "98.50%",
+      "features": [
+        "Cashless Overseas Hospitalization",
+        "Trip Delay and Flight Cancellation",
+        "Loss of Passport and Checked Baggage"
+      ]
+    },
+    "variants": []
   }
 ]
