@@ -75,7 +75,8 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const allArticles = getBlogs();
+  const cmsArticles = getBlogs();
+  const allArticles = cmsArticles.length > 0 ? cmsArticles : Object.values(FALLBACK_ARTICLES);
   const post = getBlog(slug) || FALLBACK_ARTICLES[slug];
   if (!post) notFound();
 
@@ -84,5 +85,5 @@ export default async function BlogPostPage({ params }: Props) {
     (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
   ).slice(0, 3);
 
-  return <BlogPostClient post={post} relatedArticles={relatedArticles} />;
+  return <BlogPostClient post={post} relatedArticles={relatedArticles} allArticles={allArticles} />;
 }
