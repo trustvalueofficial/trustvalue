@@ -74,11 +74,17 @@ export function BlogListingClient({ articles }: Props) {
           <button
             type="button"
             onClick={() => setSelectedSector("all")}
-            className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
-              selectedSector === "all"
-                ? "bg-[#071B46] text-white"
-                : "bg-[#F8FAFC] text-[#46526B] border border-[#DCE2EB] hover:bg-[#EEF2F7]"
-            }`}
+            style={{
+              padding: "6px 14px",
+              backgroundColor: selectedSector === "all" ? "#071B46" : "#F8FAFC",
+              color: selectedSector === "all" ? "#FFFFFF" : "#46526B",
+              border: selectedSector === "all" ? "1px solid #071B46" : "1px solid #DCE2EB",
+              borderRadius: "8px",
+              fontSize: "12px",
+              fontWeight: 600,
+              cursor: "pointer",
+            }}
+            className="transition-colors hover:!bg-[#EEF2F7]"
           >
             All Sectors ({articles.length})
           </button>
@@ -90,11 +96,17 @@ export function BlogListingClient({ articles }: Props) {
                 key={s}
                 type="button"
                 onClick={() => setSelectedSector(s)}
-                className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize cursor-pointer transition-colors ${
-                  active
-                    ? "bg-[#071B46] text-white"
-                    : "bg-[#F8FAFC] text-[#46526B] border border-[#DCE2EB] hover:bg-[#EEF2F7]"
-                }`}
+                style={{
+                  padding: "6px 14px",
+                  backgroundColor: active ? "#071B46" : "#F8FAFC",
+                  color: active ? "#FFFFFF" : "#46526B",
+                  border: active ? "1px solid #071B46" : "1px solid #DCE2EB",
+                  borderRadius: "8px",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+                className="capitalize transition-colors hover:!bg-[#EEF2F7]"
               >
                 {s} ({count})
               </button>
