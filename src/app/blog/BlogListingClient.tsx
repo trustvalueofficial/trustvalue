@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { Search, Clock, Eye, Sparkles, BookOpen, MessageSquare, ChevronRight } from "lucide-react";
+import { Search, Clock, Eye, Sparkles, BookOpen, ChevronRight } from "lucide-react";
 import { paths } from "@/lib/routing";
 import type { BlogArticle } from "@/lib/cms";
 
@@ -43,60 +43,42 @@ export function BlogListingClient({ articles }: Props) {
   }, [articles, selectedSector, searchQuery]);
 
   return (
-    <div className="blog-portal" style={{ maxWidth: "1140px", margin: "0 auto", padding: "32px 16px" }}>
+    <div className="max-w-[1200px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
       {/* Header */}
-      <div style={{ marginBottom: "32px", textAlign: "center" }}>
-        <div style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: "8px",
-          padding: "6px 14px",
-          background: "rgba(37, 99, 235, 0.1)",
-          border: "1px solid rgba(59, 130, 246, 0.25)",
-          borderRadius: "9999px",
-          fontSize: "12px",
-          fontWeight: 600,
-          color: "#60a5fa",
-          marginBottom: "14px"
-        }}>
-          <Sparkles size={14} /> TrustValue Legal &amp; Regulatory Intelligence
+      <div className="mb-6 sm:mb-8 text-center max-w-2xl mx-auto">
+        <div className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-[#EEF2F7] border border-[#DCE2EB] text-[10px] font-bold uppercase tracking-wider text-[#071B46] mb-2">
+          <Sparkles size={12} className="text-[#FF5A0A]" />
+          <span>TrustValue Legal &amp; Regulatory Intelligence</span>
         </div>
-        <h1 style={{ fontSize: "36px", fontWeight: 800, letterSpacing: "-0.02em", color: "#f8fafc", margin: "0 0 12px 0" }}>
+        <h1
+          style={{
+            fontSize: "26px",
+            fontWeight: 800,
+            color: "#071B46",
+            lineHeight: 1.25,
+            letterSpacing: "-0.02em",
+            margin: "0 0 8px 0",
+          }}
+        >
           Research &amp; Regulatory Guides
         </h1>
-        <p style={{ fontSize: "16px", color: "#94a3b8", maxWidth: "680px", margin: "0 auto", lineHeight: 1.6 }}>
+        <p style={{ fontSize: "14px", color: "#46526B", lineHeight: 1.55, margin: 0 }}>
           Evidence-backed statutory explainers, IRDAI/RERA/SEBI circular breakdowns, and consumer protection playbooks audited by our research desk.
         </p>
       </div>
 
       {/* Search & Category Filter Toolbar */}
-      <div style={{
-        background: "#0f172a",
-        border: "1px solid #1e293b",
-        borderRadius: "14px",
-        padding: "16px 20px",
-        marginBottom: "32px",
-        display: "flex",
-        flexWrap: "wrap",
-        gap: "16px",
-        alignItems: "center",
-        justifyContent: "space-between"
-      }}>
+      <div className="bg-white border border-[#DCE2EB] rounded-2xl p-3 sm:p-4 mb-6 sm:mb-8 shadow-xs flex flex-wrap gap-3 items-center justify-between">
         {/* Category Tabs */}
-        <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", alignItems: "center" }}>
+        <div className="flex gap-1.5 flex-wrap items-center">
           <button
+            type="button"
             onClick={() => setSelectedSector("all")}
-            style={{
-              padding: "7px 16px",
-              borderRadius: "8px",
-              fontSize: "13px",
-              fontWeight: 600,
-              cursor: "pointer",
-              transition: "all 0.15s ease",
-              background: selectedSector === "all" ? "#2563eb" : "#1e293b",
-              color: selectedSector === "all" ? "#ffffff" : "#94a3b8",
-              border: selectedSector === "all" ? "1px solid #3b82f6" : "1px solid #334155",
-            }}
+            className={`px-3 py-1.5 rounded-lg text-xs font-semibold cursor-pointer transition-colors ${
+              selectedSector === "all"
+                ? "bg-[#071B46] text-white"
+                : "bg-[#F8FAFC] text-[#46526B] border border-[#DCE2EB] hover:bg-[#EEF2F7]"
+            }`}
           >
             All Sectors ({articles.length})
           </button>
@@ -106,19 +88,13 @@ export function BlogListingClient({ articles }: Props) {
             return (
               <button
                 key={s}
+                type="button"
                 onClick={() => setSelectedSector(s)}
-                style={{
-                  padding: "7px 16px",
-                  borderRadius: "8px",
-                  fontSize: "13px",
-                  fontWeight: 600,
-                  textTransform: "capitalize",
-                  cursor: "pointer",
-                  transition: "all 0.15s ease",
-                  background: active ? "#2563eb" : "#1e293b",
-                  color: active ? "#ffffff" : "#94a3b8",
-                  border: active ? "1px solid #3b82f6" : "1px solid #334155",
-                }}
+                className={`px-3 py-1.5 rounded-lg text-xs font-semibold capitalize cursor-pointer transition-colors ${
+                  active
+                    ? "bg-[#071B46] text-white"
+                    : "bg-[#F8FAFC] text-[#46526B] border border-[#DCE2EB] hover:bg-[#EEF2F7]"
+                }`}
               >
                 {s} ({count})
               </button>
@@ -127,131 +103,112 @@ export function BlogListingClient({ articles }: Props) {
         </div>
 
         {/* Search input */}
-        <div style={{ position: "relative", minWidth: "260px", flex: "1 1 260px", maxWidth: "380px" }}>
-          <Search size={16} style={{ position: "absolute", left: "12px", top: "50%", transform: "translateY(-50%)", color: "#64748b" }} />
+        <div className="relative min-w-[220px] flex-1 sm:max-w-xs">
+          <Search
+            size={14}
+            className="absolute left-3 top-1/2 -translate-y-1/2 text-[#94A3B8]"
+          />
           <input
             type="text"
             placeholder="Search regulations, laws, keywords..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            style={{
-              width: "100%",
-              padding: "8px 12px 8px 36px",
-              borderRadius: "8px",
-              background: "#131d33",
-              border: "1px solid #334155",
-              color: "#f8fafc",
-              fontSize: "13px",
-              outline: "none",
-            }}
+            className="w-full pl-8 pr-3 py-1.5 rounded-lg bg-[#F8FAFC] border border-[#DCE2EB] text-[#071B46] placeholder-[#94A3B8] text-xs focus:outline-none focus:border-[#FF5A0A] focus:bg-white transition-colors"
           />
         </div>
       </div>
 
       {/* Grid of Articles */}
       {filteredArticles.length === 0 ? (
-        <div style={{ textAlign: "center", padding: "64px 20px", background: "#0f172a", borderRadius: "14px", border: "1px solid #1e293b" }}>
-          <BookOpen size={40} style={{ color: "#475569", margin: "0 auto 16px auto" }} />
-          <h3 style={{ color: "#f8fafc", fontSize: "18px", marginBottom: "8px" }}>No research guides found</h3>
-          <p style={{ color: "#94a3b8", fontSize: "14px" }}>Try adjusting your sector filter or search keyword.</p>
+        <div className="text-center py-12 px-4 bg-white rounded-2xl border border-[#DCE2EB] shadow-xs">
+          <BookOpen size={36} className="text-[#94A3B8] mx-auto mb-2" />
+          <h3 style={{ fontSize: "15px", fontWeight: 700, color: "#071B46", margin: "0 0 4px 0" }}>
+            No research guides found
+          </h3>
+          <p style={{ fontSize: "13px", color: "#667085", margin: 0 }}>
+            Try adjusting your sector filter or search keyword.
+          </p>
         </div>
       ) : (
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: "24px" }}>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
           {filteredArticles.map((a) => (
             <Link
               key={a.slug}
               href={paths.blogPost(a.slug)}
-              style={{
-                display: "flex",
-                flexDirection: "column",
-                background: "#0f172a",
-                border: "1px solid #1e293b",
-                borderRadius: "14px",
-                overflow: "hidden",
-                textDecoration: "none",
-                transition: "all 0.2s ease",
-              }}
-              className="hover:border-blue-500/40 hover:shadow-lg"
+              className="group flex flex-col bg-white border border-[#DCE2EB] hover:border-[#FF5A0A] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all no-underline"
             >
               {/* Featured Image */}
               {a.featuredImage ? (
-                <div style={{ height: "180px", overflow: "hidden", background: "#131d33" }}>
+                <div className="h-40 overflow-hidden bg-[#F8FAFC]">
                   <img
                     src={a.featuredImage}
                     alt={a.title}
-                    style={{ width: "100%", height: "100%", objectFit: "cover", transition: "transform 0.3s ease" }}
+                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                   />
                 </div>
               ) : null}
 
-              <div style={{ padding: "20px", display: "flex", flexDirection: "column", flex: 1 }}>
+              <div className="p-4 sm:p-5 flex flex-col flex-1">
                 {/* Meta Header */}
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "12px" }}>
-                  <span style={{
-                    padding: "3px 10px",
-                    borderRadius: "6px",
-                    background: "rgba(59, 130, 246, 0.15)",
-                    border: "1px solid rgba(59, 130, 246, 0.3)",
-                    fontSize: "11px",
-                    fontWeight: 700,
-                    textTransform: "uppercase",
-                    color: "#93c5fd",
-                    letterSpacing: "0.04em",
-                  }}>
+                <div className="flex justify-between items-center mb-2.5">
+                  <span className="px-2 py-0.5 rounded-full bg-[#EEF2F7] border border-[#DCE2EB] text-[10px] font-bold uppercase tracking-wider text-[#071B46]">
                     {a.sector}
                   </span>
-                  <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "12px", color: "#64748b" }}>
-                    <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                      <Clock size={12} /> {a.readTime || "5 min read"}
+                  <div className="flex items-center gap-2.5 text-[11px] text-[#667085]">
+                    <span className="flex items-center gap-1">
+                      <Clock size={11} /> {a.readTime || "5 min read"}
                     </span>
                     {a.views ? (
-                      <span style={{ display: "flex", alignItems: "center", gap: "4px" }}>
-                        <Eye size={12} /> {a.views}
+                      <span className="flex items-center gap-1">
+                        <Eye size={11} /> {a.views}
                       </span>
                     ) : null}
                   </div>
                 </div>
 
-                {/* Title */}
-                <h2 style={{ fontSize: "18px", fontWeight: 700, color: "#f8fafc", lineHeight: 1.4, margin: "0 0 10px 0" }}>
+                {/* Card Title - Explicit inline styles to prevent prototype.css h2 inflation */}
+                <div
+                  className="font-bold text-[#071B46] group-hover:text-[#FF5A0A] transition-colors"
+                  style={{
+                    fontSize: "15px",
+                    fontWeight: 700,
+                    lineHeight: "1.35",
+                    margin: "0 0 8px 0",
+                  }}
+                >
                   {a.title}
-                </h2>
+                </div>
 
                 {/* Direct Answer snippet highlight if present */}
                 {a.directAnswer ? (
-                  <div style={{
-                    padding: "10px 12px",
-                    background: "rgba(16, 185, 129, 0.08)",
-                    borderLeft: "3px solid #10b981",
-                    borderRadius: "4px",
-                    fontSize: "12px",
-                    color: "#a7f3d0",
-                    lineHeight: 1.5,
-                    marginBottom: "12px"
-                  }}>
-                    <strong style={{ color: "#34d399", display: "block", marginBottom: "2px" }}>Direct Statutory Answer:</strong>
-                    {a.directAnswer.length > 120 ? a.directAnswer.slice(0, 120) + "..." : a.directAnswer}
+                  <div
+                    className="p-2.5 bg-[#ECFDF5] border-l-2 border-[#10B981] rounded-r-lg mb-3"
+                    style={{ fontSize: "12px", lineHeight: "1.5", color: "#065F46" }}
+                  >
+                    <strong style={{ color: "#0A8754", display: "block", marginBottom: "2px" }}>
+                      Statutory Takeaway:
+                    </strong>
+                    {a.directAnswer.length > 100 ? a.directAnswer.slice(0, 100) + "..." : a.directAnswer}
                   </div>
                 ) : (
-                  <p style={{ fontSize: "14px", color: "#94a3b8", lineHeight: 1.5, margin: "0 0 16px 0", flex: 1 }}>
+                  <p
+                    style={{
+                      fontSize: "13px",
+                      color: "#46526B",
+                      lineHeight: "1.5",
+                      margin: "0 0 12px 0",
+                    }}
+                    className="flex-1 line-clamp-2"
+                  >
                     {a.summary}
                   </p>
                 )}
 
                 {/* Card Footer */}
-                <div style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  paddingTop: "14px",
-                  borderTop: "1px solid #1e293b",
-                  marginTop: "auto",
-                  fontSize: "12px",
-                  color: "#64748b"
-                }}>
+                <div className="flex justify-between items-center pt-2.5 border-t border-[#EEF2F7] mt-auto text-[11px] text-[#667085]">
                   <span>By {a.author || "Research Desk"}</span>
-                  <span style={{ display: "flex", alignItems: "center", gap: "4px", color: "#60a5fa", fontWeight: 600 }}>
-                    Read Guide <ChevronRight size={14} />
+                  <span className="flex items-center gap-1 text-[#FF5A0A] font-bold group-hover:translate-x-0.5 transition-transform text-xs">
+                    Read Guide <ChevronRight size={13} />
                   </span>
                 </div>
               </div>
