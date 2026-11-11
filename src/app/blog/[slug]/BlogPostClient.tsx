@@ -545,7 +545,20 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
               <button
                 type="button"
                 onClick={handleShare}
-                className="ml-auto inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-white border border-[#DCE2EB] text-[#071B46] hover:bg-[#F8FAFC] text-[11px] font-semibold cursor-pointer shadow-xs transition-colors"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "6px",
+                  padding: "6px 12px",
+                  backgroundColor: "#FFFFFF",
+                  border: "1px solid #DCE2EB",
+                  borderRadius: "8px",
+                  color: "#071B46",
+                  fontSize: "12px",
+                  fontWeight: 600,
+                  cursor: "pointer",
+                }}
+                className="ml-auto hover:!bg-[#F8FAFC] shadow-xs transition-colors"
               >
                 {copied ? <Check size={13} className="text-[#0A8754]" /> : <Share2 size={13} />}
                 <span>{copied ? "Copied" : "Share"}</span>
@@ -914,9 +927,25 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
               />
               <button
                 type="submit"
-                className="self-start inline-flex items-center gap-1.5 px-4 py-2 rounded-lg bg-[#071B46] hover:bg-[#FF5A0A] text-white text-xs font-bold cursor-pointer transition-colors"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "8px",
+                  padding: "10px 22px",
+                  backgroundColor: "#071B46",
+                  color: "#FFFFFF",
+                  borderRadius: "10px",
+                  fontSize: "13px",
+                  fontWeight: 700,
+                  border: "none",
+                  cursor: "pointer",
+                  transition: "all 0.15s ease",
+                }}
+                className="self-start shadow-xs hover:!bg-[#FF5A0A] hover:!text-white active:scale-[0.98]"
               >
-                <Send size={13} /> Submit Query
+                <Send size={14} className="shrink-0 text-white" />
+                <span>Submit Query</span>
               </button>
             </form>
           </div>
