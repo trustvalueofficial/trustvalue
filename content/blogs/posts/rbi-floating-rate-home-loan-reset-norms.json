@@ -1,0 +1,36 @@
+{
+  "slug": "rbi-floating-rate-home-loan-reset-norms",
+  "title": "RBI Home Loan Reset Norms: Why Banks Cannot Arbitrarily Extend Your EMI Tenure",
+  "sector": "banking",
+  "readTime": "6 min read",
+  "summary": "Detailed breakdown of the RBI Master Circular capping arbitrary loan tenure extensions and enforcing transparent benchmark reset options for borrowers.",
+  "directAnswer": "Under RBI Master Directions on Personal Loans, commercial banks and NBFCs are legally mandated to offer borrowers the explicit choice to switch to fixed rate or prepay without penalty at every benchmark interest rate reset, prohibiting unilateral tenure extensions that increase lifetime interest.",
+  "body": "### 1. The Statutory Benchmark Framework\n\nUnder the Reserve Bank of India (Reset of Floating Interest Rate on Equated Monthly Instalments - EMI / Loan Tenure) circular, regulated entities must adhere to strict consumer transparency standards during monetary policy cycle adjustments.\n\n### 2. Mandatory Switch Option\n- Regulated entities must present borrowers the option to transition to fixed interest rates at the time of reset.\n- Transparent disclosure of all administrative charges associated with switching must be detailed in the Key Fact Statement (KFS).\n- Unilateral tenure extension exceeding borrower retirement age is strictly prohibited under banking ombudsman directives.",
+  "status": "published",
+  "author": "Pooja Sundaram, Financial Regulatory Desk",
+  "publishedAt": "2026-11-12T12:00:00.000Z",
+  "faqData": [
+    {
+      "question": "Can my bank extend my home loan tenure without my written consent?",
+      "answer": "No. Under the RBI August 2023 directions, banks and NBFCs cannot unilaterally increase loan tenure. They must provide clear communication and obtain explicit borrower approval before modifying EMI or tenure."
+    },
+    {
+      "question": "Are prepayment penalties allowed on floating rate home loans?",
+      "answer": "No. Under RBI statutory guidelines, commercial banks and housing finance companies are prohibited from levying any foreclosure charges or pre-payment penalties on floating rate personal and home loans."
+    }
+  ],
+  "seo": {
+    "title": "RBI Home Loan Reset Norms Explained | TrustValue",
+    "description": "Comprehensive analysis of RBI floating rate reset guidelines and borrower rights against arbitrary EMI tenure extensions.",
+    "focusKeyword": "RBI Home Loan",
+    "keywords": [
+      "RBI",
+      "Home Loan",
+      "EMI Reset",
+      "Banking Ombudsman"
+    ],
+    "schemaType": "Article"
+  },
+  "updatedAt": "2026-11-12T12:49:13.566Z",
+  "lastEditedBy": "API_Client"
+}

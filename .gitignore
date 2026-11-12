@@ -67,3 +67,6 @@ next-env.d.ts
 
 # Local documentation archive
 /mdfiles/
+*.xlsx
+__pycache__/
+/scripts/

@@ -1,0 +1,45 @@
+{
+  "slug": "nabh-cashless-hospital-turnaround-times",
+  "title": "Cashless Hospitalization Standards: What NABH Accreditations Mean for Your Discharge",
+  "sector": "healthcare",
+  "readTime": "5 min read",
+  "summary": "Step-by-step breakdown of cashless pre-authorization, TPA query resolution limits, and hospital repudiation appeals.",
+  "directAnswer": "IRDAI Master Circular mandates that insurance TPAs must grant initial cashless pre-authorization within 60 minutes and finalize discharge clearance within 180 minutes of hospital billing submission.",
+  "featuredImage": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1200&q=80",
+  "categoryId": "cat-healthcare",
+  "views": 1845,
+  "commentsCount": 7,
+  "indexedAt": "2026-05-13T12:00:00.000Z",
+  "relatedSlugs": [
+    "irdai-3-year-incontestability-rule-explained"
+  ],
+  "body": "NABH and JCI accredited hospital networks adhere to strict turnaround protocols for insurer cashless desk coordination. Learn how patient discharge settlement times are capped under standard regulatory operating procedures.\n\n### SLA Standards:\n- Pre-authorization response within 60 minutes of submission.\n- Final discharge authorization within 120 minutes of complete medical file clearance.\n- Direct TPA escalation desk accessible 24/7.",
+  "faqData": [
+    {
+      "question": "What is the penalty if a TPA takes more than 3 hours for discharge approval?",
+      "answer": "Under IRDAI's revised master guidelines, insurers face regulatory fines and are barred from holding the patient or imposing hospital room rent overstays on the policyholder for TPA processing delays."
+    },
+    {
+      "question": "Can a hospital refuse cashless treatment if they are in the GIPSA / ROHINI network?",
+      "answer": "No. Network hospitals bound by standard service level agreements cannot deny cashless admission to eligible active policyholders without documented technical or exclusion grounds."
+    }
+  ],
+  "status": "published",
+  "author": "Dr. Sameer Joshi",
+  "createdAt": "2026-05-10T08:00:00.000Z",
+  "updatedAt": "2026-05-12T16:20:00.000Z",
+  "publishedAt": "2026-05-12T16:20:00.000Z",
+  "seo": {
+    "title": "NABH Cashless Hospital Discharge SLAs | TrustValue Healthcare",
+    "description": "Understand statutory TPA turnaround times and cashless pre-authorization rights in accredited hospital networks.",
+    "focusKeyword": "Cashless Hospitalization",
+    "keywords": [
+      "NABH",
+      "Cashless Mediclaim",
+      "TPA Settlement",
+      "Health Insurance",
+      "Hospital Discharge"
+    ],
+    "schemaType": "FAQPage"
+  }
+}

@@ -43,8 +43,8 @@ const FALLBACK_ARTICLES = [
   },
 ];
 
-export default function BlogPage() {
-  const cmsArticles = getBlogs();
+export default async function BlogPage() {
+  const cmsArticles = await getBlogs();
   const articles = cmsArticles.length > 0 ? cmsArticles : FALLBACK_ARTICLES;
 
   return <BlogListingClient articles={articles} />;

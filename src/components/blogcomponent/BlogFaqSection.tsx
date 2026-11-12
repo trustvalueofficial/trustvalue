@@ -4,8 +4,10 @@ import React from "react";
 import { HelpCircle, ChevronDown } from "lucide-react";
 
 export interface FaqItem {
-  question: string;
-  answer: string;
+  question?: string;
+  answer?: string;
+  q?: string;
+  a?: string;
 }
 
 interface BlogFaqSectionProps {
@@ -53,7 +55,7 @@ export function BlogFaqSection({ faqData }: BlogFaqSectionProps) {
                 }}
                 className="group-open:text-[#FF5A0A] transition-colors pr-3"
               >
-                {faq.question}
+                {faq.question || faq.q}
               </span>
               <span className="shrink-0 text-[#667085] group-open:text-[#FF5A0A] transition-transform duration-200 group-open:rotate-180">
                 <ChevronDown size={15} />
@@ -67,7 +69,7 @@ export function BlogFaqSection({ faqData }: BlogFaqSectionProps) {
                 margin: "8px 0 0 0",
               }}
             >
-              {faq.answer}
+              {faq.answer || faq.a}
             </p>
           </details>
         ))}

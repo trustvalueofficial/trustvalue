@@ -1,23 +1,10 @@
 import type { Metadata } from "next";
-import { Manrope, Inter } from "next/font/google";
 import "../../public/css/globals.css";
 import SmoothScrollProvider from "@/components/providers/SmoothScrollProvider";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import SvgIcons from "@/components/layout/SvgIcons";
 import SEO from "@/components/seo";
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-manrope",
-  display: "swap",
-});
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-});
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "https://trustvalue.ai"),
@@ -67,9 +54,15 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en-IN" className={`${manrope.variable} ${inter.variable}`}>
+    <html lang="en-IN">
       <head>
         <SEO />
+        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+        <link
+          rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Manrope:wght@500;600;700;800&display=swap"
+        />
         <link
           rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
