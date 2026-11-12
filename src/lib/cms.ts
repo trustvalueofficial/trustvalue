@@ -1,5 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
+import { API_CONFIG } from "@/config";
 import type {
   AttributeDef, CategoryNode, City, ComparePairs, LocationMode, Offering, Provider,
   RedirectRule, ResolvedCategory, SectorConfig, SectorFile, TemplateKey,
@@ -170,6 +171,17 @@ export interface BlogArticle {
 }
 
 const loadBlogs = memo((): BlogArticle[] => {
+  // Try manifest.json first for high-scale performance (10K+ articles)
+  const manifestPath = path.join(ROOT, "blogs", "manifest.json");
+  if (fs.existsSync(manifestPath)) {
+    try {
+      return JSON.parse(fs.readFileSync(manifestPath, "utf8")) as BlogArticle[];
+    } catch {
+      // fallback
+    }
+  }
+
+  // Fallback to monolithic articles.json
   const full = path.join(ROOT, "blogs", "articles.json");
   if (!fs.existsSync(full)) return [];
   try {
@@ -179,8 +191,97 @@ const loadBlogs = memo((): BlogArticle[] => {
   }
 });
 
-export const getBlogs = () => loadBlogs().filter((b) => b.status === "published");
-export const getBlog = (slug: string) => loadBlogs().find((b) => b.slug === slug);
+function normalizeArticle(article: any): BlogArticle {
+  if (!article) return article;
+  // Normalize FAQ format if CMS or bulk import passed { q, a } instead of { question, answer }
+  const faqData = Array.isArray(article.faqData)
+    ? article.faqData.map((f: any) => ({
+        question: f.question || f.q || "",
+        answer: f.answer || f.a || "",
+      }))
+    : undefined;
+
+  return {
+    ...article,
+    faqData,
+  };
+}
+
+export function getBlogFromLocal(slug: string): BlogArticle | undefined {
+  // 1. O(1) Fast path: Direct single-file lookup in content/blogs/posts/{slug}.json
+  const postFile = path.join(ROOT, "blogs", "posts", `${slug}.json`);
+  if (fs.existsSync(postFile)) {
+    try {
+      const raw = fs.readFileSync(postFile, "utf8");
+      return normalizeArticle(JSON.parse(raw));
+    } catch (e) {
+      console.error(`Failed to read post file ${postFile}:`, e);
+    }
+  }
+
+  // 2. Check articles.json for full post if not in posts/
+  const articlesFile = path.join(ROOT, "blogs", "articles.json");
+  if (fs.existsSync(articlesFile)) {
+    try {
+      const articles: any[] = JSON.parse(fs.readFileSync(articlesFile, "utf8"));
+      const found = articles.find((b) => b.slug === slug);
+      if (found) return normalizeArticle(found);
+    } catch {}
+  }
+
+  // 3. Fallback to full loadBlogs array
+  const fromList = loadBlogs().find((b) => b.slug === slug);
+  return fromList ? normalizeArticle(fromList) : undefined;
+}
+
+export async function getBlogs(params?: {
+  sector?: string;
+  page?: number;
+  limit?: number;
+}): Promise<BlogArticle[]> {
+  try {
+    const query = new URLSearchParams({ status: "published" });
+    if (params?.sector) query.set("sector", params.sector);
+    if (params?.page) query.set("page", String(params.page));
+    if (params?.limit) query.set("limit", String(params.limit));
+
+    const res = await fetch(`${API_CONFIG.cms.endpoints.blogs}?${query.toString()}`, {
+      next: { revalidate: API_CONFIG.cms.revalidateSeconds, tags: ["blogs"] },
+      signal: AbortSignal.timeout(API_CONFIG.cms.timeouts.defaultMs),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (Array.isArray(json.data) && json.data.length > 0) {
+        return json.data.map(normalizeArticle);
+      }
+    }
+  } catch {
+    // CMS API unreachable or timeout — seamless fallback to local high-scale partition storage
+  }
+
+  return loadBlogs().filter((b) => b.status === "published");
+}
+
+export async function getBlog(slug: string): Promise<BlogArticle | undefined> {
+  try {
+    const res = await fetch(API_CONFIG.cms.endpoints.blogBySlug(slug), {
+      next: { revalidate: API_CONFIG.cms.revalidateSeconds, tags: ["blogs", `blog-${slug}`] },
+      signal: AbortSignal.timeout(API_CONFIG.cms.timeouts.defaultMs),
+    });
+
+    if (res.ok) {
+      const json = await res.json();
+      if (json.data) {
+        return normalizeArticle(json.data);
+      }
+    }
+  } catch {
+    // CMS API unreachable or timeout — seamless fallback to local high-scale partition storage
+  }
+
+  return getBlogFromLocal(slug);
+}
 
 /* ----------------------------------- helpers ----------------------------------- */
 

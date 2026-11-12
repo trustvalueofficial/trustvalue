@@ -56,15 +56,18 @@ const FALLBACK_ARTICLES: Record<string, BlogArticle> = {
 
 type Props = { params: Promise<{ slug: string }> };
 
-export const generateStaticParams = () => {
-  const dynamicSlugs = getBlogs().map((b) => ({ slug: b.slug }));
+export const dynamicParams = true;
+
+export const generateStaticParams = async () => {
+  const dynamicBlogs = await getBlogs();
+  const dynamicSlugs = dynamicBlogs.slice(0, 100).map((b) => ({ slug: b.slug }));
   const fallbackSlugs = Object.keys(FALLBACK_ARTICLES).map((slug) => ({ slug }));
   return dynamicSlugs.length > 0 ? dynamicSlugs : fallbackSlugs;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params;
-  const post = getBlog(slug) || FALLBACK_ARTICLES[slug];
+  const post = (await getBlog(slug)) || FALLBACK_ARTICLES[slug];
   if (!post) return {};
   return meta(
     post.seo?.title || post.title,
@@ -75,15 +78,17 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params;
-  const cmsArticles = getBlogs();
+  const cmsArticles = await getBlogs();
   const allArticles = cmsArticles.length > 0 ? cmsArticles : Object.values(FALLBACK_ARTICLES);
-  const post = getBlog(slug) || FALLBACK_ARTICLES[slug];
+  const post = (await getBlog(slug)) || FALLBACK_ARTICLES[slug];
   if (!post) notFound();
 
   // Find related articles (same sector or relatedSlugs)
-  const relatedArticles = allArticles.filter(
-    (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
-  ).slice(0, 3);
+  const relatedArticles = allArticles
+    .filter(
+      (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
+    )
+    .slice(0, 3);
 
   return <BlogPostClient post={post} relatedArticles={relatedArticles} allArticles={allArticles} />;
 }

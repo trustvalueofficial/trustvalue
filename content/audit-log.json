@@ -1,5 +1,60 @@
 [
   {
+    "id": "aud_1794487753579",
+    "timestamp": "2026-11-12T12:49:13.566Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "update",
+    "entityType": "blog",
+    "entityId": "rbi-floating-rate-home-loan-reset-norms",
+    "details": "Updated blog article \"RBI Home Loan Reset Norms: Why Banks Cannot Arbitrarily Extend Your EMI Tenure\" [Status: published]"
+  },
+  {
+    "id": "aud_1794487751605",
+    "timestamp": "2026-11-12T12:49:11.595Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "update",
+    "entityType": "blog",
+    "entityId": "rbi-floating-rate-home-loan-reset-norms",
+    "details": "Updated blog article \"RBI Home Loan Reset Norms: Why Banks Cannot Arbitrarily Extend Your EMI Tenure\" [Status: draft]"
+  },
+  {
+    "id": "aud_1794487729610",
+    "timestamp": "2026-11-12T12:48:49.602Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "create",
+    "entityType": "blog",
+    "entityId": "rbi-floating-rate-home-loan-reset-norms",
+    "details": "Created blog article \"RBI Home Loan Reset Norms: Why Banks Cannot Arbitrarily Extend Your EMI Tenure\" [Status: published]"
+  },
+  {
+    "id": "aud_1794487040858",
+    "timestamp": "2026-11-12T12:37:20.842Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "update",
+    "entityType": "blog",
+    "entityId": "test-one-guide",
+    "details": "Updated blog article \"test 1 from kishan\" [Status: published]"
+  },
+  {
+    "id": "aud_1794487035688",
+    "timestamp": "2026-11-12T12:37:15.676Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "create",
+    "entityType": "blog",
+    "entityId": "test-one-guide",
+    "details": "Created blog article \"test 1 from kishan\" [Status: published]"
+  },
+  {
     "id": "aud_1793120377357",
     "timestamp": "2026-10-27T16:59:37.356Z",
     "userId": "active_user",

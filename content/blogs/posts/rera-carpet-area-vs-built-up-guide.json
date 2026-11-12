@@ -1,0 +1,45 @@
+{
+  "slug": "rera-carpet-area-vs-built-up-guide",
+  "title": "MahaRERA Carpet Area Standard: How to Avoid Paying for Balcony & Utility Air",
+  "sector": "real-estate",
+  "readTime": "8 min read",
+  "summary": "Clear guide on statutory carpet area measurements, RERA escrow protections, and penalty interest for delayed possession.",
+  "directAnswer": "Under RERA legislation, developers are legally obligated to quote and sell units strictly based on RERA Net Usable Carpet Area. Selling on super built-up area or loaded square footage is a punishable statutory violation across all Indian jurisdictions.",
+  "featuredImage": "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1200&q=80",
+  "categoryId": "cat-realestate",
+  "views": 2980,
+  "commentsCount": 12,
+  "indexedAt": "2026-04-03T10:30:00.000Z",
+  "relatedSlugs": [
+    "irdai-3-year-incontestability-rule-explained"
+  ],
+  "body": "Under RERA legislation across all Indian states, builders are legally prohibited from selling apartments on super built-up or loaded square footage. Every transaction must be calculated exclusively on usable net carpet area.\n\n### What Counts as Usable Carpet Area:\n- Net usable floor area of an apartment, excluding the area covered by external walls.\n- Areas under internal partition walls are included.\n- Exclusive balconies or verandahs must be priced and reported as distinct line items.",
+  "faqData": [
+    {
+      "question": "What is the difference between RERA Carpet Area and Super Built-Up Area?",
+      "answer": "RERA Carpet Area measures actual usable internal floor space between walls. Super Built-Up includes common areas (lobbies, staircases, lifts, clubhouses) marked up by 25-45% loading."
+    },
+    {
+      "question": "Can a builder change the layout and reduce carpet area after booking?",
+      "answer": "No. Under RERA Section 14, any layout alteration requires prior written consent from at least two-thirds of the allottees who booked apartments in that project."
+    }
+  ],
+  "status": "published",
+  "author": "Kavita Rao",
+  "createdAt": "2026-04-01T09:15:00.000Z",
+  "updatedAt": "2026-04-02T11:00:00.000Z",
+  "publishedAt": "2026-04-02T11:00:00.000Z",
+  "seo": {
+    "title": "MahaRERA Carpet Area Guide 2026 | TrustValue Real Estate Audit",
+    "description": "Don't pay for loaded super built-up square footage. Understand exact RERA net usable carpet area legal calculations.",
+    "focusKeyword": "Carpet Area",
+    "keywords": [
+      "MahaRERA",
+      "Carpet Area",
+      "Real Estate Law",
+      "Super Built Up",
+      "Homebuyer Protection"
+    ],
+    "schemaType": "FAQPage"
+  }
+}

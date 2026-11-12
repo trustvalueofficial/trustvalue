@@ -1,0 +1,50 @@
+{
+  "slug": "irdai-3-year-incontestability-rule-explained",
+  "title": "Section 45 Explained: Why Life Insurers Cannot Reject Claims After 3 Years",
+  "sector": "insurance",
+  "readTime": "6 min read",
+  "summary": "How the Insurance Act Section 45 protects nominees and makes life policies incontestable after 36 months.",
+  "directAnswer": "Under Section 45 of the Insurance Act 1938, once a life insurance policy completes 3 consecutive years from issuance or revival, the insurer is legally barred from questioning or rejecting any death claim on ANY ground, including fraud or non-disclosure of medical facts.",
+  "featuredImage": "https://images.unsplash.com/photo-1450133064473-71024230f91b?auto=format&fit=crop&w=1200&q=80",
+  "categoryId": "cat-insurance",
+  "views": 4210,
+  "commentsCount": 18,
+  "indexedAt": "2026-03-21T08:00:00.000Z",
+  "relatedSlugs": [
+    "nabh-cashless-hospital-turnaround-times",
+    "rera-carpet-area-vs-built-up-guide"
+  ],
+  "body": "Under Section 45 of the Insurance Act 1938 (amended in 2015), no policy of life insurance can be called in question on any ground whatsoever, including fraud or non-disclosure of material facts, after the expiry of three continuous years from the date of issuance or revival.\n\n### Key Protections Under Section 45:\n1. **Absolute Incontestability**: Once 36 continuous months lapse, the insurer forfeits the legal right to repudiate a death claim.\n2. **Shifted Burden of Proof**: During the first 3 years, the insurer bears strict legal burden to prove deliberate, material misstatement.\n3. **Nominee Safeguards**: Eliminates harassment of surviving beneficiaries during claim settlement periods.",
+  "faqData": [
+    {
+      "question": "Can an insurer repudiate a claim after 3 years if fraud is discovered?",
+      "answer": "No. Under the amended Section 45 (effective 2015), the 3-year bar is absolute. Even if intentional fraud or omission is alleged, no repudiation is legally permissible once 36 continuous months pass."
+    },
+    {
+      "question": "Does the 3-year clock reset if the policy lapses and is subsequently revived?",
+      "answer": "Yes. If a policy lapses due to non-payment of premiums and is later revived, the 3-year period begins afresh from the official date of revival."
+    },
+    {
+      "question": "What happens to premiums paid if a claim is rejected within the first 3 years?",
+      "answer": "If repudiated for fraud within 3 years, premiums may be forfeited; however, if rejected for misstatement without fraudulent intent, the insurer must refund the premiums collected."
+    }
+  ],
+  "status": "published",
+  "author": "Dr. Aris Thorne",
+  "createdAt": "2026-03-15T10:00:00.000Z",
+  "updatedAt": "2026-03-20T14:30:00.000Z",
+  "publishedAt": "2026-03-20T14:30:00.000Z",
+  "seo": {
+    "title": "Section 45 IRDAI Incontestability Rule | TrustValue Legal Audit",
+    "description": "Comprehensive analysis of Section 45 of the Insurance Act 1938: why insurers cannot repudiate claims after 3 years.",
+    "focusKeyword": "Section 45",
+    "keywords": [
+      "IRDAI",
+      "Insurance Act",
+      "Incontestability",
+      "Life Insurance Claims",
+      "Section 45"
+    ],
+    "schemaType": "FAQPage"
+  }
+}
