@@ -1,5 +1,60 @@
 [
   {
+    "slug": "ktm",
+    "name": "KTM",
+    "type": "Motorcycle OEM",
+    "parentGroup": "Pierer Mobility AG / Bajaj Auto",
+    "website": "https://www.ktmindia.com",
+    "sectors": {
+      "automobiles": {
+        "description": "Austrian motorcycle and sports car manufacturer renowned for high-performance street, adventure, and track-ready supersport bikes engineered with lightweight trellis frames and racing heritage.",
+        "registration": "KTM-AUT-IN-01",
+        "aboutContent": [
+          "KTM Sportmotorcycle GmbH is a world-renowned Austrian motorcycle manufacturer recognized for cutting-edge engineering, lightweight trellis architecture, and unmatched track-to-street performance pedigree. With dozens of Dakar Rally victories and MotoGP podiums, the brand's 'Ready to Race' mantra defines every machine produced.",
+          "In India, KTM partners with Bajaj Auto through advanced manufacturing at the Chakan facility in Pune, delivering world-class motorcycles equipped with liquid-cooled DOHC engines, WP APEX suspension, cornering traction aids, and digital connectivity."
+        ],
+        "facts": [
+          {
+            "key": "Country of Origin",
+            "val": "Austria (Manufactured in Mattighofen & Chakan, India)"
+          },
+          {
+            "key": "Global Headquarters",
+            "val": "Mattighofen, Austria"
+          },
+          {
+            "key": "Founded",
+            "val": "1934"
+          },
+          {
+            "key": "Signature Series",
+            "val": "Duke (Naked), RC (Supersport), Adventure (ADV)"
+          }
+        ],
+        "warnings": [
+          {
+            "text": "High power-to-weight delivery requires experienced throttle modulation and certified full-face helmet and riding gear at all times."
+          }
+        ],
+        "trust": {
+          "Engineering Philosophy": "Ready to Race Lightweight Performance",
+          "Authorized Network": "PAN-India Exclusive Showrooms & Service Centers",
+          "Safety Technology": "Cornering ABS, Supermoto Mode & Traction Control"
+        },
+        "faqs": [
+          {
+            "a": "KTM models up to 390cc (including Duke 125, 200, 250, 390 and RC/Adventure variants) are manufactured at Bajaj Auto's advanced Chakan facility in Pune, Maharashtra.",
+            "q": "Where are KTM motorcycles manufactured for the Indian market?"
+          },
+          {
+            "a": "KTM typically offers a standard 5-year or 75,000 km manufacturer warranty across its Indian motorcycle portfolio, along with complimentary roadside assistance.",
+            "q": "What warranty coverage does KTM provide in India?"
+          }
+        ]
+      }
+    }
+  },
+  {
     "slug": "tata-aig-general",
     "name": "Tata AIG General",
     "type": "General & Health Insurer",

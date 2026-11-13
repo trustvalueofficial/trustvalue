@@ -1,5 +1,45 @@
 [
   {
+    "slug": "ktm-390-duke",
+    "name": "KTM 390 Duke",
+    "sector": "automobiles",
+    "provider": "ktm",
+    "primaryCategory": "two-wheelers/bikes",
+    "status": "published",
+    "lastVerified": "2026-11-14",
+    "summary": "Flagship sub-500cc naked streetfighter featuring a 399cc liquid-cooled LC4c motor, adjustable WP APEX suspension, cornering ABS, traction control, and launch control.",
+    "aboutContent": [
+      "The 2024-2026 KTM 390 Duke represents the ultimate performance benchmark in the single-cylinder motorcycle segment. Built around an all-new 2-piece trellis frame with a lightweight cast aluminium subframe, the 390 Duke delivers exceptional agility, aggressive ergonomic geometry, and razor-sharp steering dynamics.",
+      "Powering the machine is an upgraded 399cc LC4c motor delivering 45.3 bhp (46 PS) and 39 Nm of torque through a 6-speed transmission equipped with a power-assist slipper clutch and bi-directional quickshifter+. A 5-inch bonded glass TFT display offers Bluetooth connectivity, turn-by-turn navigation, and multiple riding modes (Street, Rain, Track)."
+    ],
+    "attributes": {
+      "fuel_type": "Petrol",
+      "seating": 2,
+      "ex_showroom_price": "? 3.11 Lakh",
+      "mileage": "28 - 30 kmpl",
+      "safety_rating": "Dual-Channel ABS (Cornering & Supermoto)",
+      "engine": "399cc, Single Cylinder, Liquid Cooled, DOHC 4V"
+    },
+    "variants": [
+      {
+        "attributes": {
+          "engine": "399cc LC4c",
+          "ex_showroom_price": "? 3,10,520"
+        },
+        "name": "Electronic Orange",
+        "slug": "electronic-orange"
+      },
+      {
+        "attributes": {
+          "engine": "399cc LC4c",
+          "ex_showroom_price": "? 3,10,520"
+        },
+        "name": "Atlantic Blue",
+        "slug": "atlantic-blue"
+      }
+    ]
+  },
+  {
     "slug": "nexon",
     "provider": "tata-motors",
     "name": "Nexon",

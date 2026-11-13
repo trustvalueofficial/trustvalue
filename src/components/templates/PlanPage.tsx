@@ -103,6 +103,7 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
       providerSlug={provider.slug}
       sectorSlug={sector.slug}
       summary={offering.summary || "Pure risk individual protection plan with comprehensive disclosure."}
+      aboutContent={offering.aboutContent && offering.aboutContent.length > 0 ? offering.aboutContent : undefined}
       lastVerified={offering.lastVerified || "2026-10-29"}
       claimSettlementRatio={claimSettlement}
       solvencyRatio="2.12x"
@@ -110,6 +111,7 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
       trustScore={94.2}
       facts={facts.length ? facts : undefined}
       warnings={warnings && warnings.length ? warnings : undefined}
+      faqs={offering.faqs && offering.faqs.length > 0 ? offering.faqs : undefined}
       products={brandProducts.length > 0 ? brandProducts : undefined}
       comparePeers={crossBrandPeers}
       sameBrandComparePeers={sameBrandPeers}

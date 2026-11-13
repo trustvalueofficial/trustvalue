@@ -66,10 +66,19 @@ export interface ResolvedCategory {
   childSlugs: string[];
 }
 
+export interface FactItem { key: string; val: string; citation?: string; }
+export interface WarningItem { text: string; citation?: string; }
+export interface NewsItem { date: string; title: string; desc: string; citation?: string; }
+
 export interface ProviderProfile {
   description: string;
   registration?: string;
   trust?: Record<string, string>;
+  facts?: FactItem[];
+  warnings?: WarningItem[];
+  newsList?: NewsItem[];
+  aboutContent?: string[];
+  faqs?: Faq[];
 }
 export interface Provider {
   slug: string;
@@ -93,6 +102,7 @@ export interface Offering {
   status: "published" | "draft";
   lastVerified: string;
   summary?: string;
+  aboutContent?: string[];
   attributes: Record<string, AttrValue>;
   variants?: Variant[];
   cities?: string[];

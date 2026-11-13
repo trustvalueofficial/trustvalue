@@ -3,7 +3,7 @@ import { OfferingPage, offeringMetadata } from "@/components/OfferingPage";
 import { getOfferings, getSectors } from "@/lib/cms";
 
 type Props = { params: Promise<{ sector: string; provider: string; offering: string }> };
-export const dynamicParams = false;
+export const dynamicParams = true;
 export const revalidate = 3600; // ISR: rates / prices change, so refresh hourly (tune per sector later)
 
 export const generateStaticParams = () =>
