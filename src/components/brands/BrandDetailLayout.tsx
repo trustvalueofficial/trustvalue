@@ -1161,18 +1161,25 @@ export default function BrandDetailLayout({
             <section id="about" className="py-3.5 sm:py-4 scroll-mt-20 border-b border-[#DCE2EB]">
               <h2
                 className="brand-h2 font-extrabold text-[#071B46] tracking-tight leading-tight mb-1.5"
-                
               >
-                About this plan
+                {entityType === "brand" ? `About ${providerName || title}` : "About this plan"}
               </h2>
 
               <div className="text-[#46526B] text-xs sm:text-sm leading-relaxed space-y-1.5">
-                <p>
-                  {title} is a non-linked, non-participating pure risk individual life insurance plan providing direct financial indemnity to nominees in the event of an untimely demise during the active policy term.
-                </p>
-                <p>
-                  Unlike endowment policies that mix insurance with sub-par market investments, pure term covers offer the highest sum assured per rupee of premium paid. Claims are paid directly to verified nominees within IRDAI turnaround guidelines.
-                </p>
+                {aboutContent && aboutContent.length > 0 ? (
+                  aboutContent.map((para, i) => (
+                    <p key={i}>{para}</p>
+                  ))
+                ) : (
+                  <>
+                    <p>
+                      {title} is a non-linked, non-participating pure risk individual life insurance plan providing direct financial indemnity to nominees in the event of an untimely demise during the active policy term.
+                    </p>
+                    <p>
+                      Unlike endowment policies that mix insurance with sub-par market investments, pure term covers offer the highest sum assured per rupee of premium paid. Claims are paid directly to verified nominees within IRDAI turnaround guidelines.
+                    </p>
+                  </>
+                )}
               </div>
             </section>
 

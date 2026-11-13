@@ -8,7 +8,7 @@ import { paths } from "@/lib/routing";
 import { meta } from "@/lib/seo";
 
 type Props = { params: Promise<{ sector: string; provider: string }> };
-export const dynamicParams = false;
+export const dynamicParams = true;
 export const generateStaticParams = () =>
   getSectors().flatMap((s) => getProvidersForSector(s.slug).map((p) => ({ sector: s.slug, provider: p.slug })));
 
@@ -42,6 +42,8 @@ export default async function ProviderPage({ params }: Props) {
 
   const claimRatio = profile.trust?.["Claim Settlement Ratio"] || "98.10%";
   const solvency = profile.trust?.["IRDAI Solvency Ratio"] || "2.12x";
+  const turnaround = profile.trust?.["Turnaround Days"] || "4.2 days";
+  const trustScore = profile.trust?.["Trust Score"] ? parseFloat(profile.trust["Trust Score"]) : 95.0;
 
   const brandProducts: BrandProductItem[] = offerings.map((o) => {
     const cat = getCategory(s, o.primaryCategory.split("/"));
@@ -107,9 +109,13 @@ export default async function ProviderPage({ params }: Props) {
         lastVerified="2026-10-29"
         claimSettlementRatio={claimRatio}
         solvencyRatio={solvency}
-        turnaroundDays="4.2 days"
-        trustScore={95.0}
-        facts={brandFacts}
+        turnaroundDays={turnaround}
+        trustScore={trustScore}
+        facts={profile.facts && profile.facts.length > 0 ? profile.facts : brandFacts}
+        warnings={profile.warnings}
+        newsList={profile.newsList}
+        aboutContent={profile.aboutContent}
+        faqs={profile.faqs}
         products={brandProducts}
         comparePeers={brandComparePeers}
         allCompareOptions={allBrandOptions}

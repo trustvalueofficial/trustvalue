@@ -1,5 +1,27 @@
 [
   {
+    "id": "aud_1794598614584",
+    "timestamp": "2026-11-13T19:36:54.581Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "create",
+    "entityType": "offering",
+    "entityId": "ktm-390-duke",
+    "details": "Created plan/offering \"KTM 390 Duke\" (ktm-390-duke) under automobiles"
+  },
+  {
+    "id": "aud_1794598589226",
+    "timestamp": "2026-11-13T19:36:29.225Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "create",
+    "entityType": "provider",
+    "entityId": "ktm",
+    "details": "Created provider brand \"KTM\" (ktm)"
+  },
+  {
     "id": "aud_1794487753579",
     "timestamp": "2026-11-12T12:49:13.566Z",
     "userId": "active_user",
