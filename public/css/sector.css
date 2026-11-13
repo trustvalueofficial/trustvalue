@@ -9,26 +9,26 @@
 .crumbs { font-size:14px; color:#667085; margin-bottom:12px; }
 
 /* 4 cards in one row on desktop layout */
-.grid, .grid-4, .sectors-grid-4 {
+.grid-4, .sectors-grid-4 {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 16px;
 }
 @media (max-width: 1100px) {
-  .grid, .grid-4, .sectors-grid-4 {
+  .grid-4, .sectors-grid-4 {
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
   }
 }
 @media (max-width: 640px) {
-  .grid, .grid-4, .sectors-grid-4 {
+  .grid-4, .sectors-grid-4 {
     grid-template-columns: 1fr;
     gap: 12px;
   }
 }
 
 .card { background:#fff; border:1px solid #DCE2EB; border-radius:16px; padding:20px; margin:16px 0; box-shadow:0 1px 3px rgba(7,27,70,0.04); }
-.grid .card, .grid-4 .card { margin:0; }
+.grid-4 .card, .sectors-grid-4 .card { margin:0; }
 .link-card { display:flex; flex-direction:column; gap:4px; color:#071B46; text-decoration:none; transition:all 0.15s ease; }
 .link-card:hover { border-color:#FF5A0A; text-decoration:none; transform:translateY(-1px); }
 .link-card small, .muted { color:#667085; }
