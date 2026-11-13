@@ -66,7 +66,7 @@ export default async function ProviderPage({ params }: Props) {
   const allSectorProviders = getProvidersForSector(s);
   const peerProviders = allSectorProviders.filter((x) => x.slug !== provider);
 
-  const brandComparePeers = peerProviders.slice(0, 3).map((peer) => {
+  const brandComparePeers = peerProviders.slice(0, 8).map((peer) => {
     const peerOfferings = getOfferingsByProvider(s, peer.slug);
     const csr = peer.sectors[s]?.trust?.["Claim Settlement Ratio"] || "98.10%";
     const sortedPair = [provider, peer.slug].sort().join("-vs-");

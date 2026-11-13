@@ -54,7 +54,7 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
   const rivalOfferings = catOfferings.filter((o) => o.provider !== provider.slug && o.slug !== offering.slug);
   const catLeaf = category.path[category.path.length - 1] || category.slug;
 
-  const crossBrandPeers = rivalOfferings.slice(0, 3).map((r) => {
+  const crossBrandPeers = rivalOfferings.slice(0, 8).map((r) => {
     const rivalProvider = getProvider(r.provider);
     const sortedPair = [offering.slug, r.slug].sort().join("-vs-");
     const prem = r.attributes?.["premium"] ? String(r.attributes["premium"]) : undefined;
@@ -70,7 +70,7 @@ export function PlanPage({ sector, provider, profile, offering, variant, categor
     };
   });
 
-  const sameBrandPeers = siblingOfferings.slice(0, 3).map((s) => {
+  const sameBrandPeers = siblingOfferings.slice(0, 8).map((s) => {
     const sortedPair = [offering.slug, s.slug].sort().join("-vs-");
     return {
       slug: s.slug,

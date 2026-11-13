@@ -55,6 +55,7 @@ export interface BrandDetailLayoutProps {
   comparePeers?: ComparePeerItem[];
   sameBrandComparePeers?: ComparePeerItem[];
   allCompareOptions?: { slug: string; name: string; brandName?: string }[];
+  faqs?: { question: string; answer: string }[];
 }
 
 export default function BrandDetailLayout({
@@ -79,7 +80,33 @@ export default function BrandDetailLayout({
   comparePeers,
   sameBrandComparePeers,
   allCompareOptions,
+  faqs,
 }: BrandDetailLayoutProps) {
+  // Accordion state: single-open so only one FAQ item is open at a time
+  const [openFaqIndex, setOpenFaqIndex] = useState<number | null>(null);
+  const toggleFaq = (idx: number) => {
+    setOpenFaqIndex((prev) => (prev === idx ? null : idx));
+  };
+
+  const defaultFaqs = faqs && faqs.length > 0 ? faqs : [
+    {
+      question: "What happens if I stop paying premiums?",
+      answer: "A grace period of 30 days is allowed for annual premium modes. If payment is not received within grace, pure risk cover lapses without surrender value.",
+    },
+    {
+      question: "Can this policy be challenged after 3 years?",
+      answer: "Under Section 45 of the Insurance Act 1938, no policy of life insurance can be called into question by an insurer after 3 continuous years on any ground whatsoever.",
+    },
+    {
+      question: "How are claims escalated and verified?",
+      answer: "Claims are processed directly through the insurer's audited nodal grievance officer with strict IRDAI turnaround SLAs (average 4.6 days). Nominees submit death certification and original policy documents for zero-broker settlement.",
+    },
+    {
+      question: "Is there a free-look period for cancellations?",
+      answer: "Yes, policyholders receive a statutory 30-day free-look period from receipt of digital or physical policy documents to review terms and request a 100% refund (less proportionate risk premium).",
+    },
+  ];
+
   // Story player states (Independent standalone summary of whole page)
   const [activeCard, setActiveCard] = useState<number>(0); // Starts at Card 0 (New on TrustValue)
   const [storyProgress, setStoryProgress] = useState<number>(0);
@@ -228,26 +255,26 @@ export default function BrandDetailLayout({
         </div>
       ),
       renderStoryBody: () => (
-        <div className="grid grid-cols-2 gap-2.5 py-3 w-full">
-          <div className="bg-white/10 rounded-2xl p-3 text-left border border-white/10">
-            <div className="text-xl font-black text-[#FFAA00]">₹ 600+</div>
-            <div className="text-[11px] font-bold text-white/90 mt-1">Starting Premium</div>
-            <p className="text-[9px] text-white/60 mt-0.5">₹600–1,800/mo based on entry age</p>
+        <div className="grid grid-cols-2 gap-2 py-2 w-full">
+          <div className="bg-white/10 rounded-xl p-2.5 text-left border border-white/10">
+            <div className="text-lg font-black text-[#FFAA00] leading-none">₹ 600+</div>
+            <div className="text-[10px] font-bold text-white/90 mt-1 truncate">Starting Premium</div>
+            <p className="text-[9px] text-white/60 mt-0.5 leading-tight">₹600–1,800/mo based on entry age</p>
           </div>
-          <div className="bg-white/10 rounded-2xl p-3 text-left border border-white/10">
-            <div className="text-xl font-black text-[#2FD08A]">₹ 10 Cr</div>
-            <div className="text-[11px] font-bold text-white/90 mt-1">Max Sum Assured</div>
-            <p className="text-[9px] text-white/60 mt-0.5">Flexible ₹50 Lakh to ₹10 Crore</p>
+          <div className="bg-white/10 rounded-xl p-2.5 text-left border border-white/10">
+            <div className="text-lg font-black text-[#2FD08A] leading-none">₹ 10 Cr</div>
+            <div className="text-[10px] font-bold text-white/90 mt-1 truncate">Max Sum Assured</div>
+            <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Flexible ₹50 Lakh to ₹10 Crore</p>
           </div>
-          <div className="bg-white/10 rounded-2xl p-3 text-left border border-white/10">
-            <div className="text-xl font-black text-white">Day 1</div>
-            <div className="text-[11px] font-bold text-white/90 mt-1">Waiting Period</div>
-            <p className="text-[9px] text-white/60 mt-0.5">Immediate death benefit coverage</p>
+          <div className="bg-white/10 rounded-xl p-2.5 text-left border border-white/10">
+            <div className="text-lg font-black text-white leading-none">Day 1</div>
+            <div className="text-[10px] font-bold text-white/90 mt-1 truncate">Waiting Period</div>
+            <p className="text-[9px] text-white/60 mt-0.5 leading-tight">Immediate death benefit coverage</p>
           </div>
-          <div className="bg-white/10 rounded-2xl p-3 text-left border border-white/10">
-            <div className="text-xl font-black text-white">30 Days</div>
-            <div className="text-[11px] font-bold text-white/90 mt-1">Free-Look Period</div>
-            <p className="text-[9px] text-white/60 mt-0.5">100% refund guarantee</p>
+          <div className="bg-white/10 rounded-xl p-2.5 text-left border border-white/10">
+            <div className="text-lg font-black text-white leading-none">30 Days</div>
+            <div className="text-[10px] font-bold text-white/90 mt-1 truncate">Free-Look Period</div>
+            <p className="text-[9px] text-white/60 mt-0.5 leading-tight">100% refund guarantee</p>
           </div>
         </div>
       ),
@@ -660,32 +687,32 @@ export default function BrandDetailLayout({
         </div>
 
         {/* Left / Right Carousel Buttons */}
-        {products.length > 2 && (
+        {products.length > 3 && (
           <div className="flex items-center gap-1.5 ml-auto">
             <button
               type="button"
               onClick={() => scrollProducts("left")}
-              className="w-8 h-8 rounded-full border border-[#DCE2EB] bg-white text-[#071B46] hover:bg-[#F2F4F7] hover:border-[#98A2B3] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
+              className="w-7 h-7 rounded-full border border-[#DCE2EB] bg-white text-[#071B46] hover:bg-[#F2F4F7] hover:border-[#98A2B3] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
               aria-label="Scroll left"
             >
-              <i className="fa-solid fa-chevron-left text-xs" />
+              <i className="fa-solid fa-chevron-left text-[11px]" />
             </button>
             <button
               type="button"
               onClick={() => scrollProducts("right")}
-              className="w-8 h-8 rounded-full border border-[#DCE2EB] bg-white text-[#071B46] hover:bg-[#F2F4F7] hover:border-[#98A2B3] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
+              className="w-7 h-7 rounded-full border border-[#DCE2EB] bg-white text-[#071B46] hover:bg-[#F2F4F7] hover:border-[#98A2B3] flex items-center justify-center transition-all cursor-pointer shadow-xs active:scale-95"
               aria-label="Scroll right"
             >
-              <i className="fa-solid fa-chevron-right text-xs" />
+              <i className="fa-solid fa-chevron-right text-[11px]" />
             </button>
           </div>
         )}
       </div>
 
-      {/* Horizontal Scrollable Container */}
+      {/* Horizontal Scrollable Container (compact, small, and spacious - scrolls after 3 cards) */}
       <div
         ref={productsScrollRef}
-        className="flex gap-3.5 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory"
+        className="flex gap-3 overflow-x-auto pb-3 pt-1 scroll-smooth snap-x snap-mandatory"
         style={{
           scrollbarWidth: "thin",
           scrollbarColor: "#DCE2EB transparent",
@@ -695,54 +722,56 @@ export default function BrandDetailLayout({
           <Link
             key={prod.slug}
             href={prod.href}
-            className="flex-shrink-0 w-[275px] sm:w-[310px] rounded-2xl border border-[#DCE2EB] bg-white p-4 shadow-sm hover:shadow-md hover:border-[#FF5A0A] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group flex flex-col justify-between snap-start text-left no-underline"
+            className="flex-shrink-0 w-[260px] sm:w-[280px] rounded-2xl border border-[#DCE2EB] bg-white p-3.5 sm:p-4 shadow-2xs hover:shadow-md hover:border-[#FF5A0A] hover:-translate-y-0.5 transition-all duration-200 cursor-pointer group flex flex-col justify-between snap-start text-left no-underline"
           >
             <div>
               {/* Top Row: Category tag and redirect arrow */}
-              <div className="flex items-center justify-between gap-2 mb-2.5">
-                <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF5A0A] bg-[#FFF4EE] px-2.5 py-0.5 rounded-full border border-[#FFD8C2]">
+              <div className="flex items-center justify-between gap-2 mb-2">
+                <span className="text-[9px] font-black uppercase tracking-wider text-[#FF5A0A] bg-[#FFF4ED] px-2 py-0.5 rounded-full border border-[#FFD8C2]">
                   {prod.categoryName || "Audited Plan"}
                 </span>
-                <span className="w-7 h-7 rounded-full bg-[#F4F7FB] text-[#46526B] group-hover:bg-[#FF5A0A] group-hover:text-white flex items-center justify-center transition-colors">
-                  <i className="fa-solid fa-arrow-right text-[11px]" />
+                <span className="w-6 h-6 rounded-full bg-[#F4F7FB] text-[#46526B] group-hover:bg-[#FF5A0A] group-hover:text-white flex items-center justify-center transition-all duration-200 group-hover:scale-105 shadow-2xs flex-shrink-0">
+                  <i className="fa-solid fa-arrow-right text-[10px]" />
                 </span>
               </div>
 
               {/* Product Title */}
-              <h3 className="font-extrabold text-sm sm:text-[15px] text-[#071B46] group-hover:text-[#FF5A0A] transition-colors leading-snug">
+              <h3 className="font-extrabold text-sm text-[#071B46] group-hover:text-[#FF5A0A] transition-colors leading-snug line-clamp-1 mt-1">
                 {prod.name}
               </h3>
 
               {/* Summary */}
               {prod.summary && (
-                <p className="text-[11px] text-[#667085] mt-1.5 line-clamp-2 leading-relaxed">
+                <p className="text-[11px] text-[#667085] mt-1 line-clamp-2 leading-relaxed">
                   {prod.summary}
                 </p>
               )}
 
-              {/* Key Metrics / Attributes pills */}
+              {/* Key Metrics / Structured Specs Box */}
               {prod.metrics && prod.metrics.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-3 pt-2.5 border-t border-[#EEF2F7]">
-                  {prod.metrics.map((m, mIdx) => (
-                    <div
-                      key={mIdx}
-                      className="inline-flex items-center gap-1 text-[10px] bg-[#FAFBFD] border border-[#E4E7EC] px-2 py-0.5 rounded-md text-[#46526B]"
-                    >
-                      <span className="text-[#98A2B3] capitalize">{m.label}:</span>
-                      <strong className="text-[#071B46] font-bold">{m.value}</strong>
-                    </div>
-                  ))}
+                <div className="mt-2.5 pt-2 border-t border-[#F1F4F9]">
+                  <div className="bg-[#FAFBFD] rounded-xl border border-[#EEF2F7] p-2 space-y-1">
+                    {prod.metrics.map((m, mIdx) => (
+                      <div
+                        key={mIdx}
+                        className="flex items-center justify-between text-[11px] gap-2"
+                      >
+                        <span className="text-[#667085] font-medium capitalize flex-shrink-0">{m.label}:</span>
+                        <strong className="text-[#071B46] font-bold text-right truncate">{m.value}</strong>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
             </div>
 
             {/* Card Footer: Verified status and CTA */}
-            <div className="mt-3 pt-2.5 border-t border-[#EEF2F7] flex items-center justify-between text-[11px]">
-              <span className="inline-flex items-center gap-1 text-[#0A8754] font-semibold">
+            <div className="mt-3 pt-2 border-t border-[#F1F4F9] flex items-center justify-between text-[11px]">
+              <span className="inline-flex items-center gap-1 text-[#0A8754] font-bold text-[10px]">
                 <i className="fa-solid fa-circle-check text-[10px]" />
                 <span>Audited Plan</span>
               </span>
-              <span className="text-[#FF5A0A] font-bold group-hover:translate-x-0.5 transition-transform inline-flex items-center gap-1">
+              <span className="text-[#FF5A0A] font-extrabold text-[11px] inline-flex items-center gap-1 group-hover:translate-x-0.5 transition-transform">
                 <span>View plan</span>
                 <i className="fa-solid fa-chevron-right text-[9px]" />
               </span>
@@ -791,7 +820,7 @@ export default function BrandDetailLayout({
               onMouseLeave={() => setIsHovered(false)}
             >
               {/* 1. Segmented Progress Bar (6 segments) */}
-              <div className="grid grid-cols-6 gap-1 mb-2.5 relative z-10 px-0.5">
+              <div className="flex gap-1 mb-2.5 relative z-10 px-0.5 w-full">
                 {storyCards.map((card, idx) => (
                   <button
                     key={card.index}
@@ -801,7 +830,8 @@ export default function BrandDetailLayout({
                       setStoryProgress(0);
                       playBeep(480 + idx * 30);
                     }}
-                    className="h-1 rounded-full overflow-hidden bg-white/25 transition-all cursor-pointer relative"
+                    className="flex-1 h-1 rounded-full overflow-hidden bg-white/25 transition-all cursor-pointer relative"
+                    style={{ minWidth: 0, padding: 0, border: "none" }}
                     title={`Card ${idx + 1}: ${card.name}`}
                   >
                     <div
@@ -829,7 +859,7 @@ export default function BrandDetailLayout({
                       TrustValue
                     </div>
                     <div className="text-[10px] text-white/70 truncate">
-                      {storyCards[activeCard].badgeText} · {title}
+                      {storyCards[activeCard].badge} · {title}
                     </div>
                   </div>
                 </div>
@@ -897,14 +927,6 @@ export default function BrandDetailLayout({
                 <i className="fa-solid fa-expand text-[11px] group-hover:scale-110 transition-transform" />
                 <span>Click the card to open full size</span>
               </button>
-
-              <div className="mt-1 space-y-0.5 text-[10px] text-[#667085] leading-snug">
-                <p>Autoplays muted, 6 s per card. Hover pauses it.</p>
-                <p>Card player summarizes ratings, numbers, and warnings.</p>
-              </div>
-
-              {/* Yellow bottom touch border matching user guide */}
-              <div className="w-full h-1 bg-[#FFAA00] rounded-full mt-2.5 opacity-80" />
             </div>
           </aside>
 
@@ -1161,42 +1183,64 @@ export default function BrandDetailLayout({
               <div className="flex items-center flex-wrap gap-2 mb-1">
                 <h2
                   className="brand-h2 font-extrabold text-[#071B46] tracking-tight leading-tight"
-                  
                 >
                   The facts
                 </h2>
+                <span className="text-[10px] font-bold px-2 py-0.5 rounded-full bg-[#E4F4EC] text-[#075E3B] border border-[#B9E6CF] inline-flex items-center gap-1">
+                  <i className="fa-solid fa-shield-halved text-[9px]" />
+                  <span>Audited Filings</span>
+                </span>
               </div>
-              <p className="text-[11px] text-[#667085] mb-2 leading-snug">
+              <p className="text-[11px] text-[#667085] mb-3 leading-snug">
                 From the insurer&apos;s own regulatory filings. Each fact names its source. No commissions or broker markups.
               </p>
 
-              {/* Facts Matrix Table */}
-              <div className="bg-white rounded-xl border border-[#DCE2EB] overflow-hidden shadow-sm">
-                <div className="grid grid-cols-1 md:grid-cols-2 divide-y md:divide-y-0 md:divide-x divide-[#DCE2EB]">
-                  <div className="divide-y divide-[#DCE2EB]">
-                    {defaultFacts.slice(0, 4).map((f, i) => (
-                      <div key={i} className="p-2 px-3 flex items-baseline justify-between gap-3 text-xs">
-                        <span className="font-bold text-[#071B46]">{f.key}</span>
-                        <div className="text-right">
-                          <span className="text-[#46526B] font-semibold">{f.val}</span>
-                          {f.citation && <sup className="text-[9px] text-[#667085] font-bold ml-0.5">[{f.citation}]</sup>}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
+              {/* Balanced Modern Facts Grid Matrix */}
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+                {defaultFacts.map((f, i) => {
+                  const isUrl = typeof f.val === "string" && (f.val.startsWith("http://") || f.val.startsWith("https://"));
+                  const displayVal = isUrl ? f.val.replace(/^https?:\/\//, "").replace(/\/$/, "") : f.val;
+                  const isOddLast = defaultFacts.length % 2 !== 0 && i === defaultFacts.length - 1;
 
-                  <div className="divide-y divide-[#DCE2EB]">
-                    {defaultFacts.slice(4).map((f, i) => (
-                      <div key={i} className="p-2 px-3 flex items-baseline justify-between gap-3 text-xs">
-                        <span className="font-bold text-[#071B46]">{f.key}</span>
-                        <div className="text-right">
-                          <span className="text-[#46526B] font-semibold">{f.val}</span>
-                          {f.citation && <sup className="text-[9px] text-[#667085] font-bold ml-0.5">[{f.citation}]</sup>}
+                  return (
+                    <div
+                      key={i}
+                      className={`bg-white rounded-xl border border-[#DCE2EB] p-3 px-3.5 flex items-center justify-between gap-3 shadow-2xs hover:border-[#CBD5E1] transition-colors ${
+                        isOddLast ? "sm:col-span-2" : ""
+                      }`}
+                    >
+                      <div className="min-w-0 flex-1">
+                        <span className="text-[11px] font-bold uppercase tracking-wider text-[#667085] block truncate">
+                          {f.key}
+                        </span>
+                        <div className="text-xs sm:text-[13px] font-extrabold text-[#071B46] mt-0.5 truncate">
+                          {isUrl ? (
+                            <a
+                              href={f.val}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-[#071B46] hover:text-[#FF5A0A] inline-flex items-center gap-1.5 transition-colors underline-offset-2 hover:underline"
+                            >
+                              <span>{displayVal}</span>
+                              <i className="fa-solid fa-arrow-up-right-from-square text-[10px] text-[#FF5A0A]" />
+                            </a>
+                          ) : (
+                            <span>{f.val}</span>
+                          )}
                         </div>
                       </div>
-                    ))}
-                  </div>
-                </div>
+
+                      {f.citation && (
+                        <span
+                          title={`Regulatory filing source [${f.citation}]`}
+                          className="flex-shrink-0 text-[10px] font-bold font-mono px-2 py-0.5 rounded-md bg-[#F4F6F9] text-[#46526B] border border-[#E2E8F0]"
+                        >
+                          [{f.citation}]
+                        </span>
+                      )}
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
@@ -1350,47 +1394,124 @@ export default function BrandDetailLayout({
               allEligibleOptions={allCompareOptions}
             />
 
-            {/* Questions FAQ (20px Header) */}
-            <section id="questions" className="py-3.5 sm:py-4 scroll-mt-20 border-b border-[#DCE2EB]">
-              <h2
-                className="brand-h2 font-extrabold text-[#071B46] tracking-tight leading-tight mb-2.5"
-                
-              >
-                Questions about {title}
-              </h2>
-
-              <div className="divide-y divide-[#DCE2EB] bg-white rounded-xl border border-[#DCE2EB] overflow-hidden text-xs">
-                <details className="group p-2.5 px-3 cursor-pointer">
-                  <summary className="flex items-center justify-between font-bold text-[#071B46] list-none">
-                    <span>What happens if I stop paying premiums?</span>
-                    <i className="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180" />
-                  </summary>
-                  <p className="text-[#46526B] mt-1.5 leading-relaxed pl-0.5">
-                    A grace period of 30 days is allowed for annual premium modes. If payment is not received within grace, pure risk cover lapses without surrender value.
-                  </p>
-                </details>
-
-                <details className="group p-2.5 px-3 cursor-pointer">
-                  <summary className="flex items-center justify-between font-bold text-[#071B46] list-none">
-                    <span>Can this policy be challenged after 3 years?</span>
-                    <i className="fa-solid fa-chevron-down text-[10px] transition-transform group-open:rotate-180" />
-                  </summary>
-                  <p className="text-[#46526B] mt-1.5 leading-relaxed pl-0.5">
-                    Under Section 45 of the Insurance Act 1938, no policy of life insurance can be called into question by an insurer after 3 continuous years on any ground whatsoever.
-                  </p>
-                </details>
-              </div>
-            </section>
-
-            {/* Bottom Wireframe Indication Notice */}
-            <div className="py-2.5 px-3 my-3 rounded-xl bg-[#EEF2F7] text-center border border-[#DCE2EB]">
-              <p className="text-[11px] font-semibold text-[#46526B]">
-                Page continues: News, All ratings, Questions, Sources, Related plans
-              </p>
-            </div>
-
           </main>
         </div>
+
+        {/* ========================================================= */}
+        {/* SECTION: FREQUENTLY ASKED QUESTIONS (At End, Spacious & Modern) */}
+        {/* Placed at the end of the page outside the 2-column sidebar */}
+        {/* Perfectly aligned with the page layout: Left 320/340px, Right flex-1 */}
+        {/* ========================================================= */}
+        <section id="questions" className="mt-12 sm:mt-16 pt-10 sm:pt-12 border-t border-[#DCE2EB] scroll-mt-20 pb-12">
+          <div className="flex flex-col lg:flex-row gap-6 lg:gap-8 items-start">
+            
+            {/* Left Column: Perfectly aligns with Left Sidebar (320px / 340px) */}
+            <div className="w-full lg:w-[320px] xl:w-[340px] flex-shrink-0">
+              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[11px] font-extrabold uppercase tracking-wider bg-[#FFF4ED] text-[#FF5A0A] border border-[#FFD8C2] mb-2.5 shadow-2xs">
+                <i className="fa-solid fa-circle-question text-[10px]" />
+                <span>Verified Disclosures</span>
+              </div>
+              <h2 className="brand-h2 font-extrabold text-[#071B46] tracking-tight leading-tight text-xl sm:text-2xl lg:text-[26px]">
+                Questions about {title}
+              </h2>
+              <p className="text-xs sm:text-sm text-[#667085] mt-2 leading-relaxed">
+                Key regulatory consumer protections, IRDAI dispute turnaround timelines, and statutory rights for policyholders.
+              </p>
+
+              {/* Regulatory Assurance Callout Card */}
+              <div className="mt-5 p-4 rounded-2xl bg-white border border-[#DCE2EB] shadow-2xs">
+                <div className="flex items-start gap-3">
+                  <div className="w-8 h-8 rounded-xl bg-[#E4F4EC] text-[#0A8754] flex items-center justify-center flex-shrink-0 mt-0.5">
+                    <i className="fa-solid fa-shield-halved text-sm" />
+                  </div>
+                  <div>
+                    <h4 className="text-xs font-extrabold text-[#071B46]">
+                      Statutory Protection
+                    </h4>
+                    <p className="text-[11px] text-[#46526B] mt-1 leading-relaxed">
+                      All consumer queries and claim settlement rights are legally governed under IRDAI regulations and Section 45 of the Insurance Act 1938.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Regulatory Grievance Reference */}
+              <div className="mt-3 p-3 rounded-xl bg-[#F8FAFC] border border-[#E2E8F0] text-[11px] text-[#46526B] flex items-center gap-2.5">
+                <i className="fa-solid fa-headset text-[#071B46] text-xs flex-shrink-0" />
+                <span className="leading-snug">
+                  IRDAI Grievance Portal: <strong className="text-[#071B46]">Bima Bharosa</strong> (toll-free 155255)
+                </span>
+              </div>
+            </div>
+
+            {/* Right Column: Perfectly aligns with Main Content Column (flex-1) */}
+            <div className="w-full lg:flex-1 min-w-0 space-y-3.5">
+              {defaultFaqs.map((faq, idx) => {
+                const isOpen = openFaqIndex === idx;
+                return (
+                  <div
+                    key={idx}
+                    className={`bg-white rounded-2xl border transition-all duration-200 overflow-hidden shadow-2xs ${
+                      isOpen
+                        ? "border-[#FF5A0A]/40 shadow-xs ring-1 ring-[#FF5A0A]/15"
+                        : "border-[#DCE2EB] hover:border-[#CBD5E1]"
+                    }`}
+                  >
+                    <button
+                      type="button"
+                      onClick={() => toggleFaq(idx)}
+                      className="w-full flex items-center justify-between gap-4 text-left cursor-pointer transition-colors hover:bg-[#FAFBFD]"
+                      aria-expanded={isOpen}
+                      style={{
+                        background: "transparent",
+                        border: "none",
+                        width: "100%",
+                        textAlign: "left",
+                        cursor: "pointer",
+                        padding: "16px 20px",
+                      }}
+                    >
+                      <div className="flex items-center gap-3 min-w-0 pr-2">
+                        <span className="w-6 h-6 rounded-lg bg-[#F4F7FB] border border-[#E2E8F0] text-[#071B46] text-[11px] font-extrabold flex items-center justify-center flex-shrink-0">
+                          Q{idx + 1}
+                        </span>
+                        <span className="font-extrabold text-[13.5px] sm:text-[14.5px] text-[#071B46] leading-snug">
+                          {faq.question}
+                        </span>
+                      </div>
+                      <span
+                        className={`w-7 h-7 sm:w-8 sm:h-8 rounded-full flex items-center justify-center flex-shrink-0 transition-all duration-200 shadow-2xs ${
+                          isOpen
+                            ? "bg-[#FF5A0A] text-white rotate-180"
+                            : "bg-[#F4F7FB] border border-[#E2E8F0] text-[#46526B] hover:bg-[#EEF2F7]"
+                        }`}
+                      >
+                        <i className="fa-solid fa-chevron-down text-[10px]" />
+                      </span>
+                    </button>
+
+                    {isOpen && (
+                      <div className="px-5 pb-5 sm:px-6 sm:pb-5 pt-0">
+                        <div className="pt-3 border-t border-[#F1F4F9] pl-9">
+                          <p className="text-xs sm:text-[13.5px] text-[#46526B] leading-relaxed">
+                            {faq.answer}
+                          </p>
+                          <div className="mt-3 flex items-center gap-2">
+                            <span className="inline-flex items-center gap-1 text-[10px] font-bold text-[#0A8754] bg-[#E4F4EC] px-2 py-0.5 rounded-md border border-[#B9E6CF]">
+                              <i className="fa-solid fa-check text-[9px]" />
+                              <span>Statutory IRDAI Compliance</span>
+                            </span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+
+          </div>
+        </section>
       </div>
 
       {/* ========================================================= */}
