@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Breadcrumbs } from "@/components/Breadcrumbs";
 import { ContactForm } from "@/components/contact/ContactForm";
+import { SectorHelpList } from "@/components/contact/SectorHelpList";
 import { JsonLd } from "@/components/JsonLd";
 import { CONTACT_DESKS, channelForSector } from "@/lib/contactChannels";
 import { getSectors } from "@/lib/cms";
@@ -121,15 +122,47 @@ export default function ContactPage() {
             ]}
           />
           <div className="contact-hero">
-            <div className="contact-hero__intro">
-              <p className="contact-kicker">Contact us</p>
-              <h1>Write to us. The form is the way in.</h1>
-              <p>
-                A score that looks wrong, evidence you want checked, a correction, or a provider audit. Choose the sector and the form shows where that dispute goes if it has to leave TrustValue.
-              </p>
+            <div className="contact-hero__main">
+              <ContactForm sectors={sectors.map((sector) => ({ slug: sector.slug, name: sector.name }))} />
+              <section className="contact-reasons" aria-labelledby="why-write">
+                <div className="contact-reasons__head">
+                  <h2 id="why-write">People write to us for four reasons</h2>
+                  <p>If one of these is yours, the form above is the whole path. Say which one it is in the first lines of the message.</p>
+                </div>
+                <div className="reason-grid">
+                  {REASONS.map((reason, index) => (
+                    <article className="reason-card" key={reason.title}>
+                      <span className="reason-card__index">{String(index + 1).padStart(2, "0")}</span>
+                      <h3>{reason.title}</h3>
+                      <p>{reason.body}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
+              <section className="contact-steps" aria-labelledby="after-send">
+                <div className="contact-steps__head">
+                  <h2 id="after-send">What happens after you press send</h2>
+                  <p>The form does not hide the message in a queue you cannot see. You send it from your own email, and the desk answers that thread.</p>
+                </div>
+                <div className="step-grid">
+                  {STEPS.map((step) => (
+                    <article className="step-card" key={step.n}>
+                      <b>{step.n}</b>
+                      <h3>{step.title}</h3>
+                      <p>{step.body}</p>
+                    </article>
+                  ))}
+                </div>
+              </section>
             </div>
-            <ContactForm sectors={sectors.map((sector) => ({ slug: sector.slug, name: sector.name }))} />
             <aside className="contact-hero__aside">
+              <div className="contact-hero__intro">
+                <p className="contact-kicker">Contact us</p>
+                <h1>Write to us. The form is the way in.</h1>
+                <p>
+                  A score that looks wrong, evidence you want checked, a correction, or a provider audit. Choose the sector and the form shows where that dispute goes if it has to leave TrustValue.
+                </p>
+              </div>
               <ul className="contact-promises">
                 <li>
                   <i className="fa-solid fa-envelope" aria-hidden="true" />
@@ -158,41 +191,6 @@ export default function ContactPage() {
                 <a href={`mailto:${CONTACT_DESKS.audits.email}`}>{CONTACT_DESKS.audits.email}</a>
               </div>
             </aside>
-          </div>
-        </div>
-      </section>
-
-      <section className="contact-section" aria-labelledby="why-write">
-        <div className="contact-wrap">
-          <div className="contact-section__head">
-            <h2 id="why-write">People write to us for four reasons</h2>
-            <p>If one of these is yours, the form above is the whole path. Say which one it is in the first lines of the message.</p>
-          </div>
-          <div className="reason-grid">
-            {REASONS.map((reason) => (
-              <article className="reason-card" key={reason.title}>
-                <h3>{reason.title}</h3>
-                <p>{reason.body}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="contact-section contact-section--mist" aria-labelledby="after-send">
-        <div className="contact-wrap">
-          <div className="contact-section__head">
-            <h2 id="after-send">What happens after you press send</h2>
-            <p>The form does not hide the message in a queue you cannot see. You send it from your own email, and the desk answers that thread.</p>
-          </div>
-          <div className="step-grid">
-            {STEPS.map((step) => (
-              <article className="step-card" key={step.n}>
-                <b>Step {step.n}</b>
-                <h3>{step.title}</h3>
-                <p>{step.body}</p>
-              </article>
-            ))}
           </div>
         </div>
       </section>
@@ -236,41 +234,33 @@ export default function ContactPage() {
               TrustValue covers {sectors.length} consumer sectors. We can explain our page. The body that can order a refund, a claim, or a possession date is listed under each sector. Mention the sector in the form so the reply matches it.
             </p>
           </div>
-          <div className="sector-help-grid">
-            {sectors.map((sector) => {
+          <SectorHelpList
+            cards={sectors.map((sector) => {
               const channel = channelForSector(sector.slug);
-              return (
-                <article className="sector-help" key={sector.slug}>
-                  <h3>
-                    <i className={`fa-solid ${getSectorFaIcon(sector.slug)}`} aria-hidden="true" />
-                    {sector.name}
-                  </h3>
-                  <p>{channel.route}</p>
-                  <p>
-                    <Link href={paths.sector(sector.slug)}>See {sector.name} on TrustValue</Link>
-                    {channel.href ? (
-                      <>
-                        {" · "}
-                        <a href={channel.href} target="_blank" rel="noopener noreferrer">{channel.linkLabel}</a>
-                      </>
-                    ) : null}
-                  </p>
-                </article>
-              );
+              return {
+                slug: sector.slug,
+                name: sector.name,
+                icon: getSectorFaIcon(sector.slug),
+                route: channel.route,
+                pageHref: paths.sector(sector.slug),
+                href: channel.href,
+                linkLabel: channel.linkLabel,
+              };
             })}
-          </div>
+          />
         </div>
       </section>
 
-      <section className="contact-section" aria-labelledby="faq-title">
+      <section className="contact-section contact-before" aria-labelledby="faq-title">
         <div className="contact-wrap">
           <div className="contact-section__head">
             <h2 id="faq-title">Before you write</h2>
             <p>These are the questions that usually decide whether the form is the right next step.</p>
           </div>
-          <div className="faq-grid">
-            {FAQS.map((item) => (
-              <article className="faq-item" key={item.q}>
+          <div className="step-grid">
+            {FAQS.map((item, index) => (
+              <article className="step-card" key={item.q}>
+                <b>{String(index + 1).padStart(2, "0")}</b>
                 <h3>{item.q}</h3>
                 <p>{item.a}</p>
               </article>

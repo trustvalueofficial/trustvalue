@@ -1,9 +1,8 @@
 "use client";
 
-import { useMemo, useState, type FormEvent } from "react";
+import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import {
   CONTACT_TOPICS,
-  channelForSector,
   deskForTopic,
   type ContactTopic,
 } from "@/lib/contactChannels";
@@ -43,6 +42,81 @@ const EMPTY: FormState = {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
+function BrandSelect({
+  id,
+  name,
+  value,
+  options,
+  invalid,
+  describedBy,
+  onChange,
+}: {
+  id: string;
+  name: string;
+  value: string;
+  options: { value: string; label: string }[];
+  invalid?: boolean;
+  describedBy?: string;
+  onChange: (value: string) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = options.find((item) => item.value === value);
+
+  useEffect(() => {
+    if (!open) return;
+    function onPointer(event: MouseEvent) {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    }
+    function onKey(event: KeyboardEvent) {
+      if (event.key === "Escape") setOpen(false);
+    }
+    document.addEventListener("mousedown", onPointer);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onPointer);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className={`contact-select${open ? " is-open" : ""}`} ref={rootRef}>
+      <button
+        type="button"
+        id={id}
+        className="contact-select__button"
+        aria-haspopup="listbox"
+        aria-expanded={open}
+        aria-invalid={invalid || undefined}
+        aria-describedby={describedBy}
+        onClick={() => setOpen((current) => !current)}
+      >
+        {selected?.label ?? "Select"}
+      </button>
+      <input type="hidden" name={name} value={value} />
+      {open && (
+        <ul className="contact-select__menu" role="listbox" aria-labelledby={id}>
+          {options.map((item) => (
+            <li key={item.value || "empty"} role="presentation">
+              <button
+                type="button"
+                role="option"
+                aria-selected={item.value === value}
+                onClick={() => {
+                  onChange(item.value);
+                  setOpen(false);
+                }}
+              >
+                {item.label}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
 function fieldError(form: FormState): Partial<Record<keyof FormState, string>> {
   const errors: Partial<Record<keyof FormState, string>> = {};
   if (form.name.trim().length < 2) errors.name = "Enter the name we should reply to.";
@@ -72,7 +146,6 @@ export function ContactForm({ sectors }: ContactFormProps) {
 
   const topic = CONTACT_TOPICS.find((item) => item.id === form.topic) as ContactTopic | undefined;
   const desk = deskForTopic(form.topic);
-  const channel = form.sector && form.sector !== "general" ? channelForSector(form.sector) : null;
   const sectorName = useMemo(
     () => sectors.find((item) => item.slug === form.sector)?.name ?? "Not sector-specific",
     [form.sector, sectors],
@@ -159,11 +232,7 @@ export function ContactForm({ sectors }: ContactFormProps) {
 
   return (
     <form className="contact-form" id="write" onSubmit={onSubmit} noValidate>
-      <p className="contact-form__eyebrow">Start here</p>
       <h2>Write to TrustValue</h2>
-      <p>
-        Tell us what you need. This prepares an email to <strong>{desk.email}</strong>. It is sent only when you press send in your mail app.
-      </p>
 
       <div className="contact-grid">
         <label htmlFor="contact-name">
@@ -196,12 +265,71 @@ export function ContactForm({ sectors }: ContactFormProps) {
         </label>
       </div>
 
+      <div className="contact-grid">
+        <label htmlFor="contact-topic">
+          What is this about?
+          <BrandSelect
+            id="contact-topic"
+            name="topic"
+            value={form.topic}
+            invalid={Boolean(errors.topic)}
+            options={CONTACT_TOPICS.map((item) => ({ value: item.id, label: item.label }))}
+            onChange={(value) => update("topic", value)}
+          />
+          {errors.topic && <span className="contact-error">{errors.topic}</span>}
+        </label>
+
+        <label htmlFor="contact-sector">
+          Sector
+          <BrandSelect
+            id="contact-sector"
+            name="sector"
+            value={form.sector}
+            invalid={Boolean(errors.sector)}
+            describedBy={errors.sector ? "contact-sector-error" : undefined}
+            options={[
+              { value: "", label: "Select a sector" },
+              { value: "general", label: "Not sector-specific" },
+              ...sectors.map((sector) => ({ value: sector.slug, label: sector.name })),
+            ]}
+            onChange={(value) => update("sector", value)}
+          />
+          {errors.sector && <span id="contact-sector-error" className="contact-error">{errors.sector}</span>}
+        </label>
+      </div>
+
+      <div className="contact-grid">
+        <label htmlFor="contact-reference">
+          Reference
+          <input
+            id="contact-reference"
+            name="reference"
+            placeholder="Policy or complaint number"
+            value={form.reference}
+            onChange={(event) => update("reference", event.target.value)}
+          />
+        </label>
+        <label htmlFor="contact-pageUrl">
+          Page URL
+          <input
+            id="contact-pageUrl"
+            name="pageUrl"
+            type="url"
+            inputMode="url"
+            placeholder="trustvalue.ai/…"
+            value={form.pageUrl}
+            onChange={(event) => update("pageUrl", event.target.value)}
+          />
+        </label>
+      </div>
+
       <label htmlFor="contact-organisation">
-        Company, if you represent a provider
+        Company
         <input
           id="contact-organisation"
           name="organisation"
           autoComplete="organization"
+          placeholder="Only if you represent a provider"
           value={form.organisation}
           aria-invalid={Boolean(errors.organisation)}
           aria-describedby={errors.organisation ? "contact-organisation-error" : undefined}
@@ -210,91 +338,18 @@ export function ContactForm({ sectors }: ContactFormProps) {
         {errors.organisation && <span id="contact-organisation-error" className="contact-error">{errors.organisation}</span>}
       </label>
 
-      <div className="contact-grid">
-        <label htmlFor="contact-topic">
-          What is this about?
-          <select
-            id="contact-topic"
-            name="topic"
-            value={form.topic}
-            aria-invalid={Boolean(errors.topic)}
-            onChange={(event) => update("topic", event.target.value)}
-          >
-            {CONTACT_TOPICS.map((item) => (
-              <option key={item.id} value={item.id}>{item.label}</option>
-            ))}
-          </select>
-          {errors.topic && <span className="contact-error">{errors.topic}</span>}
-        </label>
-
-        <label htmlFor="contact-sector">
-          Sector
-          <select
-            id="contact-sector"
-            name="sector"
-            value={form.sector}
-            aria-invalid={Boolean(errors.sector)}
-            aria-describedby={errors.sector ? "contact-sector-error" : undefined}
-            onChange={(event) => update("sector", event.target.value)}
-          >
-            <option value="">Select a sector</option>
-            <option value="general">Not sector-specific</option>
-            {sectors.map((sector) => (
-              <option key={sector.slug} value={sector.slug}>{sector.name}</option>
-            ))}
-          </select>
-          {errors.sector && <span id="contact-sector-error" className="contact-error">{errors.sector}</span>}
-        </label>
-      </div>
-
-      {channel && (
-        <p className="contact-route">
-          <strong>{sectorName}.</strong> {channel.route}
-          {channel.href && (
-            <>
-              {" "}
-              <a href={channel.href} target="_blank" rel="noopener noreferrer">{channel.linkLabel ?? "Official channel"}</a>
-            </>
-          )}
-        </p>
-      )}
-
-      <div className="contact-grid">
-        <label htmlFor="contact-reference">
-          Complaint reference (optional)
-          <input
-            id="contact-reference"
-            name="reference"
-            value={form.reference}
-            onChange={(event) => update("reference", event.target.value)}
-          />
-        </label>
-        <label htmlFor="contact-pageUrl">
-          Page URL (optional)
-          <input
-            id="contact-pageUrl"
-            name="pageUrl"
-            type="url"
-            inputMode="url"
-            placeholder="https://trustvalue.ai/..."
-            value={form.pageUrl}
-            onChange={(event) => update("pageUrl", event.target.value)}
-          />
-        </label>
-      </div>
-
       <label htmlFor="contact-message">
-        What happened, and what do you want done?
+        Message
         <textarea
           id="contact-message"
           name="message"
-          rows={3}
+          rows={2}
+          placeholder="Provider, date, and what you want checked."
           value={form.message}
           aria-invalid={Boolean(errors.message)}
-          aria-describedby={errors.message ? "contact-message-error" : "contact-message-hint"}
+          aria-describedby={errors.message ? "contact-message-error" : undefined}
           onChange={(event) => update("message", event.target.value)}
         />
-        <span id="contact-message-hint" className="contact-hint">Include the provider name, the date, and the exact point you want checked. Do not attach identity documents.</span>
         {errors.message && <span id="contact-message-error" className="contact-error">{errors.message}</span>}
       </label>
 
@@ -307,13 +362,12 @@ export function ContactForm({ sectors }: ContactFormProps) {
           aria-invalid={Boolean(errors.consent)}
           onChange={(event) => update("consent", event.target.checked)}
         />
-        <span>
-          I am 18 or older. This message is a request to TrustValue. It is not a filing with the regulator, the ombudsman, or the provider.
-        </span>
+        <span>I am 18 or older. This is a note to TrustValue, not a regulator filing.</span>
       </label>
       {errors.consent && <span className="contact-error">{errors.consent}</span>}
 
-      <button type="submit" className="contact-submit">Send to {desk.title}</button>
+      <button type="submit" className="contact-submit">Send message</button>
+      <p className="contact-form__foot">Opens your email to {desk.email}</p>
     </form>
   );
 }
