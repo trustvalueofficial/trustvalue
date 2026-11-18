@@ -10,7 +10,7 @@ interface SmoothScrollProviderProps {
 
 /** Lenis breaks `position: sticky` and causes janky scroll on long legal docs. */
 function shouldUseLenis(pathname: string) {
-  return !pathname.startsWith("/termsandcondition");
+  return !pathname.startsWith("/termsandcondition") && !pathname.startsWith("/contactus");
 }
 
 export default function SmoothScrollProvider({ children }: SmoothScrollProviderProps) {

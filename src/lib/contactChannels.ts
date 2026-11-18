@@ -43,13 +43,13 @@ export const CONTACT_DESKS: Record<DeskId, ContactDesk> = {
 };
 
 export const CONTACT_TOPICS: ContactTopic[] = [
-  { id: "score", label: "Question about an audit score", desk: "grievances" },
-  { id: "escalation", label: "Guidance before a regulator or ombudsman filing", desk: "grievances" },
-  { id: "correction", label: "Correction of a published page", desk: "grievances" },
-  { id: "privacy", label: "Privacy or personal-data request", desk: "grievances" },
-  { id: "evidence", label: "Submit evidence for a record", desk: "grievances" },
-  { id: "press", label: "Press or research enquiry", desk: "grievances" },
-  { id: "audit", label: "Provider audit review", desk: "audits" },
+  { id: "score", label: "A published score", desk: "grievances" },
+  { id: "escalation", label: "Regulator filing", desk: "grievances" },
+  { id: "correction", label: "Correct a page", desk: "grievances" },
+  { id: "privacy", label: "Privacy request", desk: "grievances" },
+  { id: "evidence", label: "Send evidence", desk: "grievances" },
+  { id: "press", label: "Press enquiry", desk: "grievances" },
+  { id: "audit", label: "Provider audit", desk: "audits" },
 ];
 
 /**
