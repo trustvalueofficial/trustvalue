@@ -277,7 +277,7 @@ export default function Header() {
           kind: "Question",
           title: x.q,
           sub: x.answered ? "Verified Guidance" : "Regulatory Query",
-          url: `/contact`,
+          url: `/contactus`,
         });
       }
     });
@@ -1106,7 +1106,7 @@ export default function Header() {
 
                       {/* 5. Claim Dispute Help */}
                       <Link
-                        href="/contact"
+                        href="/contactus"
                         className="mega-card-item"
                         style={{ background: "#ECFEFF", borderColor: "#CFFAFE" }}
                         onClick={() => setActiveMenu(null)}
@@ -1196,7 +1196,7 @@ export default function Header() {
                       </Link>
                       <Link
                         className="btn btn-ghost btn-sm"
-                        href="/contact"
+                        href="/contactus"
                         onClick={() => setActiveMenu(null)}
                       >
                         Escalate a Dispute
@@ -1328,7 +1328,7 @@ export default function Header() {
 
                       {/* 6. Ombudsman Escalation Desk */}
                       <Link
-                        href="/contact"
+                        href="/contactus"
                         className="mega-card-item"
                         onClick={() => setActiveMenu(null)}
                       >
@@ -1720,7 +1720,7 @@ export default function Header() {
                   </Link>
                   <Link
                     className="mobile-nav-link"
-                    href="/contact"
+                    href="/contactus"
                     onClick={() => {
                       setDrawerOpen(false);
                       setMobileSubMenu(null);
@@ -2391,7 +2391,7 @@ export default function Header() {
                     </Link>
 
                     <Link
-                      href="/contact"
+                      href="/contactus"
                       onClick={() => {
                         setDrawerOpen(false);
                         setMobileSubMenu(null);

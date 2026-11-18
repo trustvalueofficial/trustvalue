@@ -32,8 +32,13 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/contact",
+        destination: "/contactus",
+        permanent: true,
+      },
+      {
         source: "/for-business",
-        destination: "/contact",
+        destination: "/contactus",
         permanent: false,
       },
     ];
