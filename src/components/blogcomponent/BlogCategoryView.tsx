@@ -33,6 +33,11 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
   const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
+  // Filter strictly to categories that have published blogs (only present categories)
+  const activeCategories = useMemo(() => {
+    return allCategories.filter((c) => (c.articleCount || 0) > 0 || c.slug === category.slug);
+  }, [allCategories, category.slug]);
+
   // Extract all distinct sub-topics / tags across articles in this category
   const availableTopics = useMemo(() => {
     const set = new Set<string>();
@@ -330,7 +335,7 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
                   <span>Research Categories</span>
                 </div>
                 <span className="text-[11px] text-[#64748B] font-mono font-semibold">
-                  {allCategories.length} Sectors
+                  {activeCategories.length} Active
                 </span>
               </div>
               <p className="text-xs text-[#64748B] mb-3 leading-relaxed">
@@ -339,7 +344,7 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
 
               {/* Vertical Category Linking List */}
               <div className="flex flex-col gap-1 max-h-[460px] overflow-y-auto pr-1">
-                {allCategories.map((c) => {
+                {activeCategories.map((c) => {
                   const isActive = c.slug === category.slug;
                   return (
                     <Link
@@ -417,7 +422,7 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
                       <FolderTree size={13} className="text-amber-500" /> All Categories
                     </label>
                     <div className="space-y-1">
-                      {allCategories.map((c) => {
+                      {activeCategories.map((c) => {
                         const isCurrent = c.slug === category.slug;
                         return (
                           <Link

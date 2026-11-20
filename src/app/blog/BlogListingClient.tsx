@@ -151,7 +151,7 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
               </span>
             </button>
 
-            <div className="relative flex-1 w-full">
+            <div className="relative flex-1 w-full min-w-0">
               <Search
                 size={15}
                 className="absolute left-3 top-1/2 -translate-y-1/2 text-[#64748B]"
@@ -175,7 +175,7 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
               )}
             </div>
 
-            {/* Desktop-only Search button - hidden on mobile */}
+            {/* Search button - visible on both mobile and desktop */}
             <button
               type="button"
               onClick={() => {
@@ -187,13 +187,11 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
                 color: "#FFFFFF",
                 border: "none",
                 borderRadius: "8px",
-                fontSize: "12.5px",
-                fontWeight: 700,
                 cursor: "pointer",
               }}
-              className="hidden lg:inline-flex items-center gap-1.5 px-4 h-8.5 justify-center hover:opacity-95 transition-opacity shrink-0 shadow-xs"
+              className="inline-flex items-center justify-center gap-1 px-2.5 sm:px-4 h-8.5 text-xs font-bold shrink-0 hover:opacity-95 transition-opacity shadow-xs active:scale-95"
             >
-              <Search size={14} />
+              <Search size={13} />
               <span>Search</span>
             </button>
           </div>
