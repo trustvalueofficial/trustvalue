@@ -48,16 +48,19 @@ export function BlogDiscussionSection({
       <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
         <div className="flex items-center gap-1.5">
           <MessageSquare size={16} className="text-[#071B46]" />
-          <h3
+          <h2
+            id="sec-discussion-queries"
             style={{
-              fontSize: "16px",
-              fontWeight: 700,
+              fontSize: "18px",
+              fontWeight: 800,
               color: "#071B46",
+              lineHeight: 1.25,
               margin: 0,
+              letterSpacing: "-0.2px",
             }}
           >
             Discussion &amp; Queries ({comments.length})
-          </h3>
+          </h2>
         </div>
         <span className="text-[10px] text-[#667085] font-medium bg-[#EEF2F7] px-2 py-0.5 rounded-full">
           Moderated

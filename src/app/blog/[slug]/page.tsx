@@ -83,12 +83,14 @@ export default async function BlogPostPage({ params }: Props) {
   const post = (await getBlog(slug)) || FALLBACK_ARTICLES[slug];
   if (!post) notFound();
 
-  // Find related articles (same sector or relatedSlugs)
-  const relatedArticles = allArticles
-    .filter(
-      (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
-    )
-    .slice(0, 3);
+  // Find related articles (prefer same sector/related, then others for a rich horizontal scroll)
+  const sameSector = allArticles.filter(
+    (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
+  );
+  const otherSectors = allArticles.filter(
+    (a) => a.slug !== post.slug && a.sector !== post.sector && !post.relatedSlugs?.includes(a.slug)
+  );
+  const relatedArticles = [...sameSector, ...otherSectors].slice(0, 6);
 
   return <BlogPostClient post={post} relatedArticles={relatedArticles} allArticles={allArticles} />;
 }

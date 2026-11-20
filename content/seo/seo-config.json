@@ -1,0 +1,9 @@
+{
+  "canonicalBase": "https://trustvalue.ai",
+  "siteTitleTemplate": "%s | TrustValue Legal & Regulatory Audit",
+  "allowAiBots": true,
+  "robotsTxt": "# TEST CUSTOM ROBOTS DIRECTIVE - TRUSTVALUE AUDIT\nUser-agent: *\nAllow: /\nDisallow: /secret-admin/\n\nUser-agent: PerplexityBot\nAllow: /\nAllow: /blog/\n\nSitemap: https://trustvalue.ai/sitemap.xml",
+  "llmsTxt": "# TEST LLMS KNOWLEDGE BASE\n> TrustValue Empirical Audit Engine for Autonomous AI Agents\n\n## Sibling Archives\n- /category/insurance: 100% verified claim ratios\n- /category/banking: RBI grievance turnaround SLAs\n",
+  "updatedAt": "2026-11-20T08:19:46.193Z",
+  "lastEditedBy": "SEO_Admin"
+}

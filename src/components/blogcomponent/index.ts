@@ -12,4 +12,6 @@ export { BlogFaqSection } from "./BlogFaqSection";
 export type { FaqItem } from "./BlogFaqSection";
 export { BlogDiscussionSection } from "./BlogDiscussionSection";
 export type { CommentItem } from "./BlogDiscussionSection";
+export { BlogContentRenderer, processHtmlHeadings, slugifyHeading } from "./BlogContentRenderer";
+export type { HeadingItem } from "./BlogContentRenderer";
 

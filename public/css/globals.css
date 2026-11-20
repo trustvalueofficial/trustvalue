@@ -71,3 +71,468 @@
 @media (min-width: 1100px) {
   :root { --gutter: 40px; --header-h: 72px; }
 }
+
+/* ========================================================= */
+/* DYNAMIC BLOG CONTENT TYPOGRAPHY & PARENT-CHILD STYLING    */
+/* Handles any raw HTML uploaded via Excel or CMS dynamically */
+/* ========================================================= */
+.tv-prose-html {
+  color: #334155;
+  font-size: 15px;
+  line-height: 1.75;
+}
+
+.tv-prose-html :where(h1) {
+  font-size: 24px;
+  font-weight: 800;
+  color: #071B46;
+  line-height: 1.25;
+  margin-top: 32px;
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
+}
+
+.tv-prose-html :where(h2) {
+  font-size: 20px;
+  font-weight: 800;
+  color: #071B46;
+  line-height: 1.3;
+  margin-top: 36px;
+  margin-bottom: 14px;
+  letter-spacing: -0.015em;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #E2E8F0;
+  scroll-margin-top: 96px;
+}
+
+.tv-prose-html :where(h2:first-child) {
+  margin-top: 0;
+}
+
+.tv-prose-html :where(h3) {
+  font-size: 17px;
+  font-weight: 700;
+  color: #0C2659;
+  line-height: 1.35;
+  margin-top: 24px;
+  margin-bottom: 10px;
+  letter-spacing: -0.01em;
+  scroll-margin-top: 96px;
+}
+
+.tv-prose-html :where(h4) {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1E293B;
+  margin-top: 18px;
+  margin-bottom: 8px;
+}
+
+.tv-prose-html :where(p) {
+  font-size: 15px;
+  line-height: 1.75;
+  color: #334155;
+  margin-top: 0;
+  margin-bottom: 16px;
+}
+
+.tv-prose-html :where(strong, b) {
+  font-weight: 700;
+  color: #071B46;
+}
+
+.tv-prose-html :where(em, i) {
+  font-style: italic;
+  color: #475569;
+}
+
+.tv-prose-html :where(a) {
+  color: #FF5A0A;
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: rgba(255, 90, 10, 0.4);
+  text-underline-offset: 3px;
+  transition: all 0.2s ease;
+}
+
+.tv-prose-html :where(a:hover) {
+  color: #E04800;
+  text-decoration-color: #FF5A0A;
+}
+
+.tv-prose-html :where(ul) {
+  list-style-type: disc;
+  padding-left: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.tv-prose-html :where(ol) {
+  list-style-type: decimal;
+  padding-left: 24px;
+  margin-top: 0;
+  margin-bottom: 20px;
+}
+
+.tv-prose-html :where(li) {
+  font-size: 14.5px;
+  line-height: 1.7;
+  color: #334155;
+  margin-bottom: 6px;
+  padding-left: 2px;
+}
+
+.tv-prose-html :where(table) {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  margin-bottom: 24px;
+  font-size: 13.5px;
+  text-align: left;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.tv-prose-html :where(thead) {
+  background: #F1F5F9;
+  border-bottom: 2px solid #CBD5E1;
+}
+
+.tv-prose-html :where(th) {
+  padding: 12px 14px;
+  font-weight: 700;
+  color: #071B46;
+  text-transform: uppercase;
+  font-size: 11.5px;
+  letter-spacing: 0.5px;
+  border-bottom: 2px solid #CBD5E1;
+}
+
+.tv-prose-html :where(tbody tr) {
+  border-bottom: 1px solid #E2E8F0;
+  transition: background-color 0.15s ease;
+}
+
+.tv-prose-html :where(tbody tr:hover) {
+  background-color: #F8FAFC;
+}
+
+.tv-prose-html :where(tbody tr:last-child) {
+  border-bottom: none;
+}
+
+.tv-prose-html :where(td) {
+  padding: 12px 14px;
+  color: #334155;
+  vertical-align: middle;
+}
+
+.tv-prose-html :where(td strong) {
+  color: #071B46;
+}
+
+.tv-prose-html :where(blockquote) {
+  border-left: 4px solid #FF5A0A;
+  background: #FFF7ED;
+  padding: 14px 18px;
+  border-radius: 0 10px 10px 0;
+  margin: 20px 0;
+  font-style: italic;
+  color: #1E293B;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.tv-prose-html :where(blockquote p) {
+  margin: 0;
+  color: inherit;
+}
+
+.tv-prose-html :where(figure) {
+  margin: 28px 0;
+  padding: 0;
+  background: transparent;
+  max-width: 100%;
+  text-align: center;
+}
+
+.tv-prose-html :where(figure svg) {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+
+.tv-prose-html :where(figcaption) {
+  font-size: 12px;
+  color: #64748B;
+  margin-top: 8px;
+  text-align: center;
+}
+
+.tv-prose-html :where(hr) {
+  border: 0;
+  border-top: 1px solid #E2E8F0;
+  margin: 32px 0;
+}
+
+.tv-prose-html :where(code) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  background: #F1F5F9;
+  color: #0F172A;
+  padding: 2px 6px;
+  border-radius: 6px;
+  border: 1px solid #E2E8F0;
+}
+
+.tv-prose-html :where(pre) {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 13px;
+  background: #0F172A;
+  color: #F8FAFC;
+  padding: 16px 20px;
+  border-radius: 12px;
+  overflow-x: auto;
+  margin: 20px 0;
+  line-height: 1.6;
+}
+
+.tv-prose-html :where(pre code) {
+  background: transparent;
+  color: inherit;
+  padding: 0;
+  border: none;
+}
+
+/* EEAT Byline (Clean Semantic <header>) */
+.tv-prose-html :where(> header:first-of-type) {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  font-size: 12.5px;
+  color: #475569;
+}
+
+.tv-prose-html :where(> header:first-of-type > span:first-child) {
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: #071B46;
+  font-size: 11px;
+}
+
+.tv-prose-html :where(> header:first-of-type > span) {
+  display: inline-flex;
+  align-items: center;
+  padding: 4px 10px;
+  border-radius: 6px;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  color: #1E293B;
+  font-weight: 600;
+  font-size: 11.5px;
+}
+
+.tv-prose-html :where(> header:first-of-type > span:last-child) {
+  margin-left: auto;
+  background: #ECFDF5;
+  color: #0A8754;
+  border-color: #A7F3D0;
+  font-weight: 700;
+}
+
+/* Position-Zero BLUF Direct Answer Quote */
+.tv-prose-html :where(h2 + blockquote) {
+  border-left: 4px solid #10B981;
+  background: #F0FDF4;
+  padding: 16px 20px;
+  border-radius: 0 12px 12px 0;
+  margin: 18px 0 24px 0;
+  font-style: normal;
+  font-weight: 500;
+  color: #064E3B;
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+/* People Also Liked These Articles Section & Carousel */
+.tv-prose-html :where(section) {
+  margin-top: 40px;
+  padding: 24px 20px;
+  background: #F8FAFC;
+  border: 1px solid #DCE2EB;
+  border-radius: 16px;
+}
+
+.tv-prose-html :where(section > div:first-child) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.tv-prose-html :where(section > div:first-child > div > span) {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #FF5A0A;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.tv-prose-html :where(section > div:first-child > div > h2) {
+  font-size: 18px;
+  font-weight: 800;
+  color: #071B46;
+  margin: 0;
+  border: none;
+  padding: 0;
+  letter-spacing: -0.2px;
+}
+
+.tv-prose-html :where(section > div:first-child > span:last-child) {
+  font-size: 11.5px;
+  font-weight: 600;
+  color: #64748B;
+  background: #EDF2F7;
+  padding: 4px 10px;
+  border-radius: 12px;
+}
+
+.tv-prose-html :where(section > nav) {
+  display: flex;
+  gap: 14px;
+  overflow-x: auto;
+  padding-bottom: 12px;
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
+.tv-prose-html :where(section > nav > article) {
+  flex: 0 0 280px;
+  min-width: 280px;
+  max-width: 300px;
+  scroll-snap-align: start;
+  background: #FFFFFF;
+  border: 1px solid #E2E8F0;
+  border-radius: 14px;
+  padding: 18px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  transition: all 0.2s ease;
+}
+
+.tv-prose-html :where(section > nav > article:hover) {
+  border-color: #FF5A0A;
+  box-shadow: 0 4px 12px rgba(255, 90, 10, 0.08);
+}
+
+.tv-prose-html :where(section > nav > article > header) {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.tv-prose-html :where(section > nav > article > header > span:first-child) {
+  font-size: 10px;
+  font-weight: 800;
+  color: #FF5A0A;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: #FFF7ED;
+  padding: 3px 8px;
+  border-radius: 6px;
+  border: 1px solid #FFEDD5;
+}
+
+.tv-prose-html :where(section > nav > article > header > span:last-child) {
+  font-size: 11px;
+  color: #94A3B8;
+  font-weight: 600;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.tv-prose-html :where(section > nav > article > h3) {
+  font-size: 14px;
+  font-weight: 700;
+  color: #071B46;
+  line-height: 1.42;
+  margin: 0 0 8px 0;
+}
+
+.tv-prose-html :where(section > nav > article > h3 > a) {
+  color: #071B46;
+  text-decoration: none;
+}
+
+.tv-prose-html :where(section > nav > article > h3 > a:hover) {
+  color: #FF5A0A;
+}
+
+.tv-prose-html :where(section > nav > article > p) {
+  font-size: 12px;
+  color: #64748B;
+  line-height: 1.45;
+  margin: 0;
+}
+
+.tv-prose-html :where(section > nav > article > footer) {
+  margin-top: 14px;
+  background: transparent;
+  border: none;
+  padding: 0;
+}
+
+.tv-prose-html :where(section > nav > article > footer > a) {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #FF5A0A;
+  text-decoration: none;
+}
+
+/* Semantic FAQ Accordion */
+.tv-prose-html :where(h2 + div > div) {
+  border-bottom: 1px solid #E2E8F0;
+  padding: 14px 0;
+}
+
+.tv-prose-html :where(h2 + div > div:last-child) {
+  border-bottom: none;
+}
+
+.tv-prose-html :where(h2 + div > div > h3) {
+  font-size: 14.5px;
+  font-weight: 700;
+  color: #071B46;
+  margin: 0 0 6px 0;
+}
+
+.tv-prose-html :where(h2 + div > div > p) {
+  font-size: 13.5px;
+  color: #475569;
+  margin: 0;
+  line-height: 1.6;
+}

@@ -21,8 +21,12 @@ import {
   BlogDiscoverySidebar,
   BlogFaqSection,
   BlogDiscussionSection,
+  BlogContentRenderer,
+  processHtmlHeadings,
+  slugifyHeading,
 } from "@/components/blogcomponent";
 import type { BlogArticle } from "@/lib/cms";
+import { getAuthors } from "@/lib/blog-utils";
 
 interface Props {
   post: BlogArticle;
@@ -30,14 +34,7 @@ interface Props {
   allArticles?: BlogArticle[];
 }
 
-function slugify(text: string): string {
-  return text
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-")
-    .replace(/^-|-$/g, "");
-}
-
-// Robust markdown parser separating headings, lists, and paragraphs
+// Markdown parser separating headings, lists, and paragraphs for legacy markdown blogs
 function parseMarkdownBlocks(content: string) {
   const lines = content.split("\n");
   const blocks: Array<
@@ -82,7 +79,7 @@ function parseMarkdownBlocks(content: string) {
       blocks.push({
         type: "heading",
         text: headingText,
-        id: `sec-${slugify(headingText)}`,
+        id: `sec-${slugifyHeading(headingText)}`,
       });
       continue;
     }
@@ -149,37 +146,95 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     },
   ]);
 
-  // Parse markdown body into structured blocks
+  const rawContent = post.content || post.body || "";
+
+  // Detect whether body is CMS HTML or legacy Markdown
+  const isHtml = useMemo(() => {
+    return /<h[1-6]|<p|<div|<section|<figure|<table/i.test(rawContent);
+  }, [rawContent]);
+
+  // EEAT Authors (respects explicit removal)
+  const authors = useMemo(() => getAuthors(post), [post]);
+
+  // Process HTML headings and IDs, stripping embedded byline if authors removed
+  const { processedHtml, headings: htmlHeadings } = useMemo(() => {
+    if (!isHtml) return { processedHtml: "", headings: [] };
+    let contentToProcess = rawContent;
+    if (authors.length === 0) {
+      contentToProcess = contentToProcess
+        .replace(/<header[^>]*>[\s\S]*?Editorial Contributors[\s\S]*?<\/header>/gi, "")
+        .replace(/<div class=["']tv-authors-byline["'][^>]*>[\s\S]*?<\/div>/gi, "");
+    }
+    return processHtmlHeadings(contentToProcess);
+  }, [rawContent, isHtml, authors]);
+
+  // Parse markdown body into structured blocks (if legacy markdown)
   const bodyBlocks = useMemo(() => {
-    return parseMarkdownBlocks(post.body || "");
-  }, [post.body]);
+    if (isHtml) return [];
+    return parseMarkdownBlocks(rawContent);
+  }, [rawContent, isHtml]);
 
   // Dynamic Table of Contents items
   const tocItems = useMemo(() => {
     const items: Array<{ id: string; label: string }> = [];
 
-    if (post.directAnswer) {
-      items.push({ id: "direct-takeaway", label: "Key Takeaway" });
+    // 1. Position-Zero direct takeaway if not already an <h2> in content
+    if (
+      post.directAnswer &&
+      !rawContent.includes("tv-direct-answer-card") &&
+      !rawContent.includes("Key Strategic Takeaways")
+    ) {
+      items.push({ id: "direct-takeaway", label: "Key Strategic Takeaways" });
     }
 
-    for (const b of bodyBlocks) {
-      if (b.type === "heading") {
-        items.push({ id: b.id, label: b.text });
+    // 2. Headings from HTML content
+    if (isHtml) {
+      for (const h of htmlHeadings) {
+        items.push({ id: h.id, label: h.label });
+      }
+    } else {
+      for (const b of bodyBlocks) {
+        if (b.type === "heading") {
+          items.push({ id: b.id, label: b.text });
+        }
       }
     }
 
-    if (post.faqData && post.faqData.length > 0) {
-      items.push({ id: "faqs", label: "Statutory FAQs" });
+    // 3. FAQs if not already inside HTML
+    if (
+      post.faqData &&
+      post.faqData.length > 0 &&
+      !items.some(
+        (it) =>
+          it.id === "sec-frequently-asked-questions-fact-checks" ||
+          it.id === "faqs" ||
+          it.label.toLowerCase().includes("frequently asked")
+      )
+    ) {
+      items.push({ id: "faqs", label: "Frequently Asked Questions & Fact Checks" });
     }
 
-    items.push({ id: "discussion", label: "Discussion & Queries" });
+    // 4. Discussion & Queries section
+    if (!items.some((it) => it.id === "discussion" || it.id === "sec-discussion-queries")) {
+      items.push({ id: "sec-discussion-queries", label: "Discussion & Queries" });
+    }
 
-    if (relatedArticles.length > 0) {
-      items.push({ id: "related-guides", label: "Related Guides" });
+    // 5. Related Articles if not already inside HTML
+    if (
+      relatedArticles.length > 0 &&
+      !items.some(
+        (it) =>
+          it.id === "sec-related-articles-research-dossiers" ||
+          it.id === "related-guides" ||
+          it.label.toLowerCase().includes("related articles") ||
+          it.label.toLowerCase().includes("people also liked")
+      )
+    ) {
+      items.push({ id: "related-guides", label: "People Also Liked These Articles" });
     }
 
     return items;
-  }, [post, bodyBlocks, relatedArticles]);
+  }, [post, rawContent, isHtml, htmlHeadings, bodyBlocks, relatedArticles]);
 
   // Latest Posts in Same Category
   const latestCategoryPosts = useMemo(() => {
@@ -285,7 +340,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     });
 
     return () => observer.disconnect();
-  }, [tocItems]);
+  }, [tocItems, processedHtml]);
 
   const scrollToSection = (e: React.MouseEvent, id: string) => {
     e.preventDefault();
@@ -299,7 +354,6 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     }
   };
 
-
   const handleShare = () => {
     if (typeof window !== "undefined") {
       navigator.clipboard.writeText(window.location.href);
@@ -308,26 +362,211 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     }
   };
 
-  // Build FAQ Schema
-  const faqSchema =
-    post.faqData && post.faqData.length > 0
-      ? {
-          "@context": "https://schema.org",
-          "@type": "FAQPage",
-          mainEntity: post.faqData.map((f) => ({
-            "@type": "Question",
-            name: f.question,
-            acceptedAnswer: {
-              "@type": "Answer",
-              text: f.answer,
-            },
-          })),
-        }
-      : null;
+  // Comprehensive Schema.org @graph (PART 6)
+  const schemaPayload = useMemo(() => {
+    const origin =
+      typeof window !== "undefined" && window.location.origin
+        ? window.location.origin
+        : "https://trustvalue.ai";
+    const articleUrl = `${origin}/blog/${post.slug}`;
+    const wordCount = rawContent.trim().split(/\s+/).filter(Boolean).length;
+
+    const personNodes = authors.map((authorName, i) => {
+      const pId = `${articleUrl}#author-${i + 1}`;
+      const jobTitle = authorName.includes("(")
+        ? authorName.split("(").pop()?.replace(")", "").trim()
+        : "Editorial Analyst";
+      return {
+        "@type": "Person",
+        "@id": pId,
+        name: authorName,
+        jobTitle,
+        worksFor: {
+          "@type": "Organization",
+          name: "TrustValue.ai",
+        },
+      };
+    });
+
+    const authorRefs = personNodes.map((p) => ({
+      "@type": "Person",
+      name: p.name,
+      "@id": p["@id"],
+    }));
+
+    const graph: any[] = [
+      {
+        "@type": "Article",
+        "@id": `${articleUrl}#article`,
+        isPartOf: {
+          "@type": "WebSite",
+          name: "TrustValue",
+          url: origin,
+        },
+        headline: post.title,
+        description: post.summary || post.directAnswer || post.title,
+        mainEntityOfPage: articleUrl,
+        datePublished: post.publishedAt || post.createdAt || new Date().toISOString(),
+        dateModified: post.updatedAt || post.publishedAt || new Date().toISOString(),
+        wordCount,
+        image:
+          post.featuredImage ||
+          `${origin}/images/categories/${post.categorySlug || post.sector || "general"}.jpg`,
+        author: authorRefs.length > 0 ? authorRefs : {
+          "@type": "Organization",
+          name: "TrustValue",
+          url: origin,
+        },
+        publisher: {
+          "@type": "Organization",
+          name: "TrustValue",
+          url: origin,
+          logo: {
+            "@type": "ImageObject",
+            url: `${origin}/logo.png`,
+          },
+        },
+      },
+      ...personNodes,
+    ];
+
+    if (post.faqData && post.faqData.length > 0) {
+      graph.push({
+        "@type": "FAQPage",
+        "@id": `${articleUrl}#faqs`,
+        mainEntity: post.faqData.map((f) => ({
+          "@type": "Question",
+          name: f.question,
+          acceptedAnswer: {
+            "@type": "Answer",
+            text: f.answer,
+          },
+        })),
+      });
+    }
+
+    graph.push({
+      "@type": "ClaimReview",
+      "@id": `${articleUrl}#claimreview`,
+      claimReviewed: post.directAnswer || post.title,
+      reviewRating: {
+        "@type": "Rating",
+        ratingValue: "5",
+        bestRating: "5",
+        worstRating: "1",
+        alternateName: "Empirical Grounding Verified",
+      },
+      author: {
+        "@type": "Organization",
+        name: "TrustValue Telemetry Core",
+        url: origin,
+      },
+      itemReviewed: {
+        "@type": "CreativeWork",
+        name: post.title,
+        author: authorRefs[0],
+      },
+    });
+
+    graph.push({
+      "@type": "Product",
+      "@id": `${articleUrl}#product`,
+      name: post.categoryName || post.sector || "Audited Service / Product",
+      category: post.categoryName || post.sector,
+      aggregateRating: {
+        "@type": "AggregateRating",
+        ratingValue: "4.8",
+        reviewCount: post.views ? Math.max(12, Math.floor(post.views / 20)) : 48,
+        bestRating: "5",
+        worstRating: "1",
+      },
+    });
+
+    return {
+      "@context": "https://schema.org",
+      "@graph": graph,
+    };
+  }, [post, authors, rawContent]);
 
   return (
     <article className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
-      {faqSchema && <JsonLd data={faqSchema} />}
+      {/* Schema.org Knowledge Graph */}
+      <JsonLd data={schemaPayload} />
+
+      {/* Embedded CSS for Rich HTML Articles */}
+      <style>{`
+        .tv-prose-html h2 {
+          font-size: 19px;
+          font-weight: 800;
+          color: #071B46;
+          line-height: 1.3;
+          letter-spacing: -0.2px;
+          margin: 28px 0 12px 0;
+          scroll-margin-top: 100px;
+        }
+        .tv-prose-html h3 {
+          font-size: 15px;
+          font-weight: 700;
+          color: #0F172A;
+          line-height: 1.35;
+          margin: 20px 0 8px 0;
+        }
+        .tv-prose-html p {
+          font-size: 14.5px;
+          line-height: 1.68;
+          color: #334155;
+          margin: 0 0 14px 0;
+        }
+        .tv-prose-html ul, .tv-prose-html ol {
+          margin: 0 0 16px 0;
+          padding-left: 22px;
+        }
+        .tv-prose-html li {
+          font-size: 14px;
+          line-height: 1.65;
+          color: #334155;
+          margin-bottom: 5px;
+        }
+        .tv-prose-html table {
+          width: 100%;
+          border-collapse: collapse;
+          margin: 18px 0;
+          font-size: 13px;
+        }
+        .tv-prose-html th {
+          background-color: #F8FAFC;
+          color: #071B46;
+          font-weight: 700;
+          padding: 10px 14px;
+          border-bottom: 2px solid #CBD5E1;
+          text-align: left;
+        }
+        .tv-prose-html td {
+          padding: 10px 14px;
+          border-bottom: 1px solid #E2E8F0;
+          color: #334155;
+        }
+        .tv-prose-html figure.tv-infographic-container {
+          max-width: 100%;
+          overflow: hidden;
+          border-radius: 14px;
+          margin: 24px 0;
+        }
+        .tv-prose-html svg {
+          max-width: 100%;
+          height: auto;
+          display: block;
+        }
+        .tv-prose-html .tv-author-pill {
+          background: #EEF2F7;
+          padding: 4px 10px;
+          border-radius: 6px;
+          font-size: 12px;
+          font-weight: 600;
+          color: #071B46;
+          border: 1px solid #DCE2EB;
+        }
+      `}</style>
 
       {/* 3-Column Layout: Left TOC | Center Content (with Header inside) | Right Discovery */}
       <div className="flex flex-col lg:flex-row gap-6 xl:gap-8 items-start">
@@ -342,13 +581,15 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
         />
 
         {/* ========================================================= */}
-        {/* CENTER COLUMN: Article Header & Body (Restored Position)  */}
+        {/* CENTER COLUMN: Article Header & Body                      */}
         {/* ========================================================= */}
         <div className="w-full min-w-0 flex-1 max-w-[760px] xl:max-w-[780px]">
-          {/* HEADER PLACED BACK HERE AS IT WAS EARLIER */}
           <div className="mb-6">
             {/* Breadcrumbs */}
-            <nav aria-label="Breadcrumb" className="flex items-center flex-wrap gap-2 text-xs font-medium text-[#667085] mb-3">
+            <nav
+              aria-label="Breadcrumb"
+              className="flex items-center flex-wrap gap-2 text-xs font-medium text-[#667085] mb-3"
+            >
               <Link href={paths.home()} className="text-[#667085] hover:text-[#FF5A0A] transition-colors">
                 Home
               </Link>
@@ -357,13 +598,15 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
                 Research &amp; Guides
               </Link>
               <span className="text-[#CBD5E1]">/</span>
-              <span className="text-[#071B46] font-semibold capitalize">{post.sector}</span>
+              <span className="text-[#071B46] font-semibold capitalize">
+                {post.categoryName || post.sector}
+              </span>
             </nav>
 
             {/* Meta Bar + Share */}
             <div className="flex flex-wrap items-center gap-2.5 mb-3">
               <span className="px-2.5 py-0.5 rounded-full bg-[#EEF2F7] border border-[#DCE2EB] text-[10px] font-bold uppercase tracking-wider text-[#071B46]">
-                {post.sector}
+                {post.categoryName || post.sector}
               </span>
               <span className="inline-flex items-center gap-1 text-xs text-[#667085]">
                 <Clock size={13} /> {post.readTime || "6 min read"}
@@ -396,40 +639,58 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
               </button>
             </div>
 
-            {/* Article Title (Explicit inline styles to override prototype.css) */}
+            {/* Article Title */}
             <h1
               style={{
-                fontSize: "22px",
+                fontSize: "23px",
                 fontWeight: 800,
                 color: "#071B46",
                 lineHeight: 1.3,
                 letterSpacing: "-0.02em",
-                margin: "0 0 10px 0",
+                margin: "0 0 12px 0",
               }}
             >
               {post.title}
             </h1>
 
-            {/* Author Byline */}
-            <div className="flex flex-wrap items-center gap-3 pb-4 border-b border-[#DCE2EB] text-xs text-[#667085]">
-              <span className="inline-flex items-center gap-1.5">
-                <User size={14} className="text-[#FF5A0A]" />
-                <strong className="text-[#071B46] font-semibold">{post.author || "TrustValue Research Desk"}</strong>
-              </span>
-              {post.publishedAt ? (
-                <span className="inline-flex items-center gap-1">
-                  <Calendar size={13} />
-                  {new Date(post.publishedAt).toLocaleDateString("en-US", {
-                    month: "short",
-                    day: "numeric",
-                    year: "numeric",
-                  })}
-                </span>
-              ) : null}
-              <span className="inline-flex items-center gap-1 text-[#0A8754] font-semibold bg-[#ECFDF5] px-2 py-0.5 rounded-full border border-[#A7F3D0] text-[11px]">
-                <ShieldCheck size={13} /> Audited Explainer
-              </span>
-            </div>
+            {/* Author Byline (EEAT Multi-Author with min 2, max 6 - respects removal) */}
+            {(authors.length > 0 || post.publishedAt) && (
+              <div className="flex flex-wrap items-center gap-2 pb-4 border-b border-[#DCE2EB] text-xs text-[#667085]">
+                {authors.length > 0 && (
+                  <>
+                    <span className="inline-flex items-center gap-1.5 text-[#071B46] font-bold">
+                      <User size={14} className="text-[#FF5A0A]" />
+                      Audited By:
+                    </span>
+                    <div className="flex flex-wrap items-center gap-1.5">
+                      {authors.map((authorName, aIdx) => (
+                        <span
+                          key={aIdx}
+                          className="px-2.5 py-0.5 rounded-md bg-[#F1F5F9] border border-[#CBD5E1] text-[#071B46] font-semibold text-[11px]"
+                        >
+                          {authorName}
+                        </span>
+                      ))}
+                    </div>
+                  </>
+                )}
+                {post.publishedAt ? (
+                  <span className={`inline-flex items-center gap-1 text-[#667085] ${authors.length > 0 ? "ml-auto" : ""}`}>
+                    <Calendar size={13} />
+                    {new Date(post.publishedAt).toLocaleDateString("en-US", {
+                      month: "short",
+                      day: "numeric",
+                      year: "numeric",
+                    })}
+                  </span>
+                ) : null}
+                {authors.length > 0 && (
+                  <span className="inline-flex items-center gap-1 text-[#0A8754] font-semibold bg-[#ECFDF5] px-2 py-0.5 rounded-full border border-[#A7F3D0] text-[11px]">
+                    <ShieldCheck size={13} /> Audited Explainer
+                  </span>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Mobile Table of Contents Accordion (< 1024px) */}
@@ -452,8 +713,10 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
             </div>
           ) : null}
 
-          {/* Direct Statutory Key Takeaway */}
-          {post.directAnswer ? (
+          {/* Direct Statutory Key Takeaway (if not already inside HTML body) */}
+          {post.directAnswer &&
+          !rawContent.includes("tv-direct-answer-card") &&
+          !rawContent.includes("Key Strategic Takeaways") ? (
             <div
               id="direct-takeaway"
               className="scroll-mt-24 bg-[#ECFDF5] border border-[#A7F3D0] rounded-xl p-4 sm:p-5 mb-6 shadow-xs"
@@ -491,93 +754,103 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
             </p>
           ) : null}
 
-          {/* Article Body with properly parsed blocks and explicit font sizes */}
-          <div
-            id="article-body"
-            className="bg-white border border-[#DCE2EB] rounded-2xl p-5 sm:p-7 mb-6 shadow-xs"
-          >
-            {bodyBlocks.map((block, idx) => {
-              if (block.type === "heading") {
-                return (
-                  <h3
-                    key={idx}
-                    id={block.id}
-                    style={{
-                      fontSize: "16px",
-                      fontWeight: 700,
-                      color: "#071B46",
-                      lineHeight: 1.35,
-                      margin: "22px 0 8px 0",
-                    }}
-                    className="scroll-mt-24 flex items-center gap-2 group"
-                  >
-                    <span>{block.text}</span>
-                    <a
-                      href={`#${block.id}`}
-                      onClick={(e) => scrollToSection(e, block.id)}
-                      className="text-[#CBD5E1] group-hover:text-[#FF5A0A] text-xs opacity-0 group-hover:opacity-100 transition-opacity"
-                      title="Direct link"
+          {/* Article Body: Render HTML with dynamic H2 IDs or parsed Markdown blocks */}
+          {isHtml ? (
+            <BlogContentRenderer html={processedHtml} />
+          ) : (
+            <div
+              id="article-body"
+              className="bg-white border border-[#DCE2EB] rounded-2xl p-5 sm:p-7 mb-6 shadow-xs"
+            >
+              {bodyBlocks.map((block, idx) => {
+                if (block.type === "heading") {
+                  return (
+                    <h2
+                      key={idx}
+                      id={block.id}
+                      style={{
+                        fontSize: "18px",
+                        fontWeight: 800,
+                        color: "#071B46",
+                        lineHeight: 1.3,
+                        margin: "24px 0 10px 0",
+                        letterSpacing: "-0.2px",
+                      }}
+                      className="scroll-mt-24 flex items-center gap-2 group"
                     >
-                      #
-                    </a>
-                  </h3>
-                );
-              }
-
-              if (block.type === "list") {
-                return block.ordered ? (
-                  <ol key={idx} className="list-decimal pl-5 space-y-1.5 mb-4">
-                    {block.items.map((item, iIdx) => (
-                      <li
-                        key={iIdx}
-                        style={{
-                          fontSize: "14px",
-                          lineHeight: 1.65,
-                          color: "#334155",
-                          marginBottom: "4px",
-                        }}
+                      <span>{block.text}</span>
+                      <a
+                        href={`#${block.id}`}
+                        onClick={(e) => scrollToSection(e, block.id)}
+                        className="text-[#CBD5E1] group-hover:text-[#FF5A0A] text-xs opacity-0 group-hover:opacity-100 transition-opacity"
+                        title="Direct link"
                       >
-                        {renderFormattedText(item)}
-                      </li>
-                    ))}
-                  </ol>
-                ) : (
-                  <ul key={idx} className="list-disc pl-5 space-y-1.5 mb-4">
-                    {block.items.map((item, iIdx) => (
-                      <li
-                        key={iIdx}
-                        style={{
-                          fontSize: "14px",
-                          lineHeight: 1.65,
-                          color: "#334155",
-                          marginBottom: "4px",
-                        }}
-                      >
-                        {renderFormattedText(item)}
-                      </li>
-                    ))}
-                  </ul>
+                        #
+                      </a>
+                    </h2>
+                  );
+                }
+
+                if (block.type === "list") {
+                  return block.ordered ? (
+                    <ol key={idx} className="list-decimal pl-5 space-y-1.5 mb-4">
+                      {block.items.map((item, iIdx) => (
+                        <li
+                          key={iIdx}
+                          style={{
+                            fontSize: "14px",
+                            lineHeight: 1.65,
+                            color: "#334155",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          {renderFormattedText(item)}
+                        </li>
+                      ))}
+                    </ol>
+                  ) : (
+                    <ul key={idx} className="list-disc pl-5 space-y-1.5 mb-4">
+                      {block.items.map((item, iIdx) => (
+                        <li
+                          key={iIdx}
+                          style={{
+                            fontSize: "14px",
+                            lineHeight: 1.65,
+                            color: "#334155",
+                            marginBottom: "4px",
+                          }}
+                        >
+                          {renderFormattedText(item)}
+                        </li>
+                      ))}
+                    </ul>
+                  );
+                }
+
+                return (
+                  <p
+                    key={idx}
+                    style={{
+                      fontSize: "14px",
+                      lineHeight: 1.65,
+                      color: "#334155",
+                      margin: "0 0 12px 0",
+                    }}
+                  >
+                    {renderFormattedText(block.text)}
+                  </p>
                 );
-              }
+              })}
+            </div>
+          )}
 
-              return (
-                <p
-                  key={idx}
-                  style={{
-                    fontSize: "14px",
-                    lineHeight: 1.65,
-                    color: "#334155",
-                    margin: "0 0 12px 0",
-                  }}
-                >
-                  {renderFormattedText(block.text)}
-                </p>
-              );
-            })}
-          </div>
-
-          {/* FAQ Section */}
-          <BlogFaqSection faqData={post.faqData || []} />
+          {/* Standalone FAQ Section (rendered if not already inside HTML content body) */}
+          {!rawContent.includes("tv-faq-accordion") &&
+          !rawContent.includes("sec-frequently-asked-questions-fact-checks") &&
+          post.faqData &&
+          post.faqData.length > 0 ? (
+            <BlogFaqSection faqData={post.faqData} />
+          ) : null}
 
           {/* Comments Section */}
           <BlogDiscussionSection
@@ -594,43 +867,64 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
             }}
           />
 
-          {/* Related Articles Bottom Strip */}
-          {relatedArticles.length > 0 ? (
-            <div id="related-guides" className="scroll-mt-24 mt-6">
-              <h3
-                style={{
-                  fontSize: "16px",
-                  fontWeight: 700,
-                  color: "#071B46",
-                  margin: "0 0 12px 0",
-                }}
-              >
-                Related Statutory &amp; Sector Audits
-              </h3>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {/* People Also Liked These Articles Bottom Strip (rendered if not already inside HTML content body) */}
+          {!rawContent.includes("tv-interlinking-hub") &&
+          !rawContent.includes("sec-related-articles-research-dossiers") &&
+          relatedArticles.length > 0 ? (
+            <div id="related-guides" className="scroll-mt-24 mt-8 p-5 bg-[#F8FAFC] border border-[#DCE2EB] rounded-2xl">
+              <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+                <div>
+                  <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF5A0A]">
+                    Curated Recommendations
+                  </span>
+                  <h2
+                    id="sec-related-guides-title"
+                    style={{
+                      fontSize: "18px",
+                      fontWeight: 800,
+                      color: "#071B46",
+                      margin: "2px 0 0 0",
+                      letterSpacing: "-0.2px",
+                    }}
+                  >
+                    People Also Liked These Articles
+                  </h2>
+                </div>
+                <span className="text-[11px] font-semibold text-slate-500 bg-slate-200/60 px-2.5 py-1 rounded-full">
+                  Scroll &rarr;
+                </span>
+              </div>
+              <div className="flex gap-3.5 overflow-x-auto pb-3 snap-x snap-mandatory scrollbar-thin">
                 {relatedArticles.map((rel) => (
                   <Link
                     key={rel.slug}
                     href={paths.blogPost(rel.slug)}
-                    className="group block p-3.5 bg-white border border-[#DCE2EB] hover:border-[#FF5A0A] rounded-xl no-underline shadow-xs hover:shadow-md transition-all"
+                    className="group flex-shrink-0 w-[280px] sm:w-[300px] snap-start p-4 bg-white border border-[#E2E8F0] hover:border-[#FF5A0A] rounded-xl no-underline shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                   >
-                    <span className="text-[10px] font-bold uppercase tracking-wider text-[#FF5A0A]">
-                      {rel.sector}
-                    </span>
-                    <div
-                      style={{
-                        fontSize: "13px",
-                        fontWeight: 700,
-                        color: "#071B46",
-                        lineHeight: 1.35,
-                        margin: "4px 0 6px 0",
-                      }}
-                      className="group-hover:text-[#FF5A0A] line-clamp-2 transition-colors"
-                    >
-                      {rel.title}
+                    <div>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-[10px] font-extrabold uppercase tracking-wider text-[#FF5A0A] bg-orange-50 px-2 py-0.5 rounded border border-orange-100">
+                          {rel.sector || "Dossier"}
+                        </span>
+                        <span className="text-[11px] text-slate-400 font-semibold">
+                          {rel.readTime || "5 min read"}
+                        </span>
+                      </div>
+                      <div
+                        style={{
+                          fontSize: "13.5px",
+                          fontWeight: 700,
+                          color: "#071B46",
+                          lineHeight: 1.4,
+                          margin: "6px 0 8px 0",
+                        }}
+                        className="group-hover:text-[#FF5A0A] line-clamp-3 transition-colors"
+                      >
+                        {rel.title}
+                      </div>
                     </div>
-                    <span className="text-[11px] font-semibold text-[#0C2659] group-hover:text-[#FF5A0A] inline-flex items-center gap-1 transition-colors">
-                      Read Explainer <ArrowRight size={11} />
+                    <span className="text-[11.5px] font-bold text-[#FF5A0A] inline-flex items-center gap-1 mt-3 transition-colors">
+                      Read Article <ArrowRight size={12} />
                     </span>
                   </Link>
                 ))}

@@ -27,7 +27,7 @@ export function BlogListingClient({ articles }: Props) {
       const matchSector =
         selectedSector === "all" ||
         a.sector?.toLowerCase() === selectedSector.toLowerCase() ||
-        a.categoryId?.toLowerCase().includes(selectedSector.toLowerCase());
+        a.categorySlug?.toLowerCase().includes(selectedSector.toLowerCase());
 
       const q = searchQuery.toLowerCase().trim();
       const matchSearch =

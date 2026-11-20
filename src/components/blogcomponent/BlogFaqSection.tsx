@@ -22,16 +22,19 @@ export function BlogFaqSection({ faqData }: BlogFaqSectionProps) {
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2">
           <HelpCircle size={17} className="text-[#FF5A0A]" />
-          <div
+          <h2
+            id="sec-frequently-asked-questions-fact-checks"
             style={{
-              fontSize: "16px",
-              fontWeight: 700,
+              fontSize: "18px",
+              fontWeight: 800,
               color: "#071B46",
               lineHeight: 1.25,
+              margin: 0,
+              letterSpacing: "-0.2px",
             }}
           >
-            Frequently Asked Statutory Questions
-          </div>
+            Frequently Asked Questions &amp; Fact Checks
+          </h2>
         </div>
         <span className="text-[10px] font-semibold text-[#0A8754] bg-[#ECFDF5] px-2 py-0.5 rounded-full border border-[#A7F3D0]">
           Audited Answers
