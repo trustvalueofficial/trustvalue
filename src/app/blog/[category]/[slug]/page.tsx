@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound } from "next/navigation";
+import { notFound, redirect } from "next/navigation";
 import { paths } from "@/lib/routing";
 import { meta } from "@/lib/seo";
 import { getBlog, getBlogs, BlogArticle } from "@/lib/cms";
@@ -54,36 +54,48 @@ const FALLBACK_ARTICLES: Record<string, BlogArticle> = {
   },
 };
 
-type Props = { params: Promise<{ slug: string }> };
+type Props = { params: Promise<{ category: string; slug: string }> };
 
 export const dynamicParams = true;
 
 export const generateStaticParams = async () => {
   const dynamicBlogs = await getBlogs();
-  const dynamicSlugs = dynamicBlogs.slice(0, 100).map((b) => ({ slug: b.slug }));
-  const fallbackSlugs = Object.keys(FALLBACK_ARTICLES).map((slug) => ({ slug }));
-  return dynamicSlugs.length > 0 ? dynamicSlugs : fallbackSlugs;
+  const dynamicParams = dynamicBlogs.slice(0, 100).map((b) => ({
+    category: b.sector || "general",
+    slug: b.slug,
+  }));
+  const fallbackParams = Object.values(FALLBACK_ARTICLES).map((b) => ({
+    category: b.sector || "general",
+    slug: b.slug,
+  }));
+  return dynamicParams.length > 0 ? dynamicParams : fallbackParams;
 };
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
-  const { slug } = await params;
+  const { category, slug } = await params;
   const post = (await getBlog(slug)) || FALLBACK_ARTICLES[slug];
   if (!post) return {};
+  const canonicalCategory = post.sector || category;
   return meta(
     post.seo?.title || post.title,
     post.seo?.description || post.summary,
-    paths.blogPost(slug)
+    paths.blogPost(canonicalCategory, slug)
   );
 }
 
 export default async function BlogPostPage({ params }: Props) {
-  const { slug } = await params;
+  const { category, slug } = await params;
   const cmsArticles = await getBlogs();
   const allArticles = cmsArticles.length > 0 ? cmsArticles : Object.values(FALLBACK_ARTICLES);
   const post = (await getBlog(slug)) || FALLBACK_ARTICLES[slug];
   if (!post) notFound();
 
-  // Find related articles (prefer same sector/related, then others for a rich horizontal scroll)
+  // Canonical sector redirect if URL sector does not match article's authoritative sector
+  if (post.sector && post.sector.toLowerCase() !== category.toLowerCase()) {
+    redirect(paths.blogPost(post.sector, post.slug));
+  }
+
+  // Find related articles (prefer same sector/related, then others for rich horizontal scroll)
   const sameSector = allArticles.filter(
     (a) => a.slug !== post.slug && (a.sector === post.sector || post.relatedSlugs?.includes(a.slug))
   );
@@ -92,5 +104,12 @@ export default async function BlogPostPage({ params }: Props) {
   );
   const relatedArticles = [...sameSector, ...otherSectors].slice(0, 6);
 
-  return <BlogPostClient post={post} relatedArticles={relatedArticles} allArticles={allArticles} />;
+  return (
+    <BlogPostClient
+      post={post}
+      category={category}
+      relatedArticles={relatedArticles}
+      allArticles={allArticles}
+    />
+  );
 }

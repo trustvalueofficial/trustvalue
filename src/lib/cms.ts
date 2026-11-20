@@ -21,10 +21,19 @@ function listJson(dir: string): string[] {
   return fs.existsSync(full) ? fs.readdirSync(full).filter((f) => f.endsWith(".json")).sort() : [];
 }
 /** Cache in production builds; re-read on every call in dev so content edits show up instantly. */
+const memoClearers: (() => void)[] = [];
 function memo<T>(fn: () => T): () => T {
   if (process.env.NODE_ENV !== "production") return fn;
   let v: T | undefined;
+  memoClearers.push(() => { v = undefined; });
   return () => (v ??= fn());
+}
+
+/** Clear all in-memory cache so file updates on disk are read fresh on next access. */
+export function clearCmsCache(): void {
+  for (const clear of memoClearers) {
+    clear();
+  }
 }
 
 /* ----------------------------- sectors & categories ----------------------------- */
@@ -302,6 +311,84 @@ export async function getBlogs(params?: {
   return loadBlogs().filter((b) => b.status === "published").map(normalizeArticle);
 }
 
+export interface BlogCategory {
+  id: string;
+  name: string;
+  slug: string;
+  sectorSlug?: string;
+  description?: string;
+  heroTitle?: string;
+  badge?: string;
+  seoTitle?: string;
+  seoDescription?: string;
+  articleCount?: number;
+  updatedAt?: string;
+}
+
+export function getBlogCategories(): BlogCategory[] {
+  const sectors = getSectors();
+  const blogs = loadBlogs().filter((b) => b.status === "published");
+
+  let saved: BlogCategory[] = [];
+  const catFile = path.join(ROOT, "blogs", "categories.json");
+  if (fs.existsSync(catFile)) {
+    try {
+      saved = JSON.parse(fs.readFileSync(catFile, "utf8"));
+    } catch {}
+  }
+
+  const map = new Map<string, BlogCategory>();
+  for (const c of saved) {
+    map.set(c.slug, c);
+  }
+
+  const result: BlogCategory[] = [];
+  for (const s of sectors) {
+    const existing = map.get(s.slug);
+    const count = blogs.filter(
+      (b) => b.sector?.toLowerCase() === s.slug.toLowerCase() || b.categorySlug?.toLowerCase() === s.slug.toLowerCase()
+    ).length;
+
+    if (existing) {
+      result.push({
+        ...existing,
+        sectorSlug: s.slug,
+        articleCount: count,
+      });
+      map.delete(s.slug);
+    } else {
+      result.push({
+        id: s.slug,
+        slug: s.slug,
+        sectorSlug: s.slug,
+        name: s.name,
+        description: s.description || `Independent regulatory audit and research guides for the ${s.name} sector.`,
+        heroTitle: `${s.name} Research & Regulatory Audits`,
+        badge: "Regulatory Silo",
+        seoTitle: `${s.name} Research & Consumer Guides | TrustValue`,
+        seoDescription: `In-depth consumer research, statutory circulars, and regulatory audits across the ${s.name} sector.`,
+        articleCount: count,
+      });
+    }
+  }
+
+  for (const extra of map.values()) {
+    const count = blogs.filter(
+      (b) => b.categorySlug?.toLowerCase() === extra.slug.toLowerCase() || b.sector?.toLowerCase() === extra.slug.toLowerCase()
+    ).length;
+    result.push({
+      ...extra,
+      articleCount: count,
+    });
+  }
+
+  return result;
+}
+
+export function getBlogCategory(slug: string): BlogCategory | undefined {
+  return getBlogCategories().find((c) => c.slug === slug);
+}
+
 export async function getBlog(slug: string): Promise<BlogArticle | undefined> {
   // Direct partition lookup on local filesystem for instant hot-reload sync in development
   const local = getBlogFromLocal(slug);
@@ -459,4 +546,107 @@ export async function getLlmsTxt(): Promise<string> {
   const config = await getSeoConfig();
   return config.llmsTxt || DEFAULT_SEO_CONFIG.llmsTxt;
 }
+
+/* ---------------------------------- Static Pages (Home Page) ---------------------------------- */
+
+export interface HomePageContent {
+  hero: {
+    descriptor: string;
+    titlePrimary: string;
+    titleAccent: string;
+    lead: string;
+    searchPlaceholder: string;
+    tryChips: string[];
+    promises: string[];
+  };
+  ticker: {
+    stateLabel: string;
+    highlightNote: string;
+  };
+  statusCard: {
+    tagLabel: string;
+    title: string;
+    description: string;
+    targetReviews: number;
+    lockedReviews: number;
+    counts: {
+      articlesPublished: number;
+      brandsListed: number;
+      productsListed: number;
+      sectorsMapped: number;
+    };
+  };
+  simulator: {
+    title: string;
+    lead: string;
+    tag: string;
+    question: string;
+    hint: string;
+  };
+  seo: {
+    title: string;
+    description: string;
+    focusKeyword: string;
+  };
+  updatedAt?: string;
+  lastEditedBy?: string;
+}
+
+export const DEFAULT_HOME_PAGE: HomePageContent = {
+  hero: {
+    descriptor: "The Global Trust Index",
+    titlePrimary: "Know before you",
+    titleAccent: "trust.",
+    lead: "TrustValue is where people rate and review brands, in public. Real experiences become a Trust Index for every brand and product. See what people actually lived through before you choose, whether it is a policy, a loan, a phone plan, a car or a hospital.",
+    searchPlaceholder: "Search a brand, product or category",
+    tryChips: ["Insurance", "Banking & loans", "Telecom", "Automobiles", "All 18 sectors"],
+    promises: [
+      "No paid influence",
+      "No rating ownership by businesses",
+      "No rewritten history",
+    ],
+  },
+  ticker: {
+    stateLabel: "Every-Sector Index",
+    highlightNote: "Insurance opens first, then banking, telecom and automobiles · 183 brands listed",
+  },
+  statusCard: {
+    tagLabel: "Trust Index, pre-live",
+    title: "Goes live at 1,000 reviews.",
+    description: "An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.",
+    targetReviews: 1000,
+    lockedReviews: 0,
+    counts: {
+      articlesPublished: 0,
+      brandsListed: 183,
+      productsListed: 84,
+      sectorsMapped: 18,
+    },
+  },
+  simulator: {
+    title: "One gesture. One truth. Then move on.",
+    lead: "Rating here takes about seven seconds. Drag once, fine-tune if you care to, lock it. Try it now. This is a demo and nothing is submitted.",
+    tag: "Demo. Nothing is submitted.",
+    question: "How did it feel?",
+    hint: "Don't overthink it. Your first instinct is the signal.",
+  },
+  seo: {
+    title: "TrustValue | The Global Consumer Regulatory & Trust Index",
+    description: "Independent regulatory audit, consumer trust scores, and statutory telemetries across India's core sectors.",
+    focusKeyword: "Global Trust Index",
+  },
+};
+
+const loadHomePage = memo((): HomePageContent => {
+  const p = path.join(ROOT, "static", "home.json");
+  if (fs.existsSync(p)) {
+    try {
+      return { ...DEFAULT_HOME_PAGE, ...JSON.parse(fs.readFileSync(p, "utf8")) };
+    } catch {}
+  }
+  return DEFAULT_HOME_PAGE;
+});
+
+export const getHomePageContent = (): HomePageContent => loadHomePage();
+
 

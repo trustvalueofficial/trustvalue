@@ -1,0 +1,39 @@
+{
+  "slug": "rbi-prepayment-penalty-ban-audit",
+  "title": "RBI Zero Prepayment Penalty Directives: Home Loan Foreclosure Audit",
+  "excerpt": "Empirical audit of banking adherence to RBI circulars banning foreclosure charges on floating-rate individual home loans.",
+  "body": "### Statutory Regulatory Mandate\n\nUnder RBI Master Circular RBI/2014-15/63, Scheduled Commercial Banks and Non-Banking Financial Companies (NBFCs) are strictly prohibited from levying foreclosure charges or pre-payment penalties on floating rate term loans sanctioned to individual borrowers.\n\n### SLA and Statutory Recourse\n- Zero pre-payment penalties for individual floating-rate loans\n- Loan closing documents and title deeds must be released within 30 days\n- Penalty compensation of Rs 5,000 per day for delay beyond 30 days",
+  "sector": "banking",
+  "categoryName": "Banking and Lending",
+  "categorySlug": "banking",
+  "status": "published",
+  "author": "Kishan Shinde",
+  "authors": [
+    "Kishan Shinde",
+    "Banking Telemetry Desk"
+  ],
+  "directAnswer": "Scheduled Commercial Banks and NBFCs cannot charge foreclosure or prepayment penalties on individual floating-rate home loans under statutory RBI directives.",
+  "summary": "Comprehensive regulatory guide and telemetry analysis on RBI's zero prepayment penalty mandate.",
+  "featuredImage": "https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=1200&h=630&fit=crop",
+  "seo": {
+    "title": "RBI Zero Prepayment Penalty Directives | TrustValue Audit",
+    "description": "RBI circular forbids foreclosure charges on individual floating-rate home loans. Know your rights and compensation SLAs.",
+    "focusKeyword": "RBI Prepayment Penalty",
+    "keywords": [
+      "RBI",
+      "Home Loan",
+      "Prepayment Penalty"
+    ],
+    "schemaType": "Article"
+  },
+  "faqData": [
+    {
+      "question": "Can banks charge prepayment penalties on floating rate home loans?",
+      "answer": "No, banks are strictly prohibited from levying prepayment penalties on floating-rate home loans to individual borrowers under RBI directives."
+    }
+  ],
+  "readTime": "1 min read",
+  "updatedAt": "2026-11-20T10:08:53.480Z",
+  "lastEditedBy": "API_Client",
+  "publishedAt": "2026-11-20T10:08:53.480Z"
+}

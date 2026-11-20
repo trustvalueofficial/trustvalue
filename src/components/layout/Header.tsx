@@ -266,7 +266,7 @@ export default function Header() {
           kind: "Guide",
           title: a.title,
           sub: "Research Desk",
-          url: `/blog/irdai-3-year-incontestability-rule-explained`,
+          url: `/blog/insurance/irdai-3-year-incontestability-rule-explained`,
         });
       }
     });
@@ -1049,7 +1049,7 @@ export default function Header() {
 
                       {/* 2. Section 45 Rule */}
                       <Link
-                        href="/blog/irdai-3-year-incontestability-rule-explained"
+                        href="/blog/insurance/irdai-3-year-incontestability-rule-explained"
                         className="mega-card-item"
                         style={{ background: "#F5F3FF", borderColor: "#EDE9FE" }}
                         onClick={() => setActiveMenu(null)}
@@ -1068,7 +1068,7 @@ export default function Header() {
 
                       {/* 3. RERA Carpet Area */}
                       <Link
-                        href="/blog/rera-carpet-area-vs-built-up-guide"
+                        href="/blog/real-estate/rera-carpet-area-vs-built-up-guide"
                         className="mega-card-item"
                         style={{ background: "#FDF2F8", borderColor: "#FCE7F3" }}
                         onClick={() => setActiveMenu(null)}
@@ -1087,7 +1087,7 @@ export default function Header() {
 
                       {/* 4. NABH Cashless Standards */}
                       <Link
-                        href="/blog/nabh-cashless-hospital-turnaround-times"
+                        href="/blog/healthcare/nabh-cashless-hospital-turnaround-times"
                         className="mega-card-item"
                         style={{ background: "#FEFCE8", borderColor: "#FEF08A" }}
                         onClick={() => setActiveMenu(null)}
@@ -2242,7 +2242,7 @@ export default function Header() {
                     </Link>
 
                     <Link
-                      href="/blog/irdai-3-year-incontestability-rule-explained"
+                      href="/blog/insurance/irdai-3-year-incontestability-rule-explained"
                       onClick={() => {
                         setDrawerOpen(false);
                         setMobileSubMenu(null);
@@ -2259,7 +2259,7 @@ export default function Header() {
                     </Link>
 
                     <Link
-                      href="/blog/rera-carpet-area-vs-built-up-guide"
+                      href="/blog/real-estate/rera-carpet-area-vs-built-up-guide"
                       onClick={() => {
                         setDrawerOpen(false);
                         setMobileSubMenu(null);
@@ -2276,7 +2276,7 @@ export default function Header() {
                     </Link>
 
                     <Link
-                      href="/blog/nabh-cashless-hospital-turnaround-times"
+                      href="/blog/healthcare/nabh-cashless-hospital-turnaround-times"
                       onClick={() => {
                         setDrawerOpen(false);
                         setMobileSubMenu(null);

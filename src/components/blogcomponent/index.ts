@@ -1,4 +1,5 @@
 export { BlogCard } from "./BlogCard";
+export { BlogCategoryView } from "./BlogCategoryView";
 export { DesktopTableOfContents, MobileTableOfContents } from "./BlogTableOfContents";
 export type { TocItem } from "./BlogTableOfContents";
 export {
