@@ -1,0 +1,10 @@
+# TEST CUSTOM ROBOTS DIRECTIVE - TRUSTVALUE AUDIT
+User-agent: *
+Allow: /
+Disallow: /secret-admin/
+
+User-agent: PerplexityBot
+Allow: /
+Allow: /blog/
+
+Sitemap: https://trustvalue.ai/sitemap.xml
