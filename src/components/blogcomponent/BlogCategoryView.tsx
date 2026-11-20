@@ -31,6 +31,7 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
   const [readTimeFilter, setReadTimeFilter] = useState<"all" | "short" | "medium" | "long">("all");
   const [sortBy, setSortBy] = useState<"newest" | "oldest" | "quickest" | "longest">("newest");
   const [selectedTopic, setSelectedTopic] = useState<string>("all");
+  const [isMobileDrawerOpen, setIsMobileDrawerOpen] = useState<boolean>(false);
 
   // Extract all distinct sub-topics / tags across articles in this category
   const availableTopics = useMemo(() => {
@@ -148,42 +149,21 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
               >
                 {category.heroTitle || `${category.name} Research & Regulatory Audits`}
               </h1>
-              <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed max-w-2xl">
+              <p className="text-xs sm:text-sm md:text-base text-[#CBD5E1] leading-relaxed max-w-2xl">
                 {category.description ||
                   `In-depth consumer analyses, statutory circular breakdowns, and verified claim settlement telemetry for the ${category.name} sector.`}
               </p>
-            </div>
-
-            {/* Category Stats Chip */}
-            <div className="flex items-center gap-4 bg-[#091A42] border border-blue-900/60 rounded-xl p-3.5 sm:px-5 shrink-0">
-              <div className="text-center">
-                <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium block">
-                  Published Reports
-                </span>
-                <span className="text-xl sm:text-2xl font-black text-white font-mono">
-                  {articles.length}
-                </span>
-              </div>
-              <div className="h-8 w-px bg-slate-800" />
-              <div className="text-center">
-                <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium block">
-                  Category Slug
-                </span>
-                <span className="text-xs text-amber-400 font-mono font-semibold">
-                  /{category.slug}
-                </span>
-              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* 2. MAIN BODY: E-COMMERCE SIDEBAR FILTERS (LEFT) + ARTICLES GRID (RIGHT) */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          {/* ================= LEFT SIDEBAR ================= */}
-          <aside className="lg:col-span-4 xl:col-span-3 space-y-6">
+          {/* ================= LEFT SIDEBAR (DESKTOP) ================= */}
+          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 space-y-6">
             
             {/* WIDGET 1: E-COMMERCE STYLE FILTER PANEL */}
             <div className="bg-white border border-[#E2E8F0] rounded-2xl p-5 shadow-xs">
@@ -409,11 +389,149 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
 
           </aside>
 
+          {/* ================= MOBILE SLIDE-OVER DRAWER (FROM LEFT) ================= */}
+          {isMobileDrawerOpen && (
+            <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+              <div
+                className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+                onClick={() => setIsMobileDrawerOpen(false)}
+              />
+              <div className="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ease-out animate-in slide-in-from-left">
+                <div className="p-4 bg-[#071B46] text-white flex items-center justify-between border-b border-[#12224A]">
+                  <div className="flex items-center gap-2 font-bold text-sm">
+                    <SlidersHorizontal size={16} className="text-amber-400" />
+                    <span>Filters & Categories</span>
+                  </div>
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileDrawerOpen(false)}
+                    className="p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+                  >
+                    <X size={18} />
+                  </button>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  {/* Category Switcher */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#071B46] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                      <FolderTree size={13} className="text-amber-500" /> All Categories
+                    </label>
+                    <div className="space-y-1">
+                      {allCategories.map((c) => {
+                        const isCurrent = c.slug === category.slug;
+                        return (
+                          <Link
+                            key={c.slug}
+                            href={paths.blogCategory(c.slug)}
+                            onClick={() => setIsMobileDrawerOpen(false)}
+                            className={`flex items-center justify-between px-3 py-2 rounded-xl text-xs transition ${
+                              isCurrent
+                                ? "bg-[#FFF7ED] text-[#C2410C] font-bold border border-[#FFD8A8]"
+                                : "text-[#475569] hover:bg-[#F8FAFC]"
+                            }`}
+                          >
+                            <span className="truncate">{c.name}</span>
+                            <span className="text-[10px] font-mono font-bold bg-slate-100 text-slate-700 px-2 py-0.5 rounded-full">
+                              {c.articleCount ?? 0}
+                            </span>
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  </div>
+
+                  {/* Search inside Category */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#071B46] uppercase tracking-wider mb-1.5">
+                      Search in {category.name}
+                    </label>
+                    <div className="relative">
+                      <Search className="w-3.5 h-3.5 text-[#94A3B8] absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        placeholder="Keyword or circular..."
+                        value={searchQuery}
+                        onChange={(e) => setSearchQuery(e.target.value)}
+                        className="w-full pl-8 pr-7 py-2 rounded-lg bg-[#F8FAFC] border border-[#CBD5E1] text-xs text-[#071B46]"
+                      />
+                    </div>
+                  </div>
+
+                  {/* Read Time */}
+                  <div>
+                    <label className="block text-xs font-bold text-[#071B46] uppercase tracking-wider mb-1.5">
+                      Reading Duration
+                    </label>
+                    <div className="space-y-1">
+                      {[
+                        { key: "all", label: "All Read Times" },
+                        { key: "short", label: "Quick Reads (< 5 min)" },
+                        { key: "medium", label: "In-Depth (5–10 min)" },
+                        { key: "long", label: "Longform (> 10 min)" },
+                      ].map((opt) => (
+                        <button
+                          key={opt.key}
+                          type="button"
+                          onClick={() => {
+                            setReadTimeFilter(opt.key as any);
+                            setIsMobileDrawerOpen(false);
+                          }}
+                          className={`w-full text-left px-2.5 py-1.5 rounded-lg text-xs transition ${
+                            readTimeFilter === opt.key
+                              ? "bg-[#FFF7ED] text-[#C2410C] font-semibold border border-[#FFEDD5]"
+                              : "text-[#475569] hover:bg-slate-50"
+                          }`}
+                        >
+                          {opt.label}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between">
+                  <button
+                    type="button"
+                    onClick={resetFilters}
+                    className="text-xs text-red-500 font-semibold hover:underline"
+                  >
+                    Reset Filters
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => setIsMobileDrawerOpen(false)}
+                    className="px-3 py-1.5 bg-[#071B46] text-white text-xs font-bold rounded-lg"
+                  >
+                    Apply
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+
           {/* ================= RIGHT ARTICLES GRID ================= */}
-          <main className="lg:col-span-8 xl:col-span-9 space-y-6">
+          <main className="lg:col-span-8 xl:col-span-9 space-y-4 sm:space-y-6">
             
+            {/* Mobile Filter Trigger Button */}
+            <div className="lg:hidden flex items-center justify-between bg-white border border-[#E2E8F0] p-3 rounded-xl shadow-xs">
+              <button
+                type="button"
+                onClick={() => setIsMobileDrawerOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-[#071B46] text-white text-xs font-bold hover:bg-[#0B255E] transition shadow-xs"
+              >
+                <SlidersHorizontal size={13} className="text-amber-400" />
+                <span>Filters &amp; Categories</span>
+                {hasActiveFilters && (
+                  <span className="w-2 h-2 rounded-full bg-amber-400" />
+                )}
+              </button>
+              <span className="text-[11px] text-[#64748B]">
+                Showing <strong className="text-[#071B46]">{filteredArticles.length}</strong> of {articles.length}
+              </span>
+            </div>
+
             {/* Active Filter Chips & Counter Header */}
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-[#E2E8F0] p-4 rounded-2xl shadow-xs">
+            <div className="hidden lg:flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-white border border-[#E2E8F0] p-4 rounded-2xl shadow-xs">
               <div className="flex items-center gap-2">
                 <span className="text-xs font-bold text-[#071B46]">
                   Showing {filteredArticles.length} of {articles.length} reports
@@ -456,9 +574,9 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
               )}
             </div>
 
-            {/* Articles Grid - 3 side by side */}
+            {/* Articles Grid - 2 on mobile, 3 on desktop */}
             {filteredArticles.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
+              <div className="grid grid-cols-2 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-2.5 sm:gap-4">
                 {filteredArticles.map((article) => (
                   <BlogCard key={article.slug} article={article} compact={true} />
                 ))}

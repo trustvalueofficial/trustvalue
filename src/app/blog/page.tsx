@@ -1,14 +1,17 @@
 import type { Metadata } from "next";
 import { paths } from "@/lib/routing";
 import { meta } from "@/lib/seo";
-import { getBlogs, getBlogCategories } from "@/lib/cms";
+import { getBlogs, getBlogCategories, getBlogPageContent } from "@/lib/cms";
 import { BlogListingClient } from "./BlogListingClient";
 
-export const metadata: Metadata = meta(
-  "TrustValue Research & Regulatory Guides",
-  "In-depth consumer analyses, policyholder rights, statutory circular breakdowns, and sector audits.",
-  paths.blog()
-);
+export async function generateMetadata(): Promise<Metadata> {
+  const content = getBlogPageContent();
+  return meta(
+    content.seo?.title || content.title,
+    content.seo?.description || content.description,
+    paths.blog()
+  );
+}
 
 const FALLBACK_ARTICLES = [
   {
@@ -47,6 +50,13 @@ export default async function BlogPage() {
   const cmsArticles = await getBlogs();
   const articles = cmsArticles.length > 0 ? cmsArticles : FALLBACK_ARTICLES;
   const allCategories = getBlogCategories();
+  const pageContent = getBlogPageContent();
 
-  return <BlogListingClient articles={articles} allCategories={allCategories} />;
+  return (
+    <BlogListingClient
+      articles={articles}
+      allCategories={allCategories}
+      pageContent={pageContent}
+    />
+  );
 }

@@ -2,19 +2,21 @@
 
 import React, { useState, useMemo } from "react";
 import Link from "next/link";
-import { Search, Sparkles, BookOpen, ArrowRight, FolderTree, Layers, X } from "lucide-react";
+import { Search, Sparkles, BookOpen, ArrowRight, FolderTree, Layers, X, SlidersHorizontal } from "lucide-react";
 import { paths } from "@/lib/routing";
 import { BlogCard } from "@/components/blogcomponent";
-import type { BlogArticle, BlogCategory } from "@/lib/cms";
+import type { BlogArticle, BlogCategory, BlogPageContent } from "@/lib/cms";
 
 interface Props {
   articles: BlogArticle[];
   allCategories?: BlogCategory[];
+  pageContent?: BlogPageContent;
 }
 
-export function BlogListingClient({ articles, allCategories = [] }: Props) {
+export function BlogListingClient({ articles, allCategories = [], pageContent }: Props) {
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [searchQuery, setSearchQuery] = useState<string>("");
+  const [isMobileCategoryOpen, setIsMobileCategoryOpen] = useState<boolean>(false);
 
   // Compute categories that have published blogs (only show categories where blogs are present)
   const activeCategories = useMemo(() => {
@@ -87,60 +89,38 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
       {/* ========================================================= */}
       {/* 1. HERO BANNER: STYLED EXACTLY LIKE BLOG CATEGORY PAGE    */}
       {/* ========================================================= */}
-      <section className="bg-[#06132F] text-white pt-10 pb-12 border-b border-[#12224A] relative overflow-hidden">
+      <section className="bg-[#06132F] text-white pt-8 pb-10 sm:pt-10 sm:pb-12 border-b border-[#12224A] relative overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Breadcrumbs */}
-          <nav className="flex items-center gap-2 text-xs text-[#94A3B8] mb-4">
+          <nav className="flex items-center gap-2 text-xs text-[#94A3B8] mb-3 sm:mb-4">
             <Link href="/" className="hover:text-white transition-colors">
               Home
             </Link>
             <span className="text-[#475569]">/</span>
-            <span className="text-amber-400 font-semibold">Blog &amp; Regulatory Guides</span>
+            <span className="text-amber-400 font-semibold">Articles &amp; Regulatory Guides</span>
           </nav>
 
-          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6">
-            <div className="max-w-3xl">
-              <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-amber-400 text-xs font-semibold mb-3 border border-white/15">
-                <Sparkles size={13} />
-                <span>TrustValue Legal &amp; Regulatory Intelligence</span>
-              </div>
-              <h1
-                style={{
-                  fontSize: "32px",
-                  fontWeight: 800,
-                  lineHeight: "1.2",
-                  color: "#FFFFFF",
-                  letterSpacing: "-0.5px",
-                  margin: "0 0 12px 0",
-                }}
-              >
-                Research &amp; Regulatory Guides
-              </h1>
-              <p className="text-sm sm:text-base text-[#CBD5E1] leading-relaxed max-w-2xl">
-                Evidence-backed statutory explainers, IRDAI/RERA/SEBI circular breakdowns, and consumer protection playbooks audited by our research desk.
-              </p>
+          <div className="max-w-3xl">
+            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 text-amber-400 text-xs font-semibold mb-3 border border-white/15">
+              <Sparkles size={13} />
+              <span>{pageContent?.badge || "TrustValue Knowledge Hub"}</span>
             </div>
-
-            {/* Stats Chip */}
-            <div className="flex items-center gap-4 bg-[#091A42] border border-blue-900/60 rounded-xl p-3.5 sm:px-5 shrink-0">
-              <div className="text-center">
-                <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium block">
-                  Published Reports
-                </span>
-                <span className="text-xl sm:text-2xl font-black text-white font-mono">
-                  {articles.length}
-                </span>
-              </div>
-              <div className="h-8 w-px bg-slate-800" />
-              <div className="text-center">
-                <span className="text-[11px] uppercase tracking-wider text-slate-400 font-medium block">
-                  Active Sectors
-                </span>
-                <span className="text-xl sm:text-2xl font-black text-amber-400 font-mono">
-                  {activeCategories.length}
-                </span>
-              </div>
-            </div>
+            <h1
+              style={{
+                fontSize: "30px",
+                fontWeight: 800,
+                lineHeight: "1.2",
+                color: "#FFFFFF",
+                letterSpacing: "-0.5px",
+                margin: "0 0 10px 0",
+              }}
+            >
+              {pageContent?.title || "Articles, Insights & Regulatory Guides"}
+            </h1>
+            <p className="text-xs sm:text-sm md:text-base text-[#CBD5E1] leading-relaxed max-w-2xl">
+              {pageContent?.description ||
+                "Evidence-backed consumer guides, statutory explainers, and regulatory circular breakdowns audited by our research desk."}
+            </p>
           </div>
         </div>
       </section>
@@ -148,20 +128,47 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
       {/* ========================================================= */}
       {/* 2. INSTANT SEARCH BAR JUST AFTER BANNER (LETTER MATCHING) */}
       {/* ========================================================= */}
-      <section className="bg-white border-b border-[#E2E8F0] py-4 sticky top-0 z-20 shadow-xs">
+      <section className="bg-white border-b border-[#E2E8F0] py-3 sm:py-4 sticky top-0 z-20 shadow-xs">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex flex-col sm:flex-row items-center gap-3">
+          <div className="flex items-center gap-2 sm:gap-3">
+            {/* Mobile Category Trigger Pill - Slides in from left */}
+            <button
+              type="button"
+              onClick={() => setIsMobileCategoryOpen(true)}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                padding: "8px 12px",
+                backgroundColor: "#071B46",
+                color: "#FFFFFF",
+                border: "none",
+                borderRadius: "10px",
+                fontSize: "12px",
+                fontWeight: 700,
+                cursor: "pointer",
+              }}
+              className="lg:hidden shrink-0 hover:bg-[#0B255E] transition-colors shadow-xs active:scale-95"
+              title="Open Categories"
+            >
+              <FolderTree size={14} className="text-amber-400" />
+              <span className="hidden xs:inline">Categories</span>
+              <span className="text-[10px] bg-amber-400 text-[#071B46] font-bold px-1.5 py-0.2 rounded-full font-mono">
+                {activeCategories.length}
+              </span>
+            </button>
+
             <div className="relative flex-1 w-full">
               <Search
-                size={18}
+                size={16}
                 className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]"
               />
               <input
                 type="text"
-                placeholder="Search all research guides, statutory circulars, laws, or keywords across website..."
+                placeholder={pageContent?.searchPlaceholder || "Search all research guides, statutory circulars, laws..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-10 pr-9 py-2.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl text-sm text-[#071B46] placeholder-[#94A3B8] focus:outline-none focus:border-[#FF5A0A] focus:bg-white transition-all font-medium"
+                className="w-full pl-9 sm:pl-10 pr-9 py-2 sm:py-2.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl text-xs sm:text-sm text-[#071B46] placeholder-[#94A3B8] focus:outline-none focus:border-[#FF5A0A] focus:bg-white transition-all font-medium"
               />
               {searchQuery && (
                 <button
@@ -170,7 +177,7 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
                   className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
                   aria-label="Clear search query"
                 >
-                  <X size={15} />
+                  <X size={14} />
                 </button>
               )}
             </div>
@@ -185,44 +192,163 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
                 display: "inline-flex",
                 alignItems: "center",
                 gap: "8px",
-                padding: "10px 22px",
+                padding: "9px 20px",
                 backgroundColor: "#FF5A0A",
                 color: "#FFFFFF",
                 border: "none",
-                borderRadius: "12px",
+                borderRadius: "11px",
                 fontSize: "13px",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
-              className="w-full sm:w-auto justify-center hover:opacity-95 transition-opacity shrink-0 shadow-xs"
+              className="hidden sm:inline-flex justify-center hover:opacity-95 transition-opacity shrink-0 shadow-xs"
             >
-              <Search size={15} />
-              <span>Search Guides</span>
+              <Search size={14} />
+              <span>Search</span>
             </button>
           </div>
 
           {/* Instant feedback on query */}
-          {searchQuery.trim() && (
-            <div className="mt-2.5 flex items-center justify-between text-xs text-[#64748B]">
+          {searchQuery.trim() ? (
+            <div className="mt-2 flex items-center justify-between text-xs text-[#64748B]">
               <span>
-                Matching &ldquo;<strong className="text-[#071B46]">{searchQuery}</strong>&rdquo; across all published guides:
+                Matching &ldquo;<strong className="text-[#071B46]">{searchQuery}</strong>&rdquo;:
               </span>
               <span className="font-semibold text-[#071B46]">
                 {filteredArticles.length} {filteredArticles.length === 1 ? "guide" : "guides"} found
               </span>
             </div>
-          )}
+          ) : null}
         </div>
       </section>
 
       {/* ========================================================= */}
-      {/* 3. MAIN SECTION: LEFT CATEGORIES WIDGET + 4-COLUMN GRID   */}
+      {/* MOBILE SLIDE-OVER CATEGORY DRAWER (FROM LEFT SIDE)        */}
       {/* ========================================================= */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
+      {isMobileCategoryOpen && (
+        <div className="fixed inset-0 z-50 lg:hidden" role="dialog" aria-modal="true">
+          {/* Backdrop */}
+          <div
+            className="fixed inset-0 bg-black/60 backdrop-blur-xs transition-opacity duration-300"
+            onClick={() => setIsMobileCategoryOpen(false)}
+          />
+
+          {/* Drawer Sliding from Left */}
+          <div className="fixed inset-y-0 left-0 w-80 max-w-[85vw] bg-white shadow-2xl flex flex-col z-50 transform transition-transform duration-300 ease-out animate-in slide-in-from-left">
+            {/* Drawer Header */}
+            <div className="p-4 bg-[#071B46] text-white flex items-center justify-between border-b border-[#12224A]">
+              <div className="flex items-center gap-2 font-bold text-sm">
+                <FolderTree size={16} className="text-amber-400" />
+                <span>Research Categories</span>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsMobileCategoryOpen(false)}
+                className="p-1 rounded-lg text-slate-300 hover:text-white hover:bg-white/10 transition-colors"
+                aria-label="Close categories"
+              >
+                <X size={18} />
+              </button>
+            </div>
+
+            {/* Category Items */}
+            <div className="flex-1 overflow-y-auto p-3.5 space-y-1">
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setIsMobileCategoryOpen(false);
+                }}
+                className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs font-semibold transition-all mb-2 ${
+                  selectedCategory === "all"
+                    ? "bg-[#FFF7ED] text-[#C2410C] font-bold border border-[#FFD8A8]"
+                    : "text-[#334155] hover:bg-[#F8FAFC] hover:text-[#071B46] border border-transparent"
+                }`}
+              >
+                <div className="flex items-center gap-2 truncate">
+                  <Layers
+                    size={14}
+                    className={selectedCategory === "all" ? "text-[#FF5A0A]" : "text-slate-400"}
+                  />
+                  <span>All Categories</span>
+                </div>
+                <span
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold shrink-0 ${
+                    selectedCategory === "all"
+                      ? "bg-[#FF5A0A] text-white"
+                      : "bg-slate-100 text-slate-700"
+                  }`}
+                >
+                  {articles.length}
+                </span>
+              </button>
+
+              {activeCategories.map((c) => {
+                const isActive = selectedCategory === c.slug;
+                return (
+                  <button
+                    key={c.slug}
+                    type="button"
+                    onClick={() => {
+                      setSelectedCategory(c.slug);
+                      setIsMobileCategoryOpen(false);
+                    }}
+                    className={`w-full flex items-center justify-between px-3 py-2.5 rounded-xl text-xs transition-all ${
+                      isActive
+                        ? "bg-[#FFF7ED] text-[#C2410C] font-bold border border-[#FFD8A8]"
+                        : "text-[#334155] hover:bg-[#F8FAFC] hover:text-[#071B46] border border-transparent"
+                    }`}
+                  >
+                    <div className="flex items-center gap-2 truncate">
+                      <span
+                        className={`w-2 h-2 rounded-full shrink-0 ${
+                          isActive ? "bg-[#FF5A0A]" : "bg-slate-300"
+                        }`}
+                      />
+                      <span className="truncate">{c.name}</span>
+                    </div>
+                    <span
+                      className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold shrink-0 ${
+                        isActive
+                          ? "bg-[#FF5A0A] text-white"
+                          : "bg-slate-100 text-slate-700"
+                      }`}
+                    >
+                      {c.count}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* Drawer Footer */}
+            <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between">
+              <span className="text-[11px] text-[#64748B]">
+                {activeCategories.length} Active Categories
+              </span>
+              <button
+                type="button"
+                onClick={() => {
+                  setSelectedCategory("all");
+                  setIsMobileCategoryOpen(false);
+                }}
+                className="text-[11px] text-[#FF5A0A] font-bold hover:underline"
+              >
+                Reset All
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ========================================================= */}
+      {/* 3. MAIN SECTION: LEFT CATEGORIES (DESKTOP) + BLOG GRID    */}
+      {/* ========================================================= */}
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 sm:py-8 lg:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
           
-          {/* ================= LEFT CATEGORIES WIDGET ================= */}
-          <aside className="lg:col-span-4 xl:col-span-3 space-y-6">
+          {/* ================= LEFT CATEGORIES WIDGET (DESKTOP ONLY) ================= */}
+          <aside className="hidden lg:block lg:col-span-4 xl:col-span-3 space-y-6">
             <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 sm:p-5 shadow-xs sticky top-24">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
                 <div className="flex items-center gap-2 font-bold text-[#071B46] text-sm">
@@ -288,7 +414,6 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
                         />
                         <span className="truncate">{c.name}</span>
                       </div>
-                      {/* Number of blogs on right side */}
                       <span
                         className={`text-[10px] font-mono px-2 py-0.5 rounded-full font-bold shrink-0 ${
                           isActive
@@ -325,10 +450,29 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
             </div>
           </aside>
 
-          {/* ================= RIGHT BLOG GRID (4 IN HORIZONTAL) ================= */}
+          {/* ================= RIGHT BLOG GRID (2 ON MOBILE, 4 ON DESKTOP) ================= */}
           <main id="blog-grid-section" className="lg:col-span-8 xl:col-span-9">
-            {/* Results Header */}
-            <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
+            {/* Mobile/Tablet Category Status Bar */}
+            <div className="lg:hidden flex items-center justify-between mb-3 px-1">
+              <button
+                type="button"
+                onClick={() => setIsMobileCategoryOpen(true)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#CBD5E1] text-xs font-bold text-[#071B46] hover:bg-slate-50 transition shadow-xs"
+              >
+                <FolderTree size={13} className="text-amber-500" />
+                <span>Categories</span>
+                {selectedCategory !== "all" && (
+                  <span className="text-[10px] text-[#FF5A0A] font-semibold">({selectedCategory})</span>
+                )}
+              </button>
+
+              <div className="text-[11px] text-[#64748B]">
+                Showing <strong className="text-[#071B46]">{filteredArticles.length}</strong> {filteredArticles.length === 1 ? "guide" : "guides"}
+              </div>
+            </div>
+
+            {/* Results Header (Desktop) */}
+            <div className="hidden lg:flex items-center justify-between mb-4 flex-wrap gap-2">
               <div className="text-xs text-[#64748B]">
                 Showing <strong className="text-[#071B46]">{filteredArticles.length}</strong> {filteredArticles.length === 1 ? "guide" : "guides"}
                 {selectedCategory !== "all" && (
@@ -360,8 +504,8 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
                 </p>
               </div>
             ) : (
-              /* 4 BLOGS FITTED IN HORIZONTAL */
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5 sm:gap-4">
+              /* 2 BLOGS IN MOBILE, 4 IN HORIZONTAL ON DESKTOP */
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-2.5 sm:gap-4">
                 {filteredArticles.map((a) => (
                   <BlogCard key={a.slug} article={a} compact={true} />
                 ))}
