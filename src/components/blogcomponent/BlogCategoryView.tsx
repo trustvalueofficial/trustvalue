@@ -488,23 +488,6 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
                     </div>
                   </div>
                 </div>
-
-                <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between">
-                  <button
-                    type="button"
-                    onClick={resetFilters}
-                    className="text-xs text-red-500 font-semibold hover:underline"
-                  >
-                    Reset Filters
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => setIsMobileDrawerOpen(false)}
-                    className="px-3 py-1.5 bg-[#071B46] text-white text-xs font-bold rounded-lg"
-                  >
-                    Apply
-                  </button>
-                </div>
               </div>
             </div>
           )}

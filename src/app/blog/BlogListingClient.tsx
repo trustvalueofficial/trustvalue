@@ -128,31 +128,24 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
       {/* ========================================================= */}
       {/* 2. INSTANT SEARCH BAR JUST AFTER BANNER (LETTER MATCHING) */}
       {/* ========================================================= */}
-      <section className="bg-white border-b border-[#E2E8F0] py-3 sm:py-4 sticky top-0 z-20 shadow-xs">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <section className="bg-white border-b border-[#E2E8F0] py-2 sm:py-3 sticky top-0 z-20 shadow-xs">
+        <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
           <div className="flex items-center gap-2 sm:gap-3">
-            {/* Mobile Category Trigger Pill - Slides in from left */}
+            {/* Mobile Category Trigger Pill - Visible ONLY on mobile (< lg), completely hidden on desktop */}
             <button
               type="button"
               onClick={() => setIsMobileCategoryOpen(true)}
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "6px",
-                padding: "8px 12px",
                 backgroundColor: "#071B46",
                 color: "#FFFFFF",
                 border: "none",
-                borderRadius: "10px",
-                fontSize: "12px",
-                fontWeight: 700,
+                borderRadius: "8px",
                 cursor: "pointer",
               }}
-              className="lg:hidden shrink-0 hover:bg-[#0B255E] transition-colors shadow-xs active:scale-95"
+              className="inline-flex lg:hidden items-center gap-1.5 px-2.5 h-8.5 text-xs font-bold shrink-0 hover:bg-[#0B255E] transition-colors shadow-xs active:scale-95"
               title="Open Categories"
             >
-              <FolderTree size={14} className="text-amber-400" />
-              <span className="hidden xs:inline">Categories</span>
+              <FolderTree size={13} className="text-amber-400" />
               <span className="text-[10px] bg-amber-400 text-[#071B46] font-bold px-1.5 py-0.2 rounded-full font-mono">
                 {activeCategories.length}
               </span>
@@ -160,28 +153,29 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
 
             <div className="relative flex-1 w-full">
               <Search
-                size={16}
-                className="absolute left-3.5 top-1/2 -translate-y-1/2 text-[#64748B]"
+                size={15}
+                className="absolute left-3 top-1/2 -translate-y-1/2 text-[#64748B]"
               />
               <input
                 type="text"
                 placeholder={pageContent?.searchPlaceholder || "Search all research guides, statutory circulars, laws..."}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                className="w-full pl-9 sm:pl-10 pr-9 py-2 sm:py-2.5 bg-[#F8FAFC] border border-[#CBD5E1] rounded-xl text-xs sm:text-sm text-[#071B46] placeholder-[#94A3B8] focus:outline-none focus:border-[#FF5A0A] focus:bg-white transition-all font-medium"
+                className="w-full h-8.5 pl-8 pr-7 py-1 bg-[#F8FAFC] border border-[#CBD5E1] rounded-lg text-xs text-[#071B46] placeholder-[#94A3B8] focus:outline-none focus:border-[#FF5A0A] focus:bg-white transition-all font-medium"
               />
               {searchQuery && (
                 <button
                   type="button"
                   onClick={() => setSearchQuery("")}
-                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
+                  className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition-colors p-1"
                   aria-label="Clear search query"
                 >
-                  <X size={14} />
+                  <X size={13} />
                 </button>
               )}
             </div>
 
+            {/* Desktop-only Search button - hidden on mobile */}
             <button
               type="button"
               onClick={() => {
@@ -189,19 +183,15 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
                 if (grid) grid.scrollIntoView({ behavior: "smooth" });
               }}
               style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                padding: "9px 20px",
                 backgroundColor: "#FF5A0A",
                 color: "#FFFFFF",
                 border: "none",
-                borderRadius: "11px",
-                fontSize: "13px",
+                borderRadius: "8px",
+                fontSize: "12.5px",
                 fontWeight: 700,
                 cursor: "pointer",
               }}
-              className="hidden sm:inline-flex justify-center hover:opacity-95 transition-opacity shrink-0 shadow-xs"
+              className="hidden lg:inline-flex items-center gap-1.5 px-4 h-8.5 justify-center hover:opacity-95 transition-opacity shrink-0 shadow-xs"
             >
               <Search size={14} />
               <span>Search</span>
@@ -210,7 +200,7 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
 
           {/* Instant feedback on query */}
           {searchQuery.trim() ? (
-            <div className="mt-2 flex items-center justify-between text-xs text-[#64748B]">
+            <div className="mt-1.5 flex items-center justify-between text-xs text-[#64748B]">
               <span>
                 Matching &ldquo;<strong className="text-[#071B46]">{searchQuery}</strong>&rdquo;:
               </span>
@@ -319,23 +309,6 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
                   </button>
                 );
               })}
-            </div>
-
-            {/* Drawer Footer */}
-            <div className="p-3 border-t border-[#E2E8F0] bg-[#F8FAFC] flex items-center justify-between">
-              <span className="text-[11px] text-[#64748B]">
-                {activeCategories.length} Active Categories
-              </span>
-              <button
-                type="button"
-                onClick={() => {
-                  setSelectedCategory("all");
-                  setIsMobileCategoryOpen(false);
-                }}
-                className="text-[11px] text-[#FF5A0A] font-bold hover:underline"
-              >
-                Reset All
-              </button>
             </div>
           </div>
         </div>
@@ -452,23 +425,23 @@ export function BlogListingClient({ articles, allCategories = [], pageContent }:
 
           {/* ================= RIGHT BLOG GRID (2 ON MOBILE, 4 ON DESKTOP) ================= */}
           <main id="blog-grid-section" className="lg:col-span-8 xl:col-span-9">
-            {/* Mobile/Tablet Category Status Bar */}
-            <div className="lg:hidden flex items-center justify-between mb-3 px-1">
-              <button
-                type="button"
-                onClick={() => setIsMobileCategoryOpen(true)}
-                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white border border-[#CBD5E1] text-xs font-bold text-[#071B46] hover:bg-slate-50 transition shadow-xs"
-              >
-                <FolderTree size={13} className="text-amber-500" />
-                <span>Categories</span>
-                {selectedCategory !== "all" && (
-                  <span className="text-[10px] text-[#FF5A0A] font-semibold">({selectedCategory})</span>
-                )}
-              </button>
-
+            {/* Mobile/Tablet Category Status Bar - clean count only without redundant button */}
+            <div className="lg:hidden flex items-center justify-between mb-2.5 px-1">
               <div className="text-[11px] text-[#64748B]">
                 Showing <strong className="text-[#071B46]">{filteredArticles.length}</strong> {filteredArticles.length === 1 ? "guide" : "guides"}
+                {selectedCategory !== "all" && (
+                  <span className="ml-1 text-[#FF5A0A] font-semibold">in {selectedCategory}</span>
+                )}
               </div>
+              {selectedCategory !== "all" && (
+                <button
+                  type="button"
+                  onClick={() => setSelectedCategory("all")}
+                  className="text-[11px] text-[#FF5A0A] font-bold hover:underline"
+                >
+                  Clear filter
+                </button>
+              )}
             </div>
 
             {/* Results Header (Desktop) */}
