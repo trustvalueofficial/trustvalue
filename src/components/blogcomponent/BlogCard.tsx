@@ -8,91 +8,86 @@ import type { BlogArticle } from "@/lib/cms";
 
 interface BlogCardProps {
   article: BlogArticle;
+  compact?: boolean;
 }
 
-export function BlogCard({ article: a }: BlogCardProps) {
+export function BlogCard({ article: a, compact = false }: BlogCardProps) {
   const category = a.sector || a.categorySlug || "general";
   return (
     <Link
       href={paths.blogPost(category, a.slug)}
-      className="group flex flex-col bg-white border border-[#DCE2EB] hover:border-[#FF5A0A] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 no-underline"
+      className="group flex flex-col bg-white border border-[#DCE2EB] hover:border-[#FF5A0A] rounded-xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 no-underline h-full"
     >
       {/* Featured Thumbnail */}
       {a.featuredImage ? (
-        <div className="w-full h-44 overflow-hidden bg-[#F8FAFC] relative">
+        <div className={`w-full ${compact ? "h-24 sm:h-32" : "h-28 sm:h-44"} overflow-hidden bg-[#F8FAFC] relative shrink-0`}>
           <img
             src={a.featuredImage}
             alt={a.title}
             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+            onError={(e) => {
+              (e.currentTarget.parentElement as HTMLElement)?.style.setProperty("display", "none");
+            }}
           />
         </div>
       ) : null}
 
-      <div className="p-4 sm:p-5 flex-1 flex flex-col">
-        {/* Meta Header */}
-        <div className="flex justify-between items-center mb-2.5">
-          <span className="px-2 py-0.5 rounded-full bg-[#EEF2F7] border border-[#DCE2EB] text-[10px] font-bold uppercase tracking-wider text-[#071B46]">
-            {a.sector}
-          </span>
-          <div className="flex items-center gap-2.5 text-[11px] text-[#667085]">
-            <span className="flex items-center gap-1">
-              <Clock size={11} /> {a.readTime || "5 min read"}
+      <div className={`${compact ? "p-2 sm:p-3" : "p-2.5 sm:p-4"} flex-1 flex flex-col justify-between`}>
+        <div>
+          {/* Meta Header */}
+          <div className="flex justify-between items-center mb-1 sm:mb-2 gap-1">
+            <span
+              className={`px-1.5 py-0.5 rounded-md bg-[#EEF2F7] border border-[#DCE2EB] ${
+                compact ? "text-[8px] sm:text-[9.5px]" : "text-[8.5px] sm:text-[10px]"
+              } font-bold uppercase tracking-wider text-[#071B46] truncate max-w-[70px] sm:max-w-[120px]`}
+            >
+              {a.sector}
             </span>
-            {a.views ? (
-              <span className="flex items-center gap-1">
-                <Eye size={11} /> {a.views}
+            <div
+              className={`flex items-center gap-1 sm:gap-2 ${
+                compact ? "text-[8.5px] sm:text-[10px]" : "text-[9px] sm:text-[11px]"
+              } text-[#667085] shrink-0`}
+            >
+              <span className="flex items-center gap-0.5">
+                <Clock size={compact ? 9 : 11} /> {a.readTime || "5m"}
               </span>
-            ) : null}
+              {a.views ? (
+                <span className="hidden sm:flex items-center gap-0.5">
+                  <Eye size={compact ? 9 : 11} /> {a.views}
+                </span>
+              ) : null}
+            </div>
           </div>
-        </div>
 
-        {/* Card Title - Explicit inline styles to prevent prototype.css h2 inflation */}
-        <div
-          className="font-bold text-[#071B46] group-hover:text-[#FF5A0A] transition-colors"
-          style={{
-            fontSize: "15px",
-            fontWeight: 700,
-            lineHeight: "1.35",
-            margin: "0 0 8px 0",
-          }}
-        >
-          {a.title}
-        </div>
-
-        {/* Direct Answer snippet highlight if present */}
-        {a.directAnswer ? (
+          {/* Card Title */}
           <div
-            className="p-2.5 bg-[#ECFDF5] border-l-2 border-[#10B981] rounded-r-lg mb-3"
-            style={{ fontSize: "12px", lineHeight: "1.5", color: "#065F46" }}
+            className="font-bold text-[#071B46] group-hover:text-[#FF5A0A] transition-colors line-clamp-2 text-xs sm:text-[13.5px] leading-snug sm:leading-[1.35] mb-1 sm:mb-1.5"
           >
-            <strong style={{ color: "#0A8754", display: "block", marginBottom: "2px" }}>
-              Statutory Takeaway:
-            </strong>
-            {a.directAnswer.length > 100 ? a.directAnswer.slice(0, 100) + "..." : a.directAnswer}
+            {a.title}
           </div>
-        ) : (
-          <p
-            style={{
-              fontSize: "13px",
-              color: "#46526B",
-              lineHeight: "1.5",
-              margin: "0 0 12px 0",
-            }}
-            className="flex-1 line-clamp-2"
-          >
-            {a.summary}
-          </p>
-        )}
+
+          {/* Card Excerpt / Summary */}
+          {(a.summary || a.seo?.description) ? (
+            <p
+              className="line-clamp-2 text-[10px] sm:text-[11.5px] text-[#46526B] leading-tight sm:leading-relaxed mb-1.5 sm:mb-2"
+            >
+              {a.summary || a.seo?.description}
+            </p>
+          ) : null}
+        </div>
 
         {/* Card Footer */}
-        <div className="flex justify-between items-center pt-2.5 border-t border-[#EEF2F7] mt-auto text-[11px] text-[#667085]">
-          <span>By {a.author || "Research Desk"}</span>
-          <span className="flex items-center gap-1 text-[#FF5A0A] font-bold group-hover:translate-x-0.5 transition-transform text-xs">
-            Read Guide <ChevronRight size={13} />
+        <div
+          className={`flex justify-between items-center pt-1.5 sm:pt-2 border-t border-[#EEF2F7] mt-auto ${
+            compact ? "text-[8.5px] sm:text-[10px]" : "text-[9px] sm:text-[11px]"
+          } text-[#667085]`}
+        >
+          <span className="truncate max-w-[65px] sm:max-w-[110px]">By {a.author || "Research"}</span>
+          <span className="flex items-center gap-0.5 text-[#FF5A0A] font-bold group-hover:translate-x-0.5 transition-transform text-[10px] sm:text-xs">
+            Read <ChevronRight size={compact ? 10 : 12} />
           </span>
         </div>
       </div>
     </Link>
   );
 }
-

@@ -649,4 +649,42 @@ const loadHomePage = memo((): HomePageContent => {
 
 export const getHomePageContent = (): HomePageContent => loadHomePage();
 
+/* ---------------------------------- Static Pages (Blog Page) ---------------------------------- */
+
+export interface BlogPageContent {
+  badge: string;
+  title: string;
+  description: string;
+  searchPlaceholder: string;
+  seo?: {
+    title: string;
+    description: string;
+  };
+  updatedAt?: string;
+  lastEditedBy?: string;
+}
+
+export const DEFAULT_BLOG_PAGE: BlogPageContent = {
+  badge: "TrustValue Knowledge Hub",
+  title: "Articles, Insights & Regulatory Guides",
+  description: "Evidence-backed consumer guides, statutory explainers, and regulatory circular breakdowns audited by our research desk.",
+  searchPlaceholder: "Search all research guides, statutory circulars, laws, or keywords...",
+  seo: {
+    title: "TrustValue | Articles, Insights & Regulatory Guides",
+    description: "Evidence-backed consumer guides, statutory explainers, and regulatory circular breakdowns audited by our research desk."
+  }
+};
+
+const loadBlogPage = memo((): BlogPageContent => {
+  const p = path.join(ROOT, "static", "blog.json");
+  if (fs.existsSync(p)) {
+    try {
+      return { ...DEFAULT_BLOG_PAGE, ...JSON.parse(fs.readFileSync(p, "utf8")) };
+    } catch {}
+  }
+  return DEFAULT_BLOG_PAGE;
+});
+
+export const getBlogPageContent = (): BlogPageContent => loadBlogPage();
+
 
