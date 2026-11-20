@@ -25,6 +25,9 @@ export function BlogCard({ article: a, compact = false }: BlogCardProps) {
             src={a.featuredImage}
             alt={a.title}
             className="w-full h-full object-cover group-hover:scale-102 transition-transform duration-300"
+            onError={(e) => {
+              (e.currentTarget.parentElement as HTMLElement)?.style.setProperty("display", "none");
+            }}
           />
         </div>
       ) : null}
@@ -68,18 +71,8 @@ export function BlogCard({ article: a, compact = false }: BlogCardProps) {
           {a.title}
         </div>
 
-        {/* Direct Answer snippet highlight if present */}
-        {a.directAnswer ? (
-          <div
-            className={`p-2 bg-[#ECFDF5] border-l-2 border-[#10B981] rounded-r-md mb-2 line-clamp-2`}
-            style={{ fontSize: compact ? "11px" : "12px", lineHeight: "1.4", color: "#065F46" }}
-          >
-            <strong style={{ color: "#0A8754", display: "inline", marginRight: "4px" }}>
-              Takeaway:
-            </strong>
-            {a.directAnswer}
-          </div>
-        ) : (
+        {/* Card Excerpt / Summary */}
+        {(a.summary || a.seo?.description) ? (
           <p
             style={{
               fontSize: compact ? "11.5px" : "13px",
@@ -89,9 +82,9 @@ export function BlogCard({ article: a, compact = false }: BlogCardProps) {
             }}
             className="flex-1 line-clamp-2"
           >
-            {a.summary}
+            {a.summary || a.seo?.description}
           </p>
-        )}
+        ) : null}
 
         {/* Card Footer */}
         <div
