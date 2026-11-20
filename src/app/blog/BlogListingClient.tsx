@@ -88,7 +88,7 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
       {/* 1. HERO BANNER: STYLED EXACTLY LIKE BLOG CATEGORY PAGE    */}
       {/* ========================================================= */}
       <section className="bg-[#06132F] text-white pt-10 pb-12 border-b border-[#12224A] relative overflow-hidden">
-        <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           {/* Breadcrumbs */}
           <nav className="flex items-center gap-2 text-xs text-[#94A3B8] mb-4">
             <Link href="/" className="hover:text-white transition-colors">
@@ -149,7 +149,7 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
       {/* 2. INSTANT SEARCH BAR JUST AFTER BANNER (LETTER MATCHING) */}
       {/* ========================================================= */}
       <section className="bg-white border-b border-[#E2E8F0] py-4 sticky top-0 z-20 shadow-xs">
-        <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex flex-col sm:flex-row items-center gap-3">
             <div className="relative flex-1 w-full">
               <Search
@@ -218,11 +218,11 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
       {/* ========================================================= */}
       {/* 3. MAIN SECTION: LEFT CATEGORIES WIDGET + 4-COLUMN GRID   */}
       {/* ========================================================= */}
-      <div className="max-w-[1520px] mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
-        <div className="flex flex-col lg:flex-row gap-6 xl:gap-8 items-start">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
           
           {/* ================= LEFT CATEGORIES WIDGET ================= */}
-          <aside className="w-full lg:w-[280px] xl:w-[300px] shrink-0">
+          <aside className="lg:col-span-4 xl:col-span-3 space-y-6">
             <div className="bg-white border border-[#E2E8F0] rounded-2xl p-4 sm:p-5 shadow-xs sticky top-24">
               <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#E2E8F0]">
                 <div className="flex items-center gap-2 font-bold text-[#071B46] text-sm">
@@ -326,7 +326,7 @@ export function BlogListingClient({ articles, allCategories = [] }: Props) {
           </aside>
 
           {/* ================= RIGHT BLOG GRID (4 IN HORIZONTAL) ================= */}
-          <main id="blog-grid-section" className="flex-1 min-w-0">
+          <main id="blog-grid-section" className="lg:col-span-8 xl:col-span-9">
             {/* Results Header */}
             <div className="flex items-center justify-between mb-4 flex-wrap gap-2">
               <div className="text-xs text-[#64748B]">

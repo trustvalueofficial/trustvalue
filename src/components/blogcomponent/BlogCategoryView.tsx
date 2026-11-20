@@ -456,11 +456,11 @@ export function BlogCategoryView({ category, articles, allCategories }: Props) {
               )}
             </div>
 
-            {/* Articles Grid */}
+            {/* Articles Grid - 3 side by side */}
             {filteredArticles.length > 0 ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-4">
                 {filteredArticles.map((article) => (
-                  <BlogCard key={article.slug} article={article} />
+                  <BlogCard key={article.slug} article={article} compact={true} />
                 ))}
               </div>
             ) : articles.length > 0 ? (
