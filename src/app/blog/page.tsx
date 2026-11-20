@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { paths } from "@/lib/routing";
 import { meta } from "@/lib/seo";
-import { getBlogs } from "@/lib/cms";
+import { getBlogs, getBlogCategories } from "@/lib/cms";
 import { BlogListingClient } from "./BlogListingClient";
 
 export const metadata: Metadata = meta(
@@ -46,6 +46,7 @@ const FALLBACK_ARTICLES = [
 export default async function BlogPage() {
   const cmsArticles = await getBlogs();
   const articles = cmsArticles.length > 0 ? cmsArticles : FALLBACK_ARTICLES;
+  const allCategories = getBlogCategories();
 
-  return <BlogListingClient articles={articles} />;
+  return <BlogListingClient articles={articles} allCategories={allCategories} />;
 }
