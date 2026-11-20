@@ -57,9 +57,9 @@ export default function Footer() {
               <li><Link href={paths.rating()}>TrustScore Leaderboard</Link></li>
               <li><Link href={paths.reviews()}>Verified Consumer Reviews</Link></li>
               <li><Link href={paths.blog()}>Regulatory &amp; Research Desk</Link></li>
-              <li><Link href={paths.blogPost("irdai-3-year-incontestability-rule-explained")}>IRDAI Section 45 Incontestability</Link></li>
-              <li><Link href={paths.blogPost("rera-carpet-area-vs-built-up-guide")}>MahaRERA Carpet Area Standard</Link></li>
-              <li><Link href={paths.blogPost("nabh-cashless-hospital-turnaround-times")}>NABH Cashless Standards</Link></li>
+              <li><Link href={paths.blogPost("insurance", "irdai-3-year-incontestability-rule-explained")}>IRDAI Section 45 Incontestability</Link></li>
+              <li><Link href={paths.blogPost("real-estate", "rera-carpet-area-vs-built-up-guide")}>MahaRERA Carpet Area Standard</Link></li>
+              <li><Link href={paths.blogPost("healthcare", "nabh-cashless-hospital-turnaround-times")}>NABH Cashless Standards</Link></li>
             </ul>
           </div>
 

@@ -114,6 +114,7 @@ interface BlogDiscoverySidebarProps {
   latestCategoryPosts: Array<{
     slug: string;
     title: string;
+    sector?: string;
     readTime?: string;
   }>;
   popularPosts?: PopularPostItem[];
@@ -144,7 +145,7 @@ export function BlogDiscoverySidebar({
           {latestCategoryPosts.map((catPost) => (
             <Link
               key={catPost.slug}
-              href={paths.blogPost(catPost.slug)}
+              href={paths.blogPost(catPost.sector || sector, catPost.slug)}
               className="group block p-2.5 rounded-xl border border-[#EEF2F7] hover:border-[#FF5A0A] hover:bg-[#FAFBFD] transition-all no-underline"
             >
               <div
@@ -225,7 +226,7 @@ export function BlogDiscoverySidebar({
           {popularPosts.map((pop, idx) => (
             <Link
               key={pop.slug}
-              href={paths.blogPost(pop.slug)}
+              href={paths.blogPost(pop.sector || "general", pop.slug)}
               className="group flex items-start gap-2.5 p-1.5 rounded-xl hover:bg-[#F8FAFC] transition-all no-underline"
             >
               <span className="w-5 h-5 rounded-md bg-[#EEF2F7] text-[#071B46] font-extrabold text-[10px] flex items-center justify-center shrink-0 mt-0.5">

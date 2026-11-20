@@ -1,0 +1,52 @@
+{
+  "hero": {
+    "descriptor": "The Global Trust Index",
+    "titlePrimary": "Know before you",
+    "titleAccent": "trust.",
+    "lead": "TrustValue is where people rate and review brands, in public. Real experiences become a Trust Index for every brand and product. See what people actually lived through before you choose, whether it is a policy, a loan, a phone plan, a car or a hospital.",
+    "searchPlaceholder": "Search a brand, product or category",
+    "tryChips": [
+      "Insurance",
+      "Banking & loans",
+      "Telecom",
+      "Automobiles",
+      "All 18 sectors"
+    ],
+    "promises": [
+      "No paid influence",
+      "No rating ownership by businesses",
+      "No rewritten history"
+    ]
+  },
+  "ticker": {
+    "stateLabel": "Every-Sector Index",
+    "highlightNote": "Insurance opens first, then banking, telecom and automobiles · 183 brands listed"
+  },
+  "statusCard": {
+    "tagLabel": "Trust Index, pre-live",
+    "title": "Goes live at 1,000 reviews.",
+    "description": "An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.",
+    "targetReviews": 1000,
+    "lockedReviews": 0,
+    "counts": {
+      "articlesPublished": 0,
+      "brandsListed": 183,
+      "productsListed": 84,
+      "sectorsMapped": 18
+    }
+  },
+  "simulator": {
+    "title": "One gesture. One truth. Then move on.",
+    "lead": "Rating here takes about seven seconds. Drag once, fine-tune if you care to, lock it. Try it now. This is a demo and nothing is submitted.",
+    "tag": "Demo. Nothing is submitted.",
+    "question": "How did it feel?",
+    "hint": "Don't overthink it. Your first instinct is the signal."
+  },
+  "seo": {
+    "title": "TrustValue | The Global Consumer Regulatory & Trust Index",
+    "description": "Independent regulatory audit, consumer trust scores, and statutory telemetries across India's core sectors.",
+    "focusKeyword": "Global Trust Index"
+  },
+  "updatedAt": "2026-11-20T17:50:00.000Z",
+  "lastEditedBy": "System Seed"
+}

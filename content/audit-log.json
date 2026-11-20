@@ -1,5 +1,60 @@
 [
   {
+    "id": "aud_1795179938255",
+    "timestamp": "2026-11-20T13:05:38.255Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "update",
+    "entityType": "category",
+    "entityId": "insurance",
+    "details": "Updated blog category \"Insurance & Risk Protection\" (insurance)"
+  },
+  {
+    "id": "aud_1795175570338",
+    "timestamp": "2026-11-20T11:52:50.338Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "delete",
+    "entityType": "sector",
+    "entityId": "internet-ott",
+    "details": "Deleted sector internet-ott and its associated data"
+  },
+  {
+    "id": "aud_1795175516922",
+    "timestamp": "2026-11-20T11:51:56.922Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "delete",
+    "entityType": "sector",
+    "entityId": "telecom",
+    "details": "Deleted sector telecom and its associated data"
+  },
+  {
+    "id": "aud_1795175480778",
+    "timestamp": "2026-11-20T11:51:20.778Z",
+    "userId": "active_user",
+    "userName": "Admin",
+    "role": "admin",
+    "action": "delete",
+    "entityType": "sector",
+    "entityId": "automobiles",
+    "details": "Deleted sector automobiles and its associated data"
+  },
+  {
+    "id": "aud_1795169333489",
+    "timestamp": "2026-11-20T10:08:53.480Z",
+    "userId": "active_user",
+    "userName": "API_Client",
+    "role": "editor",
+    "action": "create",
+    "entityType": "blog",
+    "entityId": "rbi-prepayment-penalty-ban-audit",
+    "details": "Created blog article \"RBI Zero Prepayment Penalty Directives: Home Loan Foreclosure Audit\" [Status: published]"
+  },
+  {
     "id": "aud_1795156676760",
     "timestamp": "2026-11-20T06:37:56.749Z",
     "userId": "active_user",

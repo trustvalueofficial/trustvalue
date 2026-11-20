@@ -19,6 +19,43 @@ export default function HomePage() {
   const [pledgeDone, setPledgeDone] = useState(false);
   const [inTopSections, setInTopSections] = useState(true);
   const [headerStickyGone, setHeaderStickyGone] = useState(false);
+  const [content, setContent] = useState<any>(null);
+
+  useEffect(() => {
+    fetch("/api/content/home")
+      .then((r) => r.json())
+      .then((d) => {
+        if (d?.data) setContent(d.data);
+      })
+      .catch(() => {});
+  }, []);
+
+  const heroDescriptor = content?.hero?.descriptor || "The Global Trust Index";
+  const heroTitlePrimary = content?.hero?.titlePrimary || "Know before you";
+  const heroTitleAccent = content?.hero?.titleAccent || "trust.";
+  const heroLead = content?.hero?.lead || "TrustValue is where people rate and review brands, in public. Real experiences become a Trust Index for every brand and product. See what people actually lived through before you choose, whether it is a policy, a loan, a phone plan, a car or a hospital.";
+  const heroPromises = content?.hero?.promises || [
+    "No paid influence",
+    "No rating ownership by businesses",
+    "No rewritten history",
+  ];
+  const tickerState = content?.ticker?.stateLabel || "Every-Sector Index";
+  const tickerHighlight = content?.ticker?.highlightNote || "Insurance opens first, then banking, telecom and automobiles · 183 brands listed";
+  const statusTag = content?.statusCard?.tagLabel || "Trust Index, pre-live";
+  const statusTitle = content?.statusCard?.title || "Goes live at 1,000 reviews.";
+  const statusDesc = content?.statusCard?.description || "An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.";
+  const statusLocked = content?.statusCard?.lockedReviews ?? 0;
+  const statusTarget = content?.statusCard?.targetReviews ?? 1000;
+  const countArticles = content?.statusCard?.counts?.articlesPublished ?? 0;
+  const countBrands = content?.statusCard?.counts?.brandsListed ?? 183;
+  const countProducts = content?.statusCard?.counts?.productsListed ?? 84;
+  const countSectors = content?.statusCard?.counts?.sectorsMapped ?? 18;
+  const demoTitle = content?.simulator?.title || "One gesture. One truth. Then move on.";
+  const demoLead = content?.simulator?.lead || "Rating here takes about seven seconds. Drag once, fine-tune if you care to, lock it. Try it now. This is a demo and nothing is submitted.";
+  const demoTag = content?.simulator?.tag || "Demo. Nothing is submitted.";
+  const demoQuestion = content?.simulator?.question || "How did it feel?";
+  const demoHint = content?.simulator?.hint || "Don't overthink it. Your first instinct is the signal.";
+  const progressPct = Math.min(100, Math.round(((statusLocked || 0) / (statusTarget || 1000)) * 100));
 
   useEffect(() => {
     // Only show rating button in sections 1 & 2 (Hero and Sectors showcase)
@@ -829,10 +866,10 @@ export default function HomePage() {
       {/* TICKER */}
       <div className="ticker" role="region" aria-label="Trust Index strip, all sectors, pre-live">
         <div className="ticker__row">
-          <p className="ticker__state"><span className="dot dot--signal" />Every-Sector Index</p>
+          <p className="ticker__state"><span className="dot dot--signal" />{tickerState}</p>
           <div className="ticker__viewport" tabIndex={0} role="group" aria-label="Indices waiting to open across industries. Focus or hover to pause.">
             <ul className="ticker__track">
-              <li className="tick tick--note"><span class="dot dot--signal" /><span><b>Insurance opens first</b>, then banking, telecom and automobiles · 183 brands listed</span></li>
+              <li className="tick tick--note"><span className="dot dot--signal" /><span>{tickerHighlight}</span></li>
               <li className="tick"><span className="tick__name">Insurance</span><span className="tick__val">1,000.00</span><span className="tick__tag">opens first</span></li>
               <li className="tick"><span className="tick__name">Banking &amp; loans</span><span className="tick__val">1,000.00</span><span className="tick__tag">opens second</span></li>
               <li className="tick"><span className="tick__name">Investments</span><span className="tick__val">1,000.00</span><span className="tick__tag">planned</span></li>
@@ -853,7 +890,7 @@ export default function HomePage() {
               <li className="tick"><span className="tick__name">Government services</span><span className="tick__val">1,000.00</span><span className="tick__tag">planned</span></li>
             </ul>
             <ul className="ticker__track" aria-hidden="true">
-              <li className="tick tick--note"><span class="dot dot--signal" /><span><b>Insurance opens first</b>, then banking, telecom and automobiles · 183 brands listed</span></li>
+              <li className="tick tick--note"><span className="dot dot--signal" /><span>{tickerHighlight}</span></li>
               <li className="tick"><span className="tick__name">Insurance</span><span className="tick__val">1,000.00</span><span className="tick__tag">opens first</span></li>
               <li className="tick"><span className="tick__name">Banking &amp; loans</span><span className="tick__val">1,000.00</span><span className="tick__tag">opens second</span></li>
               <li className="tick"><span className="tick__name">Investments</span><span className="tick__val">1,000.00</span><span className="tick__tag">planned</span></li>
@@ -884,13 +921,13 @@ export default function HomePage() {
             <h1 id="hero-title">
               <span className="descriptor">
                 <img src="/brand/descriptor-icon.webp" alt="" width={26} height={26} />
-                The Global Trust Index
+                {heroDescriptor}
               </span>
               <span className="sr-only">: </span>
-              <span className="display">Know before you <span>trust.</span></span>
+              <span className="display">{heroTitlePrimary} <span>{heroTitleAccent}</span></span>
             </h1>
             <p className="lead">
-              TrustValue is where people rate and review brands, in public. Real experiences become a Trust Index for every brand and product. See what people actually lived through before you choose, whether it is a policy, a loan, a phone plan, a car or a hospital.
+              {heroLead}
             </p>
 
             <form className="search" id="search" role="search" action="/search/" method="get">
@@ -928,9 +965,9 @@ export default function HomePage() {
               <a href="#sectors">All 18 sectors</a>
             </p>
             <ul className="promises" aria-label="What we will never compromise">
-              <li><svg aria-hidden="true"><use href="#i-shield" /></svg>No paid influence</li>
-              <li><svg aria-hidden="true"><use href="#i-shield" /></svg>No rating ownership by businesses</li>
-              <li><svg aria-hidden="true"><use href="#i-shield" /></svg>No rewritten history</li>
+              {heroPromises.map((promise: string, idx: number) => (
+                <li key={idx}><svg aria-hidden="true"><use href="#i-shield" /></svg>{promise}</li>
+              ))}
             </ul>
           </div>
 
@@ -938,10 +975,10 @@ export default function HomePage() {
           <aside className="status hidden lg:block" aria-labelledby="status-title">
             <div className="status__top">
               <div>
-                <p className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</p>
-                <h2 id="status-title">Goes live at 1,000 reviews.</h2>
+                <p className="tag tag--onnavy"><span className="dot dot--idle" />{statusTag}</p>
+                <h2 id="status-title">{statusTitle}</h2>
                 <p className="status__text">
-                  An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.
+                  {statusDesc}
                 </p>
               </div>
               <img
@@ -953,21 +990,21 @@ export default function HomePage() {
                 fetchPriority="high"
               />
             </div>
-            <div className="run" role="img" aria-label="0 of 1,000 experiences locked so far">
+            <div className="run" role="img" aria-label={`${statusLocked} of ${statusTarget.toLocaleString()} experiences locked so far`}>
               <div className="run__track">
-                <div className="run__fill" style={{ width: "0%" }} />
-                <span className="run__dot" style={{ left: "0%" }} />
+                <div className="run__fill" style={{ width: `${progressPct}%` }} />
+                <span className="run__dot" style={{ left: `${progressPct}%` }} />
               </div>
               <p className="run__ends">
-                <span><b>0</b> locked so far</span>
-                <span><b>1,000</b> to go live</span>
+                <span><b>{statusLocked.toLocaleString()}</b> locked so far</span>
+                <span><b>{statusTarget.toLocaleString()}</b> to go live</span>
               </p>
             </div>
             <dl className="counts" aria-label="Listed today">
-              <div><dt>Articles published</dt><dd>0</dd></div>
-              <div><dt>Brands listed</dt><dd>183</dd></div>
-              <div><dt>Products listed</dt><dd>84</dd></div>
-              <div><dt>Sectors mapped</dt><dd>18</dd></div>
+              <div><dt>Articles published</dt><dd>{countArticles}</dd></div>
+              <div><dt>Brands listed</dt><dd>{countBrands}</dd></div>
+              <div><dt>Products listed</dt><dd>{countProducts}</dd></div>
+              <div><dt>Sectors mapped</dt><dd>{countSectors}</dd></div>
             </dl>
             <p className="status__cta">
               <Link className="btn btn--signal" href="/write-review/">Write the first review</Link>
@@ -998,7 +1035,7 @@ export default function HomePage() {
           <svg viewBox="0 0 24 24" width="20" height="20" fill="#FF5A0A" aria-hidden="true">
             <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
           </svg>
-          <span className="status-pop-badge">1,000</span>
+          <span className="status-pop-badge">{statusTarget.toLocaleString()}</span>
         </button>
       )}
 
@@ -1017,12 +1054,12 @@ export default function HomePage() {
             <div className="status-drawer-body">
               <div className="status-drawer-hero">
                 <div className="status-drawer-info">
-                  <span className="tag tag--onnavy"><span className="dot dot--idle" />Trust Index, pre-live</span>
+                  <span className="tag tag--onnavy"><span className="dot dot--idle" />{statusTag}</span>
                   <h2 id="status-title-mob" className="status-drawer-title">
-                    Goes live at 1,000 reviews.
+                    {statusTitle}
                   </h2>
                   <p className="status-drawer-desc">
-                    An index has to earn its first number. Ours opens at a base of 1,000 the day the thousandth experience is locked.
+                    {statusDesc}
                   </p>
                 </div>
                 <div className="status-drawer-mascot-box">
@@ -1039,21 +1076,21 @@ export default function HomePage() {
               {/* Progress Tracker */}
               <div className="run status-drawer-run">
                 <div className="run__track">
-                  <div className="run__fill" style={{ width: "0%" }} />
-                  <span className="run__dot" style={{ left: "0%" }} />
+                  <div className="run__fill" style={{ width: `${progressPct}%` }} />
+                  <span className="run__dot" style={{ left: `${progressPct}%` }} />
                 </div>
                 <p className="run__ends">
-                  <span><b>0</b> locked so far</span>
-                  <span><b>1,000</b> to go live</span>
+                  <span><b>{statusLocked.toLocaleString()}</b> locked so far</span>
+                  <span><b>{statusTarget.toLocaleString()}</b> to go live</span>
                 </p>
               </div>
 
               {/* Metrics Grid */}
               <dl className="counts status-drawer-counts">
-                <div><dt>Articles published</dt><dd>0</dd></div>
-                <div><dt>Brands listed</dt><dd>183</dd></div>
-                <div><dt>Products listed</dt><dd>84</dd></div>
-                <div><dt>Sectors mapped</dt><dd>18</dd></div>
+                <div><dt>Articles published</dt><dd>{countArticles}</dd></div>
+                <div><dt>Brands listed</dt><dd>{countBrands}</dd></div>
+                <div><dt>Products listed</dt><dd>{countProducts}</dd></div>
+                <div><dt>Sectors mapped</dt><dd>{countSectors}</dd></div>
               </dl>
 
               {/* Action Buttons */}
@@ -1078,8 +1115,8 @@ export default function HomePage() {
       <section className="section demo" id="experience" aria-labelledby="demo-title">
         <div className="wrap">
           <header className="section__head">
-            <h2 id="demo-title" className="wide"><span className="nb">One gesture.</span> <span className="nb">One truth.</span> <span className="nb">Then move on.</span></h2>
-            <p className="lead">Rating here takes about seven seconds. Drag once, fine-tune if you care to, lock it. Try it now. This is a demo and nothing is submitted.</p>
+            <h2 id="demo-title" className="wide">{demoTitle}</h2>
+            <p className="lead">{demoLead}</p>
           </header>
 
           <div className="instrument" id="instrument" data-tone="mid">
@@ -1094,10 +1131,10 @@ export default function HomePage() {
                   <button type="button" role="radio" aria-checked="false" data-subject="hospital" tabIndex={-1}>Healthcare</button>
                   <button type="button" role="radio" aria-checked="false" data-subject="edu" tabIndex={-1}>Education</button>
                 </div>
-                <span className="tag">Demo. Nothing is submitted.</span>
+                <span className="tag">{demoTag}</span>
               </div>
-              <h3 className="rate__q">How did it feel?</h3>
-              <p className="rate__hint">Don&apos;t overthink it. Your first instinct is the signal.</p>
+              <h3 className="rate__q">{demoQuestion}</h3>
+              <p className="rate__hint">{demoHint}</p>
 
               <div className="verdict">
                 <svg className="truststar" id="truststar" viewBox="0 0 120 120" aria-hidden="true">

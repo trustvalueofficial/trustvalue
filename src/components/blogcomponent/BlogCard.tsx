@@ -11,9 +11,10 @@ interface BlogCardProps {
 }
 
 export function BlogCard({ article: a }: BlogCardProps) {
+  const category = a.sector || a.categorySlug || "general";
   return (
     <Link
-      href={paths.blogPost(a.slug)}
+      href={paths.blogPost(category, a.slug)}
       className="group flex flex-col bg-white border border-[#DCE2EB] hover:border-[#FF5A0A] rounded-2xl overflow-hidden shadow-xs hover:shadow-md transition-all duration-200 no-underline"
     >
       {/* Featured Thumbnail */}

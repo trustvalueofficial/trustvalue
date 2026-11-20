@@ -27,7 +27,13 @@ export const paths = {
   compareOfferings: (s: string, cat: string, pair: string) => `/${s}/compare/${cat}/${pair}`,
   about: () => "/about",
   blog: () => "/blog",
-  blogPost: (slug: string) => `/blog/${slug}`,
+  blogPost: (categoryOrSlug: string, slug?: string) => {
+    if (slug) {
+      return `/blog/${categoryOrSlug}/${slug}`;
+    }
+    return `/blog/${categoryOrSlug}`;
+  },
+  blogCategory: (category: string) => `/blog/${category}`,
   contact: () => "/contactus",
   reviews: () => "/reviews",
   rating: () => "/rating",

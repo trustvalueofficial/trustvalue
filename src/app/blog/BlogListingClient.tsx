@@ -1,7 +1,9 @@
 "use client";
 
 import React, { useState, useMemo } from "react";
-import { Search, Sparkles, BookOpen } from "lucide-react";
+import Link from "next/link";
+import { Search, Sparkles, BookOpen, ArrowRight } from "lucide-react";
+import { paths } from "@/lib/routing";
 import { BlogCard } from "@/components/blogcomponent";
 import type { BlogArticle } from "@/lib/cms";
 
@@ -128,6 +130,22 @@ export function BlogListingClient({ articles }: Props) {
           />
         </div>
       </div>
+
+      {/* Selected Sector Category Hub Banner */}
+      {selectedSector !== "all" && (
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 p-3.5 mb-6 sm:mb-8 bg-[#FFF7ED] border border-[#FFEDD5] rounded-2xl text-xs text-[#C2410C]">
+          <span className="font-medium">
+            Filtering research for <strong className="capitalize">{selectedSector}</strong>.
+          </span>
+          <Link
+            href={paths.blogCategory(selectedSector)}
+            className="inline-flex items-center gap-1 font-bold text-[#FF5A0A] hover:text-[#C2410C] no-underline"
+          >
+            <span>Open Dedicated {selectedSector.toUpperCase()} Category Page</span>
+            <ArrowRight size={13} />
+          </Link>
+        </div>
+      )}
 
       {/* Grid of Articles */}
       {filteredArticles.length === 0 ? (

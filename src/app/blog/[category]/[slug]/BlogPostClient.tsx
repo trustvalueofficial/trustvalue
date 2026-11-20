@@ -30,6 +30,7 @@ import { getAuthors } from "@/lib/blog-utils";
 
 interface Props {
   post: BlogArticle;
+  category?: string;
   relatedArticles?: BlogArticle[];
   allArticles?: BlogArticle[];
 }
@@ -125,7 +126,7 @@ function renderFormattedText(text: string) {
   });
 }
 
-export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }: Props) {
+export function BlogPostClient({ post, category, relatedArticles = [], allArticles = [] }: Props) {
   const [copied, setCopied] = useState(false);
   const [activeId, setActiveId] = useState<string>("");
   const [mobileTocOpen, setMobileTocOpen] = useState(false);
@@ -147,6 +148,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
   ]);
 
   const rawContent = post.content || post.body || "";
+  const resolvedCategory = post.sector || post.categorySlug || category || "general";
 
   // Detect whether body is CMS HTML or legacy Markdown
   const isHtml = useMemo(() => {
@@ -241,7 +243,14 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     const matching = allArticles.filter(
       (a) => a.sector?.toLowerCase() === post.sector?.toLowerCase() && a.slug !== post.slug
     );
-    if (matching.length > 0) return matching.slice(0, 3);
+    if (matching.length > 0) {
+      return matching.slice(0, 3).map((m) => ({
+        slug: m.slug,
+        title: m.title,
+        sector: m.sector,
+        readTime: m.readTime,
+      }));
+    }
 
     return [
       {
@@ -265,7 +274,15 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
       .filter((a) => a.slug !== post.slug)
       .sort((a, b) => (b.views || 0) - (a.views || 0));
 
-    if (list.length >= 3) return list.slice(0, 4);
+    if (list.length >= 3) {
+      return list.slice(0, 4).map((p) => ({
+        slug: p.slug,
+        title: p.title,
+        sector: p.sector,
+        views: p.views,
+        readTime: p.readTime,
+      }));
+    }
 
     const defaults = [
       {
@@ -362,13 +379,13 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
     }
   };
 
-  // Comprehensive Schema.org @graph (PART 6)
+  // Comprehensive Schema.org @graph
   const schemaPayload = useMemo(() => {
     const origin =
       typeof window !== "undefined" && window.location.origin
         ? window.location.origin
         : "https://trustvalue.ai";
-    const articleUrl = `${origin}/blog/${post.slug}`;
+    const articleUrl = `${origin}/blog/${resolvedCategory}/${post.slug}`;
     const wordCount = rawContent.trim().split(/\s+/).filter(Boolean).length;
 
     const personNodes = authors.map((authorName, i) => {
@@ -411,7 +428,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
         wordCount,
         image:
           post.featuredImage ||
-          `${origin}/images/categories/${post.categorySlug || post.sector || "general"}.jpg`,
+          `${origin}/images/categories/${resolvedCategory}.jpg`,
         author: authorRefs.length > 0 ? authorRefs : {
           "@type": "Organization",
           name: "TrustValue",
@@ -429,6 +446,38 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
       },
       ...personNodes,
     ];
+
+    // BreadcrumbList Schema.org
+    graph.push({
+      "@type": "BreadcrumbList",
+      "@id": `${articleUrl}#breadcrumbs`,
+      itemListElement: [
+        {
+          "@type": "ListItem",
+          position: 1,
+          name: "Home",
+          item: origin,
+        },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Blog",
+          item: `${origin}/blog`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: post.categoryName || post.sector || category || "General",
+          item: `${origin}/blog/${resolvedCategory}`,
+        },
+        {
+          "@type": "ListItem",
+          position: 4,
+          name: post.title,
+          item: articleUrl,
+        },
+      ],
+    });
 
     if (post.faqData && post.faqData.length > 0) {
       graph.push({
@@ -486,7 +535,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
       "@context": "https://schema.org",
       "@graph": graph,
     };
-  }, [post, authors, rawContent]);
+  }, [post, authors, rawContent, resolvedCategory, category]);
 
   return (
     <article className="max-w-[1440px] mx-auto px-4 sm:px-6 py-6 sm:py-8">
@@ -585,7 +634,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
         {/* ========================================================= */}
         <div className="w-full min-w-0 flex-1 max-w-[760px] xl:max-w-[780px]">
           <div className="mb-6">
-            {/* Breadcrumbs */}
+            {/* Breadcrumbs: home / blog / [category] / [blog] */}
             <nav
               aria-label="Breadcrumb"
               className="flex items-center flex-wrap gap-2 text-xs font-medium text-[#667085] mb-3"
@@ -595,18 +644,28 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
               </Link>
               <span className="text-[#CBD5E1]">/</span>
               <Link href={paths.blog()} className="text-[#667085] hover:text-[#FF5A0A] transition-colors">
-                Research &amp; Guides
+                Blog
               </Link>
               <span className="text-[#CBD5E1]">/</span>
-              <span className="text-[#071B46] font-semibold capitalize">
-                {post.categoryName || post.sector}
+              <Link
+                href={paths.blogCategory(resolvedCategory)}
+                className="text-[#667085] hover:text-[#FF5A0A] transition-colors capitalize"
+              >
+                {post.categoryName || post.sector || category || "General"}
+              </Link>
+              <span className="text-[#CBD5E1]">/</span>
+              <span
+                className="text-[#071B46] font-semibold truncate max-w-[260px] sm:max-w-[380px]"
+                title={post.title}
+              >
+                {post.title}
               </span>
             </nav>
 
             {/* Meta Bar + Share */}
             <div className="flex flex-wrap items-center gap-2.5 mb-3">
               <span className="px-2.5 py-0.5 rounded-full bg-[#EEF2F7] border border-[#DCE2EB] text-[10px] font-bold uppercase tracking-wider text-[#071B46]">
-                {post.categoryName || post.sector}
+                {post.categoryName || post.sector || resolvedCategory}
               </span>
               <span className="inline-flex items-center gap-1 text-xs text-[#667085]">
                 <Clock size={13} /> {post.readTime || "6 min read"}
@@ -898,7 +957,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
                 {relatedArticles.map((rel) => (
                   <Link
                     key={rel.slug}
-                    href={paths.blogPost(rel.slug)}
+                    href={paths.blogPost(rel.sector || resolvedCategory, rel.slug)}
                     className="group flex-shrink-0 w-[280px] sm:w-[300px] snap-start p-4 bg-white border border-[#E2E8F0] hover:border-[#FF5A0A] rounded-xl no-underline shadow-xs hover:shadow-md transition-all flex flex-col justify-between"
                   >
                     <div>
@@ -937,7 +996,7 @@ export function BlogPostClient({ post, relatedArticles = [], allArticles = [] }:
         {/* RIGHT COLUMN: Discovery Sidebar                           */}
         {/* ========================================================= */}
         <BlogDiscoverySidebar
-          sector={post.sector}
+          sector={post.sector || resolvedCategory}
           latestCategoryPosts={latestCategoryPosts}
           popularPosts={popularPosts}
         />
