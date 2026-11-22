@@ -10,6 +10,10 @@ import {
   SUBJECTS_CONFIG,
   SECTORS_SHOWCASE
 } from "@/lib/data/universalData";
+import LookingFor from "@/components/home/LookingFor";
+
+/** Phase 1: keep the situations block in source, do not render it. */
+const SHOW_START_UNSURE = false;
 
 export default function HomePage() {
   const [nudgeOpen, setNudgeOpen] = useState(true);
@@ -1014,6 +1018,8 @@ export default function HomePage() {
         </div>
       </section>
 
+      <LookingFor />
+
       {/* Mobile Floating Rating Pop Tab (Image 4) - only visible in Sections 1 & 2 */}
       {inTopSections && (
         <button
@@ -1425,7 +1431,8 @@ export default function HomePage() {
 
 
 
-      {/* 5. SITUATIONS */}
+      {/* 5. SITUATIONS — hidden, code kept */}
+      {SHOW_START_UNSURE && (
       <section className="section situ" id="situations" aria-labelledby="situ-title">
         <div className="wrap">
           <header className="section__head">
@@ -1442,9 +1449,10 @@ export default function HomePage() {
           </div>
         </div>
       </section>
+      )}
 
       {/* 6. HOW REVIEWING WORKS */}
-      <section className="section" id="how-review" aria-labelledby="how-title" style={{ paddingBlock: "clamp(24px, 4vw, 48px)" }}>
+      <section className="section" id="how-review" aria-labelledby="how-title">
         <div className="wrap">
           <div className="how">
             <p className="how__eye">How reviewing works</p>
@@ -1505,11 +1513,13 @@ export default function HomePage() {
             <h2 id="duel-title">Put any two brands side by side.</h2>
             <p className="lead">Many comparison sites earn money from the brands they list. TrustValue takes none from the brands it scores. Pick a sector, pick two brands, and see what people have rated.</p>
           </div>
-          <div className="duel-pick duel-sector"><label htmlFor="duel-sector">Sector</label><select id="duel-sector" className="tv-select" /></div>
-          <div className="duel-selector">
-            <div className="duel-pick"><label htmlFor="duel-a">Brand A</label><select id="duel-a" className="tv-select" /></div>
-            <div className="duel-vs">VS</div>
-            <div className="duel-pick"><label htmlFor="duel-b">Brand B</label><select id="duel-b" className="tv-select" /></div>
+          <div className="duel-controls">
+            <div className="duel-pick duel-sector"><label htmlFor="duel-sector">Sector</label><select id="duel-sector" className="tv-select" /></div>
+            <div className="duel-selector">
+              <div className="duel-pick"><label htmlFor="duel-a">Brand A</label><select id="duel-a" className="tv-select" /></div>
+              <div className="duel-vs">VS</div>
+              <div className="duel-pick"><label htmlFor="duel-b">Brand B</label><select id="duel-b" className="tv-select" /></div>
+            </div>
           </div>
           <div className="duel-table-wrap">
             <table className="table duel-table">
@@ -1517,7 +1527,7 @@ export default function HomePage() {
               <tbody id="duel-body" />
             </table>
           </div>
-          <p className="note" style={{ marginTop: "14px" }}>A score appears once a brand has ten experiences. Until then we show the count, never a guess.</p>
+          <p className="note duel-note">A score appears once a brand has ten experiences. Until then we show the count, never a guess.</p>
           <div className="duel-cta-card">
             <div><h3>Deciding between these two?</h3><p>Get a one-page side-by-side summary the day either brand publishes its first score.</p></div>
             <div data-lf="duel-compare" data-cta="Notify me" data-ph="Work or personal email" />
