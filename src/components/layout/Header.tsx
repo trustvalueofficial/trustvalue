@@ -2,8 +2,15 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { getAllIndustries } from "@/lib/data/industryData";
 import { GLOSSARY, ARTICLES, QUESTIONS, TYPES } from "@/lib/prototypeData";
+import { pausePageScroll, resumePageScroll } from "@/components/providers/SmoothScrollProvider";
+
+/** Header "Products & Plans" is hidden for the current phase. Markup is kept so it can be restored. */
+const SHOW_HEADER_PRODUCTS = false;
+/** Header "Community" is hidden for the current phase. Markup is kept so it can be restored. */
+const SHOW_HEADER_COMMUNITY = false;
 
 interface SearchResult {
   kind: string;
@@ -143,6 +150,7 @@ const SECTOR_TITLES: Record<string, string> = {
 };
 
 export default function Header() {
+  const router = useRouter();
   const industries = getAllIndustries();
   const insuranceIndustry = industries.find((i) => i.slug === "insurance") || industries[0];
   const brands = insuranceIndustry?.brands || [];
@@ -178,6 +186,46 @@ export default function Header() {
       if (raw) setUser(JSON.parse(raw));
     } catch {}
   }, []);
+
+  useEffect(() => {
+    if (!drawerOpen) return;
+    const root = document.documentElement;
+    const y = window.scrollY;
+    root.style.setProperty("--tv-menu-top", `-${y}px`);
+    root.classList.add("tv-menu-open");
+    pausePageScroll();
+
+    const menu = document.querySelector(".mobile-drawer-root");
+    const onWheel = (event: WheelEvent) => {
+      if (!menu) return;
+      const start = event.target instanceof Element ? event.target : null;
+      let scroller: HTMLElement | null = null;
+      let node = start;
+      while (node && node !== menu) {
+        if (node instanceof HTMLElement) {
+          const overflowY = getComputedStyle(node).overflowY;
+          if ((overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight) {
+            scroller = node;
+            break;
+          }
+        }
+        node = node.parentElement;
+      }
+      if (scroller) {
+        const delta = event.deltaMode === 1 ? event.deltaY * 16 : event.deltaY;
+        scroller.scrollTop += delta;
+      }
+      event.preventDefault();
+    };
+
+    menu?.addEventListener("wheel", onWheel, { passive: false });
+    return () => {
+      menu?.removeEventListener("wheel", onWheel);
+      root.classList.remove("tv-menu-open");
+      root.style.removeProperty("--tv-menu-top");
+      resumePageScroll(y);
+    };
+  }, [drawerOpen]);
 
   // Close menus on outside click or escape
   useEffect(() => {
@@ -435,7 +483,8 @@ export default function Header() {
               </button>
             </div>
 
-            {/* 2. Products Nav Item */}
+            {/* 2. Products Nav Item — hidden, code kept */}
+            {SHOW_HEADER_PRODUCTS && (
             <div
               className="nav-item"
               onMouseEnter={() => handleNavMouseEnter("products")}
@@ -460,6 +509,7 @@ export default function Header() {
                 </svg>
               </button>
             </div>
+            )}
 
             {/* 3. Research Desk Nav Item */}
             <div
@@ -487,7 +537,8 @@ export default function Header() {
               </button>
             </div>
 
-            {/* 4. Community Nav Item */}
+            {/* 4. Community Nav Item — hidden, code kept */}
+            {SHOW_HEADER_COMMUNITY && (
             <div
               className="nav-item"
               onMouseEnter={() => handleNavMouseEnter("community")}
@@ -512,6 +563,7 @@ export default function Header() {
                 </svg>
               </button>
             </div>
+            )}
           </nav>
 
           <div className="hdr-end">
@@ -552,6 +604,8 @@ export default function Header() {
               type="button"
               onClick={() => setDrawerOpen(true)}
               aria-label="Open menu"
+              aria-expanded={drawerOpen}
+              aria-controls="site-menu"
             >
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M4 7h16M4 12h16M4 17h16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
@@ -828,8 +882,8 @@ export default function Header() {
                 </div>
               )}
 
-              {/* 2. PRODUCTS FULL WIDTH PANEL */}
-              {activeMenu === "products" && (
+              {/* 2. PRODUCTS FULL WIDTH PANEL — hidden, code kept */}
+              {SHOW_HEADER_PRODUCTS && activeMenu === "products" && (
                 <div className="mega-panel-content">
                   <div className="mega-head-bar">
                     <div className="mega-head-title">
@@ -1206,8 +1260,8 @@ export default function Header() {
                 </div>
               )}
 
-              {/* 4. COMMUNITY FULL WIDTH PANEL (With Video Upload) */}
-              {activeMenu === "community" && (
+              {/* 4. COMMUNITY FULL WIDTH PANEL (With Video Upload) — hidden, code kept */}
+              {SHOW_HEADER_COMMUNITY && activeMenu === "community" && (
                 <div className="mega-panel-content">
                   <div className="mega-head-bar">
                     <div className="mega-head-title">
@@ -1505,20 +1559,35 @@ export default function Header() {
 
       {/* Mobile Drawer (Smooth Sliding Drill-Down Architecture) */}
       {drawerOpen && (
-        <div
-          className="mobile-drawer-backdrop"
-          onClick={() => {
-            setDrawerOpen(false);
-            setMobileSubMenu(null);
-            setMobileBrandFilter("");
-          }}
-        >
+        <div className="mobile-drawer-root" data-lenis-prevent>
+          <div
+            className="mobile-drawer-backdrop"
+            onClick={() => {
+              setDrawerOpen(false);
+              setMobileSubMenu(null);
+              setMobileBrandFilter("");
+            }}
+          />
           <div
             className="mobile-drawer-sheet"
+            id="site-menu"
             role="dialog"
             aria-modal="true"
-            aria-label="Mobile Navigation"
+            aria-label="Site menu"
             onClick={(e) => e.stopPropagation()}
+            onClickCapture={(e) => {
+              const anchor = (e.target as HTMLElement).closest("a");
+              if (!anchor) return;
+              const href = anchor.getAttribute("href");
+              if (!href || href.startsWith("http") || href.startsWith("mailto:")) return;
+              e.preventDefault();
+              e.stopPropagation();
+              router.push(href);
+              setDrawerOpen(false);
+              setMobileSubMenu(null);
+              setMobileBrandFilter("");
+              setMobileSectorFilter("");
+            }}
           >
             <div className="mobile-drawer-viewport">
               {/* SCREEN 1: PRIMARY MAIN MENU */}
@@ -1588,7 +1657,7 @@ export default function Header() {
 
                 {/* Section Title */}
                 <div style={{ padding: "14px 20px 4px 20px", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8" }}>
-                  Explore Directories
+                  Explore
                 </div>
 
                 {/* Sliding Category Triggers */}
@@ -1603,8 +1672,8 @@ export default function Header() {
                         <i className="fa-solid fa-shapes"></i>
                       </div>
                       <div>
-                        <div>All 18 Sectors</div>
-                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Browse All Regulated Consumer Verticals</div>
+                        <div>All 18 sectors</div>
+                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Insurance, banking, telecom, and the rest</div>
                       </div>
                     </div>
                     <i className="fa-solid fa-chevron-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
@@ -1620,13 +1689,14 @@ export default function Header() {
                         <i className="fa-solid fa-shield-halved"></i>
                       </div>
                       <div>
-                        <div>Brands Directory</div>
-                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>26 Life Insurers &amp; Claim Ratios</div>
+                        <div>Brands</div>
+                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Search listed brands by sector</div>
                       </div>
                     </div>
                     <i className="fa-solid fa-chevron-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
                   </button>
 
+                  {SHOW_HEADER_PRODUCTS && (
                   <button
                     type="button"
                     className="mobile-nav-item-btn"
@@ -1643,7 +1713,34 @@ export default function Header() {
                     </div>
                     <i className="fa-solid fa-chevron-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
                   </button>
+                  )}
 
+                  <Link
+                    className="mobile-nav-item-btn"
+                    href="/reviews"
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      setMobileSubMenu(null);
+                    }}
+                  >
+                    <div className="mobile-nav-item-left">
+                      <div className="mobile-nav-item-icon" style={{ background: "#FFF7ED", color: "#EA580C" }}>
+                        <i className="fa-solid fa-star"></i>
+                      </div>
+                      <div>
+                        <div>Customer reviews</div>
+                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Verified experiences from customers</div>
+                      </div>
+                    </div>
+                    <i className="fa-solid fa-arrow-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
+                  </Link>
+                </nav>
+
+                <div style={{ padding: "20px 20px 4px 20px", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8" }}>
+                  Learn
+                </div>
+
+                <nav style={{ display: "flex", flexDirection: "column" }}>
                   <button
                     type="button"
                     className="mobile-nav-item-btn"
@@ -1654,59 +1751,39 @@ export default function Header() {
                         <i className="fa-solid fa-book-open-reader"></i>
                       </div>
                       <div>
-                        <div>Learn &amp; Research</div>
-                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Research Desk &amp; Legal Guides</div>
+                        <div>Research Desk</div>
+                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Guides on claims, rights, and charges</div>
                       </div>
                     </div>
                     <i className="fa-solid fa-chevron-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
                   </button>
 
-                  <button
-                    type="button"
+                  <Link
                     className="mobile-nav-item-btn"
-                    onClick={() => setMobileSubMenu("community")}
-                  >
-                    <div className="mobile-nav-item-left">
-                      <div className="mobile-nav-item-icon" style={{ background: "#FFF7ED", color: "#EA580C" }}>
-                        <i className="fa-solid fa-users"></i>
-                      </div>
-                      <div>
-                        <div>Community &amp; Reviews</div>
-                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>Verified Telemetry &amp; Proof</div>
-                      </div>
-                    </div>
-                    <i className="fa-solid fa-chevron-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
-                  </button>
-                </nav>
-
-                {/* Section Title */}
-                <div style={{ padding: "20px 20px 4px 20px", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8" }}>
-                  Institutional &amp; Trust
-                </div>
-
-                <div style={{ display: "flex", flexDirection: "column" }}>
-                  <Link
-                    className="mobile-nav-link"
-                    href="/insurance"
-                    onClick={() => {
-                      setDrawerOpen(false);
-                      setMobileSubMenu(null);
-                    }}
-                  >
-                    <span><i className="fa-solid fa-building-columns" style={{ width: "20px", color: "#64748B", marginRight: "10px" }}></i> Life Insurance Sector</span>
-                    <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.75rem", opacity: 0.5 }}></i>
-                  </Link>
-                  <Link
-                    className="mobile-nav-link"
                     href="/rating"
                     onClick={() => {
                       setDrawerOpen(false);
                       setMobileSubMenu(null);
                     }}
                   >
-                    <span><i className="fa-solid fa-square-poll-vertical" style={{ width: "20px", color: "#64748B", marginRight: "10px" }}></i> TrustScore Methodology</span>
-                    <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.75rem", opacity: 0.5 }}></i>
+                    <div className="mobile-nav-item-left">
+                      <div className="mobile-nav-item-icon" style={{ background: "#EEF2FF", color: "#4F46E5" }}>
+                        <i className="fa-solid fa-square-poll-vertical"></i>
+                      </div>
+                      <div>
+                        <div>How scores work</div>
+                        <div style={{ fontSize: "0.78rem", fontWeight: 500, color: "#64748B" }}>TrustScore method and leaderboard</div>
+                      </div>
+                    </div>
+                    <i className="fa-solid fa-arrow-right" style={{ color: "#94A3B8", fontSize: "0.85rem" }}></i>
                   </Link>
+                </nav>
+
+                <div style={{ padding: "20px 20px 4px 20px", fontSize: "0.75rem", fontWeight: 800, letterSpacing: "0.06em", textTransform: "uppercase", color: "#94A3B8" }}>
+                  TrustValue
+                </div>
+
+                <div style={{ display: "flex", flexDirection: "column" }}>
                   <Link
                     className="mobile-nav-link"
                     href="/about"
@@ -1726,7 +1803,18 @@ export default function Header() {
                       setMobileSubMenu(null);
                     }}
                   >
-                    <span><i className="fa-solid fa-envelope" style={{ width: "20px", color: "#64748B", marginRight: "10px" }}></i> Contact Support</span>
+                    <span><i className="fa-solid fa-envelope" style={{ width: "20px", color: "#64748B", marginRight: "10px" }}></i> Contact</span>
+                    <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.75rem", opacity: 0.5 }}></i>
+                  </Link>
+                  <Link
+                    className="mobile-nav-link"
+                    href="/termsandcondition"
+                    onClick={() => {
+                      setDrawerOpen(false);
+                      setMobileSubMenu(null);
+                    }}
+                  >
+                    <span><i className="fa-solid fa-file-contract" style={{ width: "20px", color: "#64748B", marginRight: "10px" }}></i> Terms of use</span>
                     <i className="fa-solid fa-arrow-up-right-from-square" style={{ fontSize: "0.75rem", opacity: 0.5 }}></i>
                   </Link>
                 </div>
@@ -1761,9 +1849,9 @@ export default function Header() {
                   <span style={{ font: "700 0.95rem/1 var(--f-display)", color: "#071B46" }}>
                     {mobileSubMenu === "sectors" && "All 18 Sectors"}
                     {mobileSubMenu === "brands" && "Brands Directory"}
-                    {mobileSubMenu === "products" && "Products & Plans"}
+                    {SHOW_HEADER_PRODUCTS && mobileSubMenu === "products" && "Products & Plans"}
                     {mobileSubMenu === "learn" && "Learn & Research"}
-                    {mobileSubMenu === "community" && "Community Hub"}
+                    {SHOW_HEADER_COMMUNITY && mobileSubMenu === "community" && "Community Hub"}
                   </span>
                   <button
                     className="mobile-drawer-close-btn"
@@ -2036,8 +2124,8 @@ export default function Header() {
                   </div>
                 )}
 
-                {/* SUB CONTENT 2: PRODUCTS */}
-                {mobileSubMenu === "products" && (
+                {/* SUB CONTENT 2: PRODUCTS — hidden, code kept */}
+                {SHOW_HEADER_PRODUCTS && mobileSubMenu === "products" && (
                   <div style={{ padding: "8px 0 24px 0", flex: 1, overflowY: "auto" }}>
                     <div style={{ padding: "8px 16px 12px 16px" }}>
                       <Link
@@ -2311,8 +2399,8 @@ export default function Header() {
                   </div>
                 )}
 
-                {/* SUB CONTENT 4: COMMUNITY */}
-                {mobileSubMenu === "community" && (
+                {/* SUB CONTENT 4: COMMUNITY — hidden, code kept */}
+                {SHOW_HEADER_COMMUNITY && mobileSubMenu === "community" && (
                   <div style={{ padding: "12px 0 24px 0", flex: 1, overflowY: "auto" }}>
                     <button
                       type="button"
