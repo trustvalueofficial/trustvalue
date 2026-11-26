@@ -6,6 +6,7 @@ import { getSectorFaIcon } from "@/lib/icons";
 import { paths } from "@/lib/routing";
 
 /** Sector context bar. An unknown sector slug is a 404 here, before any page runs. */
+
 export default async function SectorLayout({
   children,
   params,
