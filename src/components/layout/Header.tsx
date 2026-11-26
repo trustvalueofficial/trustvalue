@@ -195,7 +195,7 @@ export default function Header() {
     root.classList.add("tv-menu-open");
     pausePageScroll();
 
-    const menu = document.querySelector(".mobile-drawer-root");
+    const menu = document.querySelector<HTMLElement>(".mobile-drawer-root");
     const onWheel = (event: WheelEvent) => {
       if (!menu) return;
       const start = event.target instanceof Element ? event.target : null;
