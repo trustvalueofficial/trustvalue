@@ -1,6 +1,4 @@
 // @ts-nocheck
-"use client";
-
 import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import {
@@ -271,6 +269,7 @@ export default function HomePage() {
       "17": "government"
     };
 
+    // Products
     function drawProducts() {
       if (!bc || !bp) return;
       chips(bc, [["all", "All sectors"]].concat(S.map((s) => [s[0], s[2]])), cur, "bs");
