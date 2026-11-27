@@ -2,9 +2,15 @@
 
 import React from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { paths } from "@/lib/routing";
 
 export default function Footer() {
+  const pathname = usePathname();
+  if (pathname === "/signin" || pathname === "/login") {
+    return null;
+  }
+
   return (
     <footer id="ftr" className="ftr" role="contentinfo">
       <div className="wrap">
