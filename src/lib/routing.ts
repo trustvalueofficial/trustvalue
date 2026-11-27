@@ -35,6 +35,7 @@ export const paths = {
   },
   blogCategory: (category: string) => `/blog/${category}`,
   contact: () => "/contactus",
+  signin: () => "/signin",
   reviews: () => "/reviews",
   rating: () => "/rating",
   termsAndcondition: () => "/termsandcondition",

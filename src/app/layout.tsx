@@ -81,7 +81,7 @@ export default function RootLayout({
         <SmoothScrollProvider>
           <div className="min-h-screen flex flex-col">
             <Header />
-            <main id="main" className="flex-1 w-full">
+            <main id="main" className="flex-1 w-full flex flex-col">
               {children}
             </main>
             <Footer />

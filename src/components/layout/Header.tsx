@@ -2,8 +2,9 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { getAllIndustries } from "@/lib/data/industryData";
+import { paths } from "@/lib/routing";
 import { GLOSSARY, ARTICLES, QUESTIONS, TYPES } from "@/lib/prototypeData";
 import { pausePageScroll, resumePageScroll } from "@/components/providers/SmoothScrollProvider";
 
@@ -151,6 +152,7 @@ const SECTOR_TITLES: Record<string, string> = {
 
 export default function Header() {
   const router = useRouter();
+  const pathname = usePathname();
   const industries = getAllIndustries();
   const insuranceIndustry = industries.find((i) => i.slug === "insurance") || industries[0];
   const brands = insuranceIndustry?.brands || [];
@@ -181,11 +183,20 @@ export default function Header() {
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    try {
-      const raw = localStorage.getItem("tv-user");
-      if (raw) setUser(JSON.parse(raw));
-    } catch {}
-  }, []);
+    const syncUser = () => {
+      try {
+        const raw = localStorage.getItem("tv-user");
+        setUser(raw ? JSON.parse(raw) : null);
+      } catch {}
+    };
+    syncUser();
+    window.addEventListener("tv-user-updated", syncUser);
+    window.addEventListener("storage", syncUser);
+    return () => {
+      window.removeEventListener("tv-user-updated", syncUser);
+      window.removeEventListener("storage", syncUser);
+    };
+  }, [pathname]);
 
   useEffect(() => {
     if (!drawerOpen) return;
@@ -582,17 +593,16 @@ export default function Header() {
             </button>
 
             {user ? (
-              <span className="avatar" title={`Signed in as ${user.name}`}>
+              <Link href={paths.signin()} className="avatar" title={`Signed in as ${user.name}`}>
                 {user.name.slice(0, 1).toUpperCase()}
-              </span>
+              </Link>
             ) : (
-              <button
+              <Link
                 className="btn btn-ghost btn-sm hdr-desk-only"
-                type="button"
-                onClick={() => setSignInOpen(true)}
+                href={paths.signin()}
               >
                 Sign in
-              </button>
+              </Link>
             )}
 
             <Link className="btn btn-primary btn-sm hdr-desk-only" href="/#experience">
@@ -1639,19 +1649,18 @@ export default function Header() {
                       <span>Signed in as <b>{user.name}</b></span>
                     </div>
                   ) : (
-                    <button
+                    <Link
                       className="btn btn-ghost btn-block"
                       style={{ marginTop: "10px", border: "1px solid #E2E8F0" }}
-                      type="button"
+                      href={paths.signin()}
                       onClick={() => {
                         setDrawerOpen(false);
                         setMobileSubMenu(null);
-                        setSignInOpen(true);
                       }}
                     >
                       <i className="fa-solid fa-arrow-right-to-bracket" style={{ marginRight: "6px" }}></i>
                       Sign in / Register
-                    </button>
+                    </Link>
                   )}
                 </div>
 
